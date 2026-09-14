@@ -1,0 +1,134 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/x-is-y-percent-of-what');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I find the whole when I know a percentage of it?',
+    answer:
+      'Divide the part by the percentage written as a decimal. If 50 is 20% of a number, then 20% as a decimal is 0.2, and 50 ÷ 0.2 = 250.',
+  },
+  {
+    question: '50 is 20% of what number?',
+    answer: '250. Since 50 represents one fifth of the total, the total must be five times 50.',
+  },
+  {
+    question: 'How do I find the original price before a discount?',
+    answer:
+      'If you paid a price after a discount, that price is (100 − discount)% of the original. Paying $68 after 15% off means $68 is 85% of the original, so 68 ÷ 0.85 = $80.',
+  },
+  {
+    question: 'How do I remove sales tax from a total?',
+    answer:
+      'A total including 8% tax is 108% of the pre-tax price, so divide by 1.08. A $54 total becomes 54 ÷ 1.08 = $50 before tax. Subtracting 8% from the total instead is a common mistake and gives the wrong answer.',
+  },
+  {
+    question: 'Why can the percentage not be zero?',
+    answer:
+      '0% of every number is 0, so if the part were 0% of something, that something could be any number at all. There is no single answer to return.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="percent-of-what"
+  calculator={calculator}
+  title="X Is Y% of What Number? Calculator"
+  description="Work backwards from a part and a percentage to find the original total. Useful for recovering pre-discount prices, pre-tax amounts and totals from a deposit."
+  h1="X Is Y% of What Number?"
+  intro="Work backwards to the total. When you know a portion and what percentage it represents, this recovers the number it came from — the calculation behind pre-discount prices and pre-tax amounts."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The formula</h2>
+    <p class="mt-3 text-body">
+      Finding a percentage of a number means multiplying by it. Going the other way means dividing —
+      this calculation simply undoes the multiplication.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="Part ÷ (Percentage ÷ 100)"
+        substituted="50 ÷ (20 ÷ 100) = 250"
+        caption="Because the percentage is less than 100, the answer is larger than the part you started with."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="examples-heading" class="mt-24">
+    <h2 id="examples-heading" class="text-display-lg">Worked examples</h2>
+
+    <div class="mt-6 flex flex-col gap-4">
+      <WorkedExample
+        scenario="You paid a $340 deposit, which the agent says is 15% of the total. What is the total?"
+        steps={[
+          { label: 'Turn the percentage into a decimal.', expression: '15 ÷ 100 = 0.15' },
+          { label: 'Divide the deposit by that decimal.', expression: '340 ÷ 0.15 ≈ 2,266.67' },
+        ]}
+        answer="≈ $2,266.67"
+        href="/x-is-y-percent-of-what?part=340&percent=15"
+      />
+
+      <WorkedExample
+        scenario="A jacket cost you $68 after a 15% discount. What was the original price?"
+        steps={[
+          { label: 'Paying after 15% off means you paid 85% of the original.', expression: '100 − 15 = 85' },
+          { label: 'So $68 is 85% of the original price.', expression: '68 ÷ 0.85 = 80' },
+        ]}
+        answer="$80 before the discount"
+        href="/x-is-y-percent-of-what?part=68&percent=85"
+      />
+    </div>
+
+    <p class="mt-4 text-body">
+      That second example is worth pausing on. Adding 15% back onto $68 gives $78.20, not $80 — the
+      discount was taken off the larger number, so putting it back requires division rather than
+      addition.
+    </p>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Common uses</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Original prices</strong> — recovering the pre-sale price from what you actually
+          paid.
+        </li>
+        <li>
+          <strong>Pre-tax amounts</strong> — stripping VAT, GST or sales tax out of a gross total.
+        </li>
+        <li>
+          <strong>Totals from a deposit</strong> — the full cost implied by a percentage paid up
+          front.
+        </li>
+        <li>
+          <strong>Sales from commission</strong> — the sale value behind a known commission payment.
+        </li>
+        <li>
+          <strong>Targets from progress</strong> — the full goal when you know how far along you are.
+        </li>
+        <li>
+          <strong>Survey populations</strong> — the total sample implied by a count and its
+          percentage.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/what-percent-is-x-of-y',
+      '/percentage-calculator',
+      '/discount-calculator',
+      '/percentage-change-calculator',
+    ])}
+  />
+</CalculatorLayout>

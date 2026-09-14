@@ -1,0 +1,110 @@
+---
+/**
+ * Every <head> tag that matters for search and sharing.
+ *
+ * Canonicals are always derived from the path, never from the request URL, so
+ * query-string variants of a calculator (?percent=20&value=500) consolidate
+ * onto the clean page instead of becoming duplicate URLs.
+ */
+import { SITE, absoluteUrl, displayWidth } from '../lib/site.ts';
+import { DEFAULT_LOCALE, LOCALE_META, alternates, type Locale, type PageKey } from '../i18n/config.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path, e.g. "/discount-calculator". */
+  path: string;
+  noindex?: boolean;
+  /** JSON-LD objects to embed. */
+  schema?: Record<string, unknown>[];
+  /** "article" for the guide pages, "website" everywhere else. */
+  ogType?: 'website' | 'article';
+  /** ISO date for guide pages, surfaced as article:modified_time. */
+  modified?: string;
+  locale?: Locale;
+  /** Identifies the page across locales; absent on English-only pages. */
+  pageKey?: PageKey;
+}
+
+const {
+  title,
+  description,
+  path,
+  noindex = false,
+  schema = [],
+  ogType = 'website',
+  modified,
+  locale = DEFAULT_LOCALE,
+  pageKey,
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const ogImage = absoluteUrl('/og.png');
+
+// The brand suffix is a nicety, not a requirement, so it is appended only when
+// the result still fits what Google shows. Pages whose own title already
+// contains the site name (the main calculator, the homepage) would otherwise
+// render "Percentage Calculator | Percentage Calculator"; translated titles
+// carry the keyword in their own language and are long enough that the English
+// brand would simply be truncated away, taking real words with it.
+const TITLE_BUDGET = 60;
+const suffix = ` | ${SITE.name}`;
+const fullTitle =
+  title.includes(SITE.name) || displayWidth(title + suffix) > TITLE_BUDGET
+    ? title
+    : title + suffix;
+const imageAlt = `${SITE.name} — free online percentage calculators with step-by-step working`;
+
+// Only pages that genuinely have translations advertise alternates, so the
+// English-only policy pages stay quiet here just as they do in hreflang.
+const ogAlternates = pageKey
+  ? alternates(pageKey)
+      .filter((entry) => entry.locale !== locale)
+      .map((entry) => LOCALE_META[entry.locale].og)
+  : [];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{
+  noindex ? (
+    <meta name="robots" content="noindex, follow" />
+  ) : (
+    // Let Google use full-length snippets and large image previews.
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+  )
+}
+
+{/* Open Graph */}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={LOCALE_META[locale].og} />
+{ogAlternates.map((tag) => <meta property="og:locale:alternate" content={tag} />)}
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:secure_url" content={ogImage} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+{modified && <meta property="article:modified_time" content={modified} />}
+
+{/* Twitter / X */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+{
+  schema.map((entry) => (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(entry)} />
+  ))
+}

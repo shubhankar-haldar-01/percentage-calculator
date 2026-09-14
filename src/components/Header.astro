@@ -1,0 +1,224 @@
+---
+/**
+ * `top-nav` — sticky white bar, 56px.
+ *
+ * One menu, not seven. Every calculator and guide lives in a single grouped
+ * disclosure, so the bar itself stays down to a wordmark, that menu, and the
+ * utility cluster. The earlier arrangement put five links, a secondary pill and
+ * a primary pill on the bar at once, which left no room for longer languages
+ * and read as clutter at every width.
+ *
+ * The disclosure is a native <details>: its links are in the HTML for crawlers,
+ * it opens without JavaScript, and script is needed only for Escape and
+ * outside-click.
+ */
+import { SITE, currentPath } from '../lib/site.ts';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { DEFAULT_LOCALE, pathFor, type Locale, type PageKey } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
+
+interface Props {
+  locale?: Locale;
+  /** Lets the language switcher link to this same page in each language. */
+  pageKey?: PageKey;
+}
+
+const { locale = DEFAULT_LOCALE, pageKey = 'home' } = Astro.props;
+const t = ui(locale);
+
+/** The whole site in one menu, grouped the way the footer groups it. */
+const GROUPS: { heading: string; items: { key: PageKey; label: string }[] }[] = [
+  {
+    heading: t.footer.percentage,
+    items: [
+      { key: 'percentage-calculator', label: t.menu.percentageOf },
+      { key: 'what-percent', label: t.menu.whatPercent },
+      { key: 'percent-of-what', label: t.menu.percentOfWhat },
+    ],
+  },
+  {
+    heading: t.footer.change,
+    items: [
+      { key: 'increase', label: t.menu.increase },
+      { key: 'decrease', label: t.menu.decrease },
+      { key: 'change', label: t.menu.change },
+      { key: 'difference', label: t.menu.difference },
+    ],
+  },
+  {
+    heading: t.footer.money,
+    items: [
+      { key: 'discount', label: t.menu.discount },
+      { key: 'tax', label: t.menu.tax },
+    ],
+  },
+  {
+    heading: t.footer.schoolSport,
+    items: [
+      { key: 'grade', label: t.menu.grade },
+      { key: 'average', label: t.menu.average },
+      { key: 'win', label: t.menu.win },
+    ],
+  },
+  {
+    heading: t.footer.health,
+    items: [
+      { key: 'weight-loss', label: t.menu.weightLoss },
+      { key: 'body-fat', label: t.menu.bodyFat },
+    ],
+  },
+  {
+    heading: t.nav.guides,
+    items: [
+      { key: 'how-to', label: t.menu.howTo },
+      { key: 'formulas', label: t.menu.formulas },
+    ],
+  },
+];
+
+const path = currentPath(Astro.url);
+const isCurrent = (key: PageKey) => path === pathFor(locale, key);
+---
+
+<header class="sticky top-0 z-50 border-b border-hairline bg-canvas">
+  <div class="relative mx-auto flex min-h-14 max-w-site items-center gap-2 px-4 sm:gap-3 sm:px-8">
+    <a href={pathFor(locale, 'home')} class="flex shrink-0 items-center gap-2">
+      <span
+        aria-hidden="true"
+        class="grid size-7 place-items-center rounded-full bg-ink text-body-sm font-medium text-inverse-ink"
+      >%</span>
+      {/*
+        The wordmark is the first thing to go when space is tight: the mark
+        already carries the link home, and the menu's own label earns its place
+        on the bar sooner. `sr-only` keeps the link named at every width.
+      */}
+      <span class="hidden text-body-lg font-strong tracking-[-0.02em] min-[900px]:inline">
+        {SITE.name}
+      </span>
+      <span class="sr-only min-[900px]:hidden">{SITE.name}</span>
+    </a>
+
+    <details class="group" name="site-menu">
+      {/*
+        aria-label rather than relying on the visible text, because below 480px
+        the label is display:none and would leave the control unnamed.
+      */}
+      <summary
+        aria-label={t.menu.more}
+        class="flex min-h-10 cursor-pointer list-none items-center gap-2 rounded-pill px-2 text-body-sm font-medium transition-colors hover:bg-surface-soft min-[480px]:border min-[480px]:border-hairline min-[480px]:px-4 [&::-webkit-details-marker]:hidden"
+      >
+        <span aria-hidden="true" class="flex w-5 flex-col gap-[5px] min-[480px]:hidden">
+          <span class="h-0.5 w-full rounded-pill bg-ink"></span>
+          <span class="h-0.5 w-full rounded-pill bg-ink"></span>
+          <span class="h-0.5 w-full rounded-pill bg-ink"></span>
+        </span>
+        <span class="hidden whitespace-nowrap min-[480px]:inline">{t.menu.more}</span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 12 8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          class="hidden size-3 shrink-0 transition-transform group-open:rotate-180 min-[480px]:block"
+        >
+          <path d="M1 1.5 6 6.5l5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </summary>
+
+      {/*
+        Anchored to the header row, not to the summary: anchoring to the button
+        would push a wide panel off-screen on the narrow viewports where the
+        button sits furthest from the edge.
+      */}
+      <nav
+        aria-label={t.menu.more}
+        class="absolute inset-x-4 top-full z-50 mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-lg border border-hairline bg-canvas p-5 shadow-soft sm:inset-x-8 lg:right-auto lg:w-[46rem]"
+      >
+        {/*
+          Multi-column flow rather than a grid: a grid aligns rows, so the
+          two-item groups would sit under a band of dead space as tall as the
+          four-item one. Columns let each group take only the height it needs.
+        */}
+        <div class="-mb-6 gap-8 sm:columns-2 lg:columns-3">
+          {
+            GROUPS.map((group, index) => (
+              <div class="mb-6 break-inside-avoid">
+                {/*
+                  A <p>, not a heading: this menu repeats on every page, and six
+                  more headings in every document outline would drown the real
+                  ones. `aria-labelledby` still names the group.
+                */}
+                <p class="caption" id={`menu-group-${index}`}>
+                  {group.heading}
+                </p>
+                <ul class="mt-2 flex flex-col" aria-labelledby={`menu-group-${index}`}>
+                  {group.items.map((item) => (
+                    <li>
+                      <a
+                        href={pathFor(locale, item.key)}
+                        aria-current={isCurrent(item.key) ? 'page' : undefined}
+                        class:list={[
+                          'flex min-h-11 items-center rounded-sm px-3 py-2 text-body-sm leading-snug transition-colors hover:bg-surface-soft',
+                          isCurrent(item.key) ? 'font-strong' : 'font-book',
+                        ]}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </nav>
+    </details>
+
+    <div class="ml-auto flex items-center gap-2">
+      <LanguageSwitcher locale={locale} pageKey={pageKey} />
+      <ThemeToggle />
+
+      <a
+        href={pathFor(locale, 'percentage-calculator')}
+        class="btn-primary min-h-10 py-1.5 text-body-sm max-[359px]:px-4"
+      >
+        <span class="sm:hidden">{t.nav.calculateShort}</span>
+        <span class="hidden sm:inline">{t.nav.openCalculator}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Native <details> supplies the open/close and button semantics. These are
+  // the three behaviours it lacks.
+  const menus = Array.from(
+    document.querySelectorAll<HTMLDetailsElement>('header details[name]'),
+  );
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    for (const menu of menus) {
+      if (!menu.open) continue;
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    for (const menu of menus) {
+      if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+    }
+  });
+
+  // `name` makes disclosures exclusive only within their own group, and the
+  // language and calculator menus are separate groups — so without this they
+  // would open on top of each other.
+  for (const menu of menus) {
+    menu.addEventListener('toggle', () => {
+      if (!menu.open) return;
+      for (const other of menus) if (other !== menu) other.open = false;
+    });
+  }
+</script>

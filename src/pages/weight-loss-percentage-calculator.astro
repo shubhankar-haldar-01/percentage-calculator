@@ -1,0 +1,124 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/weight-loss-percentage-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate weight loss percentage?',
+    answer:
+      'Subtract your current weight from your starting weight, divide by the starting weight, then multiply by 100. Going from 200 lb to 180 lb is (200 − 180) ÷ 200 × 100 = 10%.',
+  },
+  {
+    question: 'Does it matter whether I use pounds or kilograms?',
+    answer:
+      'No. The units cancel out in the division, so the percentage is identical either way — as long as both figures use the same unit. Do not mix pounds and kilograms in one calculation.',
+  },
+  {
+    question: 'What is a healthy rate of weight loss?',
+    answer:
+      'Guidance commonly cited by health services is around 0.5–1 kg (1–2 lb) per week, or roughly 1% of body weight. This calculator does the arithmetic only — it is not medical advice, and a clinician is the right person to advise on a target.',
+  },
+  {
+    question: 'Why do weight loss challenges use percentages instead of pounds?',
+    answer:
+      'Because a percentage is fair across different starting weights. Losing 10 lb is a much larger achievement for someone starting at 150 lb than for someone starting at 300 lb, and the percentage reflects that while the raw number does not.',
+  },
+  {
+    question: 'How do I calculate the weight I need to reach a target percentage?',
+    answer:
+      'Multiply your starting weight by (100 − target) ÷ 100. To lose 15% from 200 lb: 200 × 0.85 = 170 lb. The percentage calculator does this in one step.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="weight-loss"
+  calculator={calculator}
+  title="Weight Loss Percentage Calculator"
+  description="Free weight loss percentage calculator. See what share of your starting weight you have lost, in pounds, kilograms or stone, with the full working."
+  h1="Weight Loss Percentage Calculator"
+  intro="See what share of your starting weight you have lost. Percentages make progress comparable across different starting weights, which is why weight-loss challenges are scored this way rather than in raw pounds."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The weight loss percentage formula</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      The loss is measured against where you started, which is what makes the figure fair between two
+      people at very different weights.
+    </p>
+
+    <div class="mt-8">
+      <FormulaCard
+        formula="((Starting weight − Current weight) ÷ Starting weight) × 100"
+        substituted="((200 − 180) ÷ 200) × 100 = 10%"
+        caption="Units cancel out, so pounds, kilograms and stone all give the same percentage."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-8">
+      <WorkedExample
+        scenario="You started at 92 kg and now weigh 84.5 kg. What percentage have you lost?"
+        steps={[
+          { label: 'Find the weight lost.', expression: '92 − 84.5 = 7.5 kg' },
+          { label: 'Divide by the weight you started at.', expression: '7.5 ÷ 92 ≈ 0.0815' },
+          { label: 'Multiply by 100.', expression: '0.0815 × 100 ≈ 8.15%' },
+        ]}
+        answer="≈ 8.15% of starting weight lost"
+        href="/weight-loss-percentage-calculator?start=92&current=84.5"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="why-heading" class="mt-24">
+    <h2 id="why-heading" class="text-display-lg">Why percentages beat pounds</h2>
+    <div class="prose-site mt-5">
+      <p>
+        Two people each lose 15 lb. One started at 180 lb and the other at 320 lb. In raw numbers
+        their results are identical; as percentages they are not close:
+      </p>
+      <ul>
+        <li>15 lb from 180 lb is <strong>8.3%</strong> of starting weight.</li>
+        <li>15 lb from 320 lb is <strong>4.7%</strong> of starting weight.</li>
+      </ul>
+      <p>
+        That gap is why workplace and team challenges are almost always scored on percentage rather
+        than pounds — it removes the advantage of simply being heavier at the start.
+      </p>
+
+      <h3>Working towards a target</h3>
+      <p>
+        To find the weight that represents a given percentage loss, use the{' '}
+        <a href="/percentage-calculator">percentage calculator</a>: losing 15% from 200 lb means
+        weighing 85% of 200, which is 170 lb.
+      </p>
+    </div>
+  </section>
+
+  <div class="mt-12 rounded-lg border border-hairline bg-surface-soft p-6 sm:p-8">
+    <h2 class="text-card-title">This is arithmetic, not medical advice</h2>
+    <p class="mt-3 text-body">
+      The calculator converts two numbers into a percentage. It knows nothing about your health,
+      body composition or what a sensible target would be for you. For that, speak to a doctor or a
+      registered dietitian. See the <a href="/disclaimer" class="font-medium text-ink hover:opacity-70">full disclaimer</a>.
+    </p>
+  </div>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/body-fat-percentage-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-change-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

@@ -1,0 +1,125 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/percentage-difference-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'What is percentage difference?',
+    answer:
+      'It is how far apart two values are, expressed as a percentage of their average. Because the average treats both values equally, the answer is the same whichever order you enter them in.',
+  },
+  {
+    question: 'What is the percentage difference between 100 and 120?',
+    answer:
+      '18.18%. The gap is 20 and the average of the two values is 110, so 20 ÷ 110 × 100 = 18.18%. Note that this is not 20% — that would be the percentage change from 100 to 120.',
+  },
+  {
+    question: 'Why divide by the average instead of one of the values?',
+    answer:
+      'Because neither value is more authoritative than the other. Dividing by one of them would make that value the reference point and produce a different answer depending on which you picked — which is exactly what percentage change does, on purpose.',
+  },
+  {
+    question: 'When should I use percentage difference instead of percentage change?',
+    answer:
+      'Use difference when the two values are peers with no before-and-after relationship: two suppliers’ quotes, two measurements of the same thing, two products’ weights. Use change when one value genuinely preceded the other.',
+  },
+  {
+    question: 'Can percentage difference be more than 100%?',
+    answer:
+      'Yes. Comparing 10 and 90 gives a gap of 80 against an average of 50, which is 160%. Differences above 100% simply mean the gap is larger than the typical size of the two values.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="difference"
+  calculator={calculator}
+  title="Percentage Difference Calculator"
+  description="Calculate the percentage difference between two values, measured against their average — and see exactly how it differs from percentage change."
+  h1="Percentage Difference Calculator"
+  intro="Compare two values where neither came first. Percentage difference measures the gap between them against their average, which is what makes it symmetric — swap the inputs and the answer is unchanged."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The percentage difference formula</h2>
+    <p class="mt-3 text-body">
+      The gap between the two values goes on top; the average of the two goes underneath. Using the
+      average is the whole point — it refuses to privilege either value as the baseline.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="(|A − B| ÷ ((A + B) ÷ 2)) × 100"
+        substituted="(|100 − 120| ÷ 110) × 100 = 18.18%"
+        caption="The vertical bars mean “ignore the sign” — a gap of 20 is a gap of 20 regardless of which value is larger."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="when-heading" class="mt-24">
+    <h2 id="when-heading" class="text-display-lg">When percentage difference is the right question</h2>
+    <div class="prose-site mt-4">
+      <p>
+        The test is simple: <strong
+          >does one of your two values come before the other?</strong
+        > If it does, you want <a href="/percentage-change-calculator">percentage change</a>. If the
+        two values are simply two readings, two quotes or two options sitting side by side, percentage
+        difference is the honest comparison.
+      </p>
+      <ul>
+        <li>
+          <strong>Two quotes for the same job</strong> — a builder at $4,200 and another at $3,800.
+          Neither is “the original”.
+        </li>
+        <li>
+          <strong>Repeated measurements</strong> — two lab readings of the same sample, where the
+          difference indicates measurement error rather than a change over time.
+        </li>
+        <li>
+          <strong>Comparing two products</strong> — two packs at 340 g and 400 g.
+        </li>
+        <li>
+          <strong>Comparing two regions or groups</strong> — average salary in two cities, or scores
+          for two cohorts sitting the same exam.
+        </li>
+      </ul>
+      <p>
+        Using percentage change for these would force you to nominate one value as the baseline, and
+        your answer would shift depending on which you picked. That is not a rounding quirk — it is a
+        different question producing a different number.
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example: two quotes</h2>
+    <div class="mt-6">
+      <WorkedExample
+        scenario="Two contractors quote $4,200 and $3,800 for the same work. How far apart are they?"
+        steps={[
+          { label: 'Find the gap, ignoring which is larger.', expression: '|4,200 − 3,800| = 400' },
+          { label: 'Find the average of the two quotes.', expression: '(4,200 + 3,800) ÷ 2 = 4,000' },
+          { label: 'Divide the gap by the average and multiply by 100.', expression: '400 ÷ 4,000 × 100 = 10%' },
+        ]}
+        answer="10% difference"
+        href="/percentage-difference-calculator?a=4200&b=3800"
+      />
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-change-calculator',
+      '/percentage-increase-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

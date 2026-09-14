@@ -1,0 +1,56 @@
+---
+/** Shell for guide and policy pages: breadcrumbs, H1, lead, then prose. */
+import BaseLayout from './BaseLayout.astro';
+import type { Locale, PageKey } from '../i18n/config.ts';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../lib/schema.ts';
+
+interface Props {
+  /** Identifies the page across locales, for hreflang. */
+  pageKey?: PageKey;
+  locale?: Locale;
+  title: string;
+  description: string;
+  path: string;
+  h1: string;
+  intro?: string;
+  /** Label used in the breadcrumb trail; defaults to the H1. */
+  crumbLabel?: string;
+  /** Shown under the H1 on policy pages. */
+  updated?: string;
+  /** Marks guide pages as articles for Open Graph. */
+  ogType?: 'website' | 'article';
+  /** ISO date for article:modified_time. */
+  modified?: string;
+}
+
+const { title, description, path, h1, intro, crumbLabel, updated, ogType, modified, pageKey, locale } = Astro.props;
+
+const crumbs = [
+  { label: 'Home', path: '/' },
+  { label: crumbLabel ?? h1, path },
+];
+---
+
+<BaseLayout
+  pageKey={pageKey}
+  locale={locale}
+  title={title}
+  description={description}
+  path={path}
+  schema={[breadcrumbSchema(crumbs)]}
+  ogType={ogType}
+  modified={modified}
+>
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <h1 class="text-display-lg text-balance">{h1}</h1>
+    {updated && <p class="mt-4 text-body-sm">Last updated {updated}</p>}
+    {intro && <p class="mt-5 max-w-2xl text-body">{intro}</p>}
+
+    <div class="mt-12">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

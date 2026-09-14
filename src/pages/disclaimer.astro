@@ -1,0 +1,75 @@
+---
+import ContentLayout from '../layouts/ContentLayout.astro';
+import { SITE } from '../lib/site.ts';
+---
+
+<ContentLayout
+  title="Disclaimer"
+  description="The limits of what the calculators on this site can be relied on for, and why you should verify results before acting on them."
+  path="/disclaimer"
+  h1="Disclaimer"
+  updated="13 September 2026"
+  intro="What these calculators are for, and — more importantly — what they are not for."
+>
+  <div class="prose-site">
+    <h2>General information only</h2>
+    <p>
+      Everything on {SITE.name} is provided for general informational and educational purposes. The
+      calculators perform standard arithmetic on the numbers you enter. They do not know your
+      circumstances and cannot judge whether the calculation you have chosen is the right one for your
+      situation.
+    </p>
+
+    <h2>Not professional advice</h2>
+    <p>
+      Nothing on this site constitutes financial, investment, tax, accounting, legal, medical or
+      academic advice. A percentage is a neutral piece of arithmetic; deciding what to do about it is
+      not. For decisions that matter, consult a qualified professional who can take your full
+      circumstances into account.
+    </p>
+
+    <h2>Accuracy</h2>
+    <p>
+      The calculation logic is covered by an automated test suite spanning whole numbers, decimals,
+      negative values, very large numbers, zero, division by zero, floating-point precision and
+      rounding. Even so, no software is guaranteed free of defects, and no warranty is given that
+      every result is correct or fit for a particular purpose.
+    </p>
+    <p>
+      Two practical limits are worth naming. First, calculations use standard double-precision
+      floating-point arithmetic, which is what every browser and spreadsheet uses; results are cleaned
+      up to remove its familiar artefacts, but extremely large or extremely small values can still
+      lose precision. Second, displayed answers are rounded — where a result is rounded it is marked
+      with ≈, and you should not treat a displayed figure as exact to unlimited decimal places.
+    </p>
+
+    <h2>Verify before you act</h2>
+    <p>
+      Please check any figure independently before using it for something consequential — a
+      contract, a tax return, an academic submission, a financial commitment or a medical dosage.
+      Every calculator shows its formula and full working precisely so that you can check it.
+    </p>
+
+    <h2>Rounding and real-world rules</h2>
+    <p>
+      Real-world percentage calculations often follow conventions this site does not apply: tax
+      authorities specify particular rounding rules, retailers round prices in particular ways, and
+      institutions weight exam marks according to their own schemes. The arithmetic here is the
+      standard mathematical calculation and may differ from an official figure for those reasons.
+    </p>
+
+    <h2>No liability</h2>
+    <p>
+      To the fullest extent permitted by law, no liability is accepted for any loss or damage
+      resulting from use of this site or reliance on its results. Use of the site is at your own risk.
+      See the <a href="/terms">terms of service</a> for the full position.
+    </p>
+
+    <h2>Reporting a problem</h2>
+    <p>
+      If a result looks wrong, please report it to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>{' '}
+      with the calculator, the numbers you entered and the answer you expected. Accuracy reports are
+      the first thing looked at.
+    </p>
+  </div>
+</ContentLayout>

@@ -1,0 +1,120 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/percentage-decrease-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate percentage decrease?',
+    answer:
+      'Subtract the new value from the original, divide by the original, then multiply by 100. Going from 200 to 150: 200 − 150 = 50, then 50 ÷ 200 = 0.25, then 0.25 × 100 = 25%.',
+  },
+  {
+    question: 'What is the percentage decrease from 200 to 150?',
+    answer: '25%. The value fell by 50, and 50 is a quarter of the original 200.',
+  },
+  {
+    question: 'How do I subtract a percentage from a number?',
+    answer:
+      'Multiply by 1 minus the percentage as a decimal. To take 20% off 200, multiply 200 × 0.8 = 160. That single step replaces working out the reduction and subtracting it.',
+  },
+  {
+    question: 'Can a percentage decrease be more than 100%?',
+    answer:
+      'Only if the value crosses below zero. A fall of 100% means the value reached zero, so anything beyond that implies a negative result — a debt rather than a balance, for example.',
+  },
+  {
+    question: 'Why is a 50% rise not cancelled out by a 50% fall?',
+    answer:
+      'Because each percentage is measured against a different starting point. £100 rising 50% gives £150; 50% of £150 is £75, leaving you at £75 rather than back at £100. Reversing a 50% rise takes a 33.3% fall.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="decrease"
+  calculator={calculator}
+  title="Percentage Decrease Calculator"
+  description="Calculate the percentage decrease between two values with full step-by-step working. Useful for price cuts, falling costs, reduced usage and declining figures."
+  h1="Percentage Decrease Calculator"
+  intro="Find out how far a value has fallen in percentage terms. Enter the original and the new value, and the calculator shows the size of the drop and how it was worked out."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The percentage decrease formula</h2>
+    <p class="mt-3 text-body">
+      A decrease is measured against the value you started with, exactly like an increase — the only
+      difference is the direction of travel.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="((Original − New) ÷ Original) × 100"
+        substituted="((200 − 150) ÷ 200) × 100 = 25%"
+        caption="Written this way the answer comes out positive, which is how a decrease is normally quoted — “a 25% decrease”, not “a −25% change”."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example: an energy bill</h2>
+    <div class="mt-6">
+      <WorkedExample
+        scenario="Your monthly energy bill falls from $180 to $126 after you switch tariff. How big is the saving in percentage terms?"
+        steps={[
+          { label: 'Find the size of the fall.', expression: '180 − 126 = 54' },
+          { label: 'Divide it by the original bill.', expression: '54 ÷ 180 = 0.3' },
+          { label: 'Multiply by 100.', expression: '0.3 × 100 = 30%' },
+        ]}
+        answer="30% decrease"
+        href="/percentage-decrease-calculator?original=180&final=126"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">When you need a percentage decrease</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Price cuts</strong> — how much a reduced price has actually come down, independent
+          of the advertised claim.
+        </li>
+        <li>
+          <strong>Cost savings</strong> — the effect of switching supplier, renegotiating a contract
+          or cutting a subscription.
+        </li>
+        <li>
+          <strong>Falling demand</strong> — sales, bookings or sign-ups against a previous period.
+        </li>
+        <li>
+          <strong>Usage reductions</strong> — energy, fuel or data consumption after a change of
+          habit.
+        </li>
+        <li>
+          <strong>Depreciation</strong> — the drop in a vehicle or device's value since purchase.
+        </li>
+      </ul>
+      <p>
+        If you are shopping rather than analysing, the{' '}
+        <a href="/discount-calculator">discount calculator</a> is the more direct tool — it gives you
+        the money off and the price you pay rather than a percentage.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-increase-calculator',
+      '/percentage-change-calculator',
+      '/discount-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

@@ -1,0 +1,131 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/percentage-increase-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate percentage increase?',
+    answer:
+      'Subtract the original value from the new value, divide the result by the original value, then multiply by 100. Going from 100 to 150: 150 − 100 = 50, then 50 ÷ 100 = 0.5, then 0.5 × 100 = 50%.',
+  },
+  {
+    question: 'What is the percentage increase from 100 to 150?',
+    answer:
+      '50%. The value rose by 50, and 50 is half of the original 100, so the increase is 50%.',
+  },
+  {
+    question: 'Why do I divide by the original value and not the new one?',
+    answer:
+      'Because an increase is measured against where you started. Dividing by the new value would answer a different question — what share of the final figure the growth represents — and would give a smaller number for the same movement.',
+  },
+  {
+    question: 'What is the difference between a percentage increase and percentage points?',
+    answer:
+      'Percentage points measure the gap between two percentages directly. If a rate rises from 4% to 5%, that is a rise of 1 percentage point, but a 25% increase. Both are correct; they answer different questions, and mixing them up is the single most common percentage error in reporting.',
+  },
+  {
+    question: 'What if my value went down instead of up?',
+    answer:
+      'The calculator says so rather than returning a confusing negative — it will tell you the size of the decrease and point you to the percentage decrease calculator.',
+  },
+  {
+    question: 'How do I add a percentage increase to a number?',
+    answer:
+      'Multiply by 1 plus the percentage as a decimal. To add 15% to 80, multiply 80 × 1.15 = 92. This is faster than working out the increase and adding it separately.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="increase"
+  calculator={calculator}
+  title="Percentage Increase Calculator"
+  description="Free increase percentage calculator. Work out the percentage increase between two values with the formula and every step shown — pay rises, prices, growth."
+  h1="Percentage Increase Calculator"
+  intro="Find out how much a value has grown in percentage terms. Enter where it started and where it ended up, and this increase percentage calculator shows the result along with the arithmetic behind it."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The percentage increase formula</h2>
+    <p class="mt-3 text-body">
+      A percentage increase measures growth <em>relative to where you started</em>. The original
+      value is the reference point, which is why it sits on the bottom of the fraction.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="((New − Original) ÷ Original) × 100"
+        substituted="((150 − 100) ÷ 100) × 100 = 50%"
+        caption="The same £50 rise is a 50% increase on £100 but only a 5% increase on £1,000 — which is exactly why the original value matters."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example: a pay rise</h2>
+    <div class="mt-6">
+      <WorkedExample
+        scenario="Your salary goes from $45,000 to $52,000. What percentage rise is that?"
+        steps={[
+          { label: 'Find the size of the rise.', expression: '52,000 − 45,000 = 7,000' },
+          { label: 'Divide it by the original salary.', expression: '7,000 ÷ 45,000 = 0.1556' },
+          { label: 'Multiply by 100.', expression: '0.1556 × 100 ≈ 15.56%' },
+        ]}
+        answer="≈ 15.56% increase"
+        href="/percentage-increase-calculator?original=45000&final=52000"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">When you need a percentage increase</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Pay rises</strong> — turning a raise into a figure you can compare against
+          inflation or against last year's rise.
+        </li>
+        <li>
+          <strong>Price and rent rises</strong> — judging whether an increase is in line with the
+          market or out of step with it.
+        </li>
+        <li>
+          <strong>Business growth</strong> — revenue, orders or subscribers this quarter against
+          last.
+        </li>
+        <li>
+          <strong>Website traffic</strong> — month-over-month sessions, where the percentage matters
+          far more than the raw number.
+        </li>
+        <li>
+          <strong>Investment gains</strong> — the return on a holding between two points in time.
+        </li>
+      </ul>
+
+      <h3>A trap worth knowing</h3>
+      <p>
+        A percentage increase and the percentage decrease that undoes it are <em>not</em> the same
+        number. If a $100 item rises 50% to $150, it takes a 33.3% fall — not 50% — to get back to
+        $100. The increase is measured against $100 and the decrease against $150, so the same $50
+        movement produces two different percentages. The{' '}
+        <a href="/percentage-decrease-calculator">percentage decrease calculator</a> works the other direction.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-decrease-calculator',
+      '/percentage-change-calculator',
+      '/percentage-difference-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

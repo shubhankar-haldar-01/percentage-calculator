@@ -1,0 +1,272 @@
+---
+import ContentLayout from '../layouts/ContentLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import { related } from '../lib/calculators.ts';
+
+const faqs: FaqItem[] = [
+  {
+    question: 'What is the basic percentage formula?',
+    answer:
+      'Percentage = (Part ÷ Whole) × 100. Every other percentage formula is a rearrangement of this one, solving for a different unknown.',
+  },
+  {
+    question: 'How do I convert a percentage to a decimal?',
+    answer:
+      'Divide by 100, which is the same as moving the decimal point two places to the left. 20% becomes 0.2, 7.5% becomes 0.075, and 150% becomes 1.5.',
+  },
+  {
+    question: 'How do I convert a decimal or fraction to a percentage?',
+    answer:
+      'Multiply a decimal by 100: 0.35 becomes 35%. For a fraction, divide the top by the bottom first, then multiply by 100: 3/8 is 0.375, which is 37.5%.',
+  },
+  {
+    question: 'Which formula should I use for percentage difference?',
+    answer:
+      'Use (|A − B| ÷ average of A and B) × 100 when the two values are peers. Use the percentage change formula instead when one value came before the other — they give different answers on purpose.',
+  },
+];
+---
+
+<ContentLayout
+  pageKey="formulas"
+  title="Percentage Formulas Explained"
+  description="Every percentage formula in one place: percentage of a number, increase, decrease, change and difference, with the distinctions between them made explicit."
+  path="/percentage-formula"
+  h1="Percentage formulas"
+  crumbLabel="Percentage formulas"
+  ogType="article"
+  modified="2026-09-13"
+  intro="Every percentage formula on one page, with the thing that actually causes mistakes made explicit: which one answers which question."
+>
+  <div class="prose-site">
+    <p>
+      All of these come from a single idea. A percentage is a fraction whose denominator is fixed at
+      100, so <code>(Part ÷ Whole) × 100</code> is the root formula and everything below is that
+      equation rearranged to solve for a different unknown.
+    </p>
+  </div>
+
+  <section aria-labelledby="of-heading" class="mt-24">
+    <h2 id="of-heading" class="text-display-lg">Percentage of a number</h2>
+    <p class="mt-3 text-body">
+      You know the percentage and the whole, and want the part.
+    </p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="(Percentage ÷ 100) × Number"
+        substituted="(20 ÷ 100) × 500 = 100"
+        caption="Use for tips, tax amounts, commissions and shares of a total."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a href="/percentage-calculator" class="text-ink underline underline-offset-2 hover:opacity-70"
+        >Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="what-heading" class="mt-24">
+    <h2 id="what-heading" class="text-display-lg">What percent one number is of another</h2>
+    <p class="mt-3 text-body">You know the part and the whole, and want the percentage.</p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="(Part ÷ Whole) × 100"
+        substituted="(25 ÷ 200) × 100 = 12.5%"
+        caption="Use for exam scores, completion rates and market share."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a href="/what-percent-is-x-of-y" class="text-ink underline underline-offset-2 hover:opacity-70"
+        >Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="whole-heading" class="mt-24">
+    <h2 id="whole-heading" class="text-display-lg">Finding the whole</h2>
+    <p class="mt-3 text-body">You know the part and the percentage, and want the whole.</p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="Part ÷ (Percentage ÷ 100)"
+        substituted="50 ÷ 0.2 = 250"
+        caption="Use for pre-discount prices, pre-tax amounts and totals implied by a deposit."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a href="/x-is-y-percent-of-what" class="text-ink underline underline-offset-2 hover:opacity-70"
+        >Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="increase-heading" class="mt-24">
+    <h2 id="increase-heading" class="text-display-lg">Percentage increase</h2>
+    <p class="mt-3 text-body">
+      How much a value grew, measured against where it started.
+    </p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="((New − Original) ÷ Original) × 100"
+        substituted="((150 − 100) ÷ 100) × 100 = 50%"
+        caption="The original value is the reference point, which is why it goes underneath."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a
+        href="/percentage-increase-calculator"
+        class="text-ink underline underline-offset-2 hover:opacity-70">Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="decrease-heading" class="mt-24">
+    <h2 id="decrease-heading" class="text-display-lg">Percentage decrease</h2>
+    <p class="mt-3 text-body">
+      How far a value fell. Identical to increase, written so the answer comes out positive.
+    </p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="((Original − New) ÷ Original) × 100"
+        substituted="((200 − 150) ÷ 200) × 100 = 25%"
+        caption="Quoting “a 25% decrease” is conventional; “a −25% change” says the same thing."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a
+        href="/percentage-decrease-calculator"
+        class="text-ink underline underline-offset-2 hover:opacity-70">Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="change-heading" class="mt-24">
+    <h2 id="change-heading" class="text-display-lg">Percentage change</h2>
+    <p class="mt-3 text-body">
+      Movement in either direction. A positive result is a rise, a negative one a fall.
+    </p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="((New − Original) ÷ |Original|) × 100"
+        substituted="((125 − 100) ÷ 100) × 100 = 25%"
+        caption="Directional: swapping the two values changes the answer."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a
+        href="/percentage-change-calculator"
+        class="text-ink underline underline-offset-2 hover:opacity-70">Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="difference-heading" class="mt-24">
+    <h2 id="difference-heading" class="text-display-lg">Percentage difference</h2>
+    <p class="mt-3 text-body">
+      The gap between two peer values, measured against their average.
+    </p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="(|A − B| ÷ ((A + B) ÷ 2)) × 100"
+        substituted="(|100 − 120| ÷ 110) × 100 = 18.18%"
+        caption="Symmetric: swapping the two values leaves the answer unchanged."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a
+        href="/percentage-difference-calculator"
+        class="text-ink underline underline-offset-2 hover:opacity-70">Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="discount-heading" class="mt-24">
+    <h2 id="discount-heading" class="text-display-lg">Discount and final price</h2>
+    <p class="mt-3 text-body">The money off, and the price you actually pay.</p>
+    <div class="mt-4">
+      <FormulaCard
+        formula="Price × ((100 − Discount) ÷ 100)"
+        substituted="100 × 0.8 = 80"
+        caption="Multiplying by what is left is one step; finding the discount and subtracting is two."
+      />
+    </div>
+    <p class="mt-3 text-body">
+      <a href="/discount-calculator" class="text-ink underline underline-offset-2 hover:opacity-70"
+        >Open the calculator →</a
+      >
+    </p>
+  </section>
+
+  <section aria-labelledby="confusion-heading" class="mt-24">
+    <h2 id="confusion-heading" class="text-display-lg">The four that get confused</h2>
+    <p class="mt-3 text-body">
+      Increase, decrease, change and difference are routinely used interchangeably. They are not
+      interchangeable, and on the same pair of numbers they give different answers.
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-lg border border-hairline bg-canvas">
+      <table class="w-full min-w-[40rem] border-collapse text-left">
+        <caption class="sr-only">
+          How percentage increase, decrease, change and difference differ
+        </caption>
+        <thead>
+          <tr class="border-b border-hairline">
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">Formula</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">Reference point</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">Order matters?</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">100 → 120</th>
+          </tr>
+        </thead>
+        <tbody class="text-body">
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-5 py-3 font-medium text-ink">Increase</th>
+            <td class="px-5 py-3">The original value</td>
+            <td class="px-5 py-3">Yes</td>
+            <td class="px-5 py-3 font-mono text-ink">20% increase</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-5 py-3 font-medium text-ink">Decrease</th>
+            <td class="px-5 py-3">The original value</td>
+            <td class="px-5 py-3">Yes</td>
+            <td class="px-5 py-3">Not applicable — the value rose</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-5 py-3 font-medium text-ink">Change</th>
+            <td class="px-5 py-3">The original value</td>
+            <td class="px-5 py-3">Yes</td>
+            <td class="px-5 py-3 font-mono text-ink">+20%</td>
+          </tr>
+          <tr>
+            <th scope="row" class="px-5 py-3 font-medium text-ink">Difference</th>
+            <td class="px-5 py-3">The average of both</td>
+            <td class="px-5 py-3">No</td>
+            <td class="px-5 py-3 font-mono text-ink">18.18%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose-site mt-6">
+      <h3>Percentage points are a fifth thing</h3>
+      <p>
+        When the values themselves are percentages, the difference between them is measured in{' '}
+        <strong>percentage points</strong>, not percent. A rate moving from 4% to 5% has risen by{' '}
+        <strong>1 percentage point</strong> and by <strong>25%</strong>. Both statements are true, and
+        choosing the flattering one is a well-worn way of making a small change sound large.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-calculator',
+      '/percentage-change-calculator',
+      '/percentage-difference-calculator',
+      '/discount-calculator',
+    ])}
+    heading="Put these formulas to work"
+  />
+</ContentLayout>

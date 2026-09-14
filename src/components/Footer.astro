@@ -1,0 +1,56 @@
+---
+/**
+ * `footer` — a centred closing mark.
+ *
+ * The spec's dense multi-column grid assumed the footer carried the site's
+ * navigation. The navbar menu does that now, and what is left — a wordmark, one
+ * line, a pill and five links — is far too little to hold two opposite edges of
+ * a 1280px page apart. Splitting it left/right left roughly 900px of nothing in
+ * the middle, so it is centred instead: nothing is stretched, and the block
+ * reads as deliberate at any width.
+ */
+import { FOOTER_NAV, SITE } from '../lib/site.ts';
+
+const year = new Date().getFullYear();
+const copyrightRange = year > SITE.founded ? `${SITE.founded}–${year}` : `${year}`;
+---
+
+<footer class="border-t border-hairline bg-canvas">
+  <div class="mx-auto max-w-site px-4 py-16 text-center sm:px-8 sm:py-20">
+    <p class="text-display-lg tracking-[-0.02em]">{SITE.name}</p>
+    <p class="mx-auto mt-4 max-w-sm text-body-sm">Every calculation runs in your browser.</p>
+
+    {/* Secondary: the bar already carries the primary pill. */}
+    <a href="/percentage-calculator" class="btn-secondary mt-8 text-body-sm">
+      Open the calculator
+    </a>
+
+    {
+      FOOTER_NAV.map((group) => (
+        <nav aria-label={group.heading} class="mt-14">
+          <h2 class="caption">{group.heading}</h2>
+          {/*
+            A wrapped row, not a column: five short links sit on one line on a
+            desktop and break cleanly onto two or three on a phone.
+          */}
+          <ul class="mt-5 flex flex-wrap justify-center gap-x-8 gap-y-3">
+            {group.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-body-sm underline-offset-4 transition-all hover:underline"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+
+    <p class="caption mt-14 border-t border-hairline-soft pt-8">
+      © {copyrightRange} {SITE.name}
+    </p>
+  </div>
+</footer>

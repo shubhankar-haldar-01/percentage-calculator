@@ -1,0 +1,172 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/discount-calculator');
+
+const quickTable = [
+  { off: '10%', on100: '90.00', on250: '225.00', on999: '899.10' },
+  { off: '15%', on100: '85.00', on250: '212.50', on999: '849.15' },
+  { off: '20%', on100: '80.00', on250: '200.00', on999: '799.20' },
+  { off: '25%', on100: '75.00', on250: '187.50', on999: '749.25' },
+  { off: '30%', on100: '70.00', on250: '175.00', on999: '699.30' },
+  { off: '50%', on100: '50.00', on250: '125.00', on999: '499.50' },
+  { off: '70%', on100: '30.00', on250: '75.00', on999: '299.70' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate a discount?',
+    answer:
+      'Multiply the price by the discount percentage and divide by 100 to get the money off, then subtract that from the price. For 20% off $100: 100 × 20 ÷ 100 = $20 off, leaving $80.',
+  },
+  {
+    question: 'What is the quickest way to work out a sale price in my head?',
+    answer:
+      'Multiply by what is left rather than what comes off. For 30% off, you pay 70%, so multiply the price by 0.7 in one step instead of calculating the discount and subtracting it.',
+  },
+  {
+    question: 'How do stacked discounts work — is 20% then 10% the same as 30%?',
+    answer:
+      'No, and it is always less. The second discount applies to the already-reduced price, so 20% then 10% off $100 gives $80 and then $72 — a total of 28% off, not 30%. Run the calculator twice, using the first result as the second starting price.',
+  },
+  {
+    question: 'How do I work out the original price from a sale price?',
+    answer:
+      'Divide by what you paid as a proportion. If $68 was after 15% off, you paid 85%, so 68 ÷ 0.85 = $80. The X is Y% of what number calculator does this directly.',
+  },
+  {
+    question: 'Does the calculator include sales tax or VAT?',
+    answer:
+      'No. It works purely on the price you enter, so whether the result includes tax depends on whether the price you typed did. Tax rules vary by country and by product, so applying one automatically would be misleading.',
+  },
+  {
+    question: 'Does changing the currency affect the maths?',
+    answer:
+      'Not at all — the symbol is only for display. There are no exchange rates involved and no data is fetched, so the calculator works offline and gives the same numbers regardless of the symbol you pick.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="discount"
+  calculator={calculator}
+  title="Discount Calculator — Sale Price"
+  description="Work out the discount amount and the final price you pay. Enter an original price and a percentage off to see what you save and what it costs."
+  h1="Discount Calculator"
+  intro="See what you save and what you actually pay. Enter the original price and the percentage off — the result shows both figures, so you can check a sale claim before you reach the till."
+  currency
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The discount formula</h2>
+    <p class="mt-3 text-body">
+      There are two ways to reach the same answer. The long way finds the money off and subtracts it;
+      the short way multiplies by the proportion you still have to pay.
+    </p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <FormulaCard
+        formula="Price − (Price × Discount ÷ 100)"
+        substituted="100 − (100 × 20 ÷ 100) = 80"
+        caption="The long way — useful when you also want to know the saving itself."
+      />
+      <FormulaCard
+        formula="Price × ((100 − Discount) ÷ 100)"
+        substituted="100 × 0.8 = 80"
+        caption="The short way — one multiplication, and much easier to do in your head."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-6">
+      <WorkedExample
+        scenario="A pair of headphones is listed at $249.99 with 35% off. What do you pay?"
+        steps={[
+          { label: 'Work out the money off.', expression: '249.99 × 35 ÷ 100 ≈ 87.50' },
+          { label: 'Subtract it from the listed price.', expression: '249.99 − 87.50 = 162.49' },
+        ]}
+        answer="You pay $162.49 and save $87.50"
+        href="/discount-calculator?price=249.99&percent=35"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="table-heading" class="mt-24">
+    <h2 id="table-heading" class="text-display-lg">Common discounts at a glance</h2>
+    <p class="mt-3 text-body">
+      The price you pay after some frequently advertised reductions.
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-lg border border-hairline bg-canvas">
+      <table class="w-full min-w-[28rem] border-collapse text-left">
+        <caption class="sr-only">Final price after common discount percentages</caption>
+        <thead>
+          <tr class="border-b border-hairline">
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">Discount</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">On 100</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">On 250</th>
+            <th scope="col" class="px-5 py-3 text-body font-medium text-ink">On 999</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            quickTable.map((row) => (
+              <tr class="border-b border-hairline last:border-0">
+                <th scope="row" class="px-5 py-3 text-body font-medium text-ink">
+                  {row.off}
+                </th>
+                <td class="px-5 py-3 font-mono text-body tabular-nums">{row.on100}</td>
+                <td class="px-5 py-3 font-mono text-body tabular-nums">{row.on250}</td>
+                <td class="px-5 py-3 font-mono text-body tabular-nums">{row.on999}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="stacking-heading" class="mt-24">
+    <h2 id="stacking-heading" class="text-display-lg">Two discounts are not one bigger discount</h2>
+    <div class="prose-site mt-4">
+      <p>
+        “20% off, plus an extra 10% at the checkout” is not 30% off. The second reduction applies to
+        the already-discounted price, so on a $100 item:
+      </p>
+      <ul>
+        <li>20% off $100 leaves <strong>$80</strong>.</li>
+        <li>10% off $80 leaves <strong>$72</strong>.</li>
+        <li>That is <strong>28% off</strong> in total — not 30%.</li>
+      </ul>
+      <p>
+        The gap widens as the discounts get larger: 50% and then another 50% leaves you paying 25% of
+        the original price, not nothing. To handle stacked offers here, run the calculator once, then
+        enter the result as the new starting price.
+      </p>
+
+      <h3>Checking a “was / now” claim</h3>
+      <p>
+        If a label shows both prices, you can verify the advertised percentage with the{' '}
+        <a href="/percentage-decrease-calculator">percentage decrease calculator</a> — enter the “was”
+        price as the original and the “now” price as the new value.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-decrease-calculator',
+      '/x-is-y-percent-of-what',
+      '/percentage-calculator',
+      '/percentage-change-calculator',
+    ])}
+  />
+</CalculatorLayout>

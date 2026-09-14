@@ -1,0 +1,57 @@
+---
+/** Shared template for the two translated guide pages. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Faq from './Faq.astro';
+import { pathFor, type Locale } from '../i18n/config.ts';
+import { contentFor } from '../i18n/content/index.ts';
+import { ui } from '../i18n/ui/index.ts';
+import { breadcrumbSchema } from '../lib/schema.ts';
+
+interface Props {
+  locale: Locale;
+  pageKey: 'how-to' | 'formulas';
+}
+
+const { locale, pageKey } = Astro.props;
+const t = ui(locale);
+const page = contentFor(locale).guides[pageKey];
+const path = pathFor(locale, pageKey);
+
+const crumbs = [
+  { label: t.sections.home, path: pathFor(locale, 'home') },
+  { label: page.h1, path },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  pageKey={pageKey}
+  title={page.title}
+  description={page.description}
+  path={path}
+  ogType="article"
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <h1 class="text-display-lg text-balance">{page.h1}</h1>
+    <p class="mt-5 max-w-2xl text-body-lg">{page.intro}</p>
+
+    <div class="prose-site mt-12">
+      {
+        page.sections.map((section) => (
+          <>
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </>
+        ))
+      }
+    </div>
+
+    <Faq items={page.faq.map((entry) => ({ question: entry.q, answer: entry.a }))} heading={t.sections.faq} />
+  </div>
+</BaseLayout>

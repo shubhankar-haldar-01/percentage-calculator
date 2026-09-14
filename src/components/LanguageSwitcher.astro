@@ -1,0 +1,59 @@
+---
+/**
+ * Language switcher.
+ *
+ * Lists only locales that actually have content, and links each one to the
+ * *same page* in that language rather than dumping the user on the home page.
+ * Native <details>, so it needs no script beyond the shared Escape handler.
+ */
+import { alternates, LOCALE_META, type Locale, type PageKey } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
+
+interface Props {
+  locale: Locale;
+  pageKey: PageKey;
+}
+
+const { locale, pageKey } = Astro.props;
+const t = ui(locale);
+const options = alternates(pageKey);
+---
+
+{
+  options.length > 1 && (
+    <details class="group relative shrink-0" name="lang-menu">
+      <summary
+        aria-label={t.nav.language}
+        class="btn-icon cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+      >
+        <span aria-hidden="true" class="caption">
+          {LOCALE_META[locale].tag.toUpperCase()}
+        </span>
+      </summary>
+
+      <nav
+        aria-label={t.nav.language}
+        class="absolute top-12 right-0 z-50 w-48 rounded-md border border-hairline bg-canvas p-2 shadow-soft"
+      >
+        <ul class="flex flex-col">
+          {options.map((option) => (
+            <li>
+              <a
+                href={option.path}
+                hreflang={option.tag}
+                lang={option.tag}
+                aria-current={option.locale === locale ? 'true' : undefined}
+                class:list={[
+                  'flex min-h-11 items-center rounded-sm px-3 text-body-sm transition-colors hover:bg-surface-soft',
+                  option.locale === locale && 'font-strong',
+                ]}
+              >
+                {LOCALE_META[option.locale].label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  )
+}

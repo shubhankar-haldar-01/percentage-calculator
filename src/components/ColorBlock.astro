@@ -1,0 +1,49 @@
+---
+/**
+ * `color-block-section` — the defining surface of this design system.
+ *
+ * A full-content-width pastel panel with 24px corners and 48px interior
+ * padding. Above 768px the canvas shows around it so the corners read; below
+ * that the block bleeds to the viewport edge for a poster effect, per the
+ * documented collapsing strategy.
+ *
+ * The page must return to white canvas between any two blocks — never render
+ * two adjacent.
+ */
+export type BlockTone = 'lime' | 'lilac' | 'cream' | 'pink' | 'mint' | 'coral' | 'navy';
+
+interface Props {
+  tone: BlockTone;
+  /** Rendered as a `<section>` by default; pass a different tag if needed. */
+  as?: 'section' | 'div' | 'aside';
+  labelledby?: string;
+  class?: string;
+}
+
+const { tone, as: Tag = 'section', labelledby, class: className } = Astro.props;
+
+// Blocks keep their pastel surface in both themes, so text is pinned to
+// `block-ink` rather than the theme's flipping ink token.
+const SURFACE: Record<BlockTone, string> = {
+  lime: 'bg-lime text-block-ink',
+  lilac: 'bg-lilac text-block-ink',
+  cream: 'bg-cream text-block-ink',
+  pink: 'bg-pink text-block-ink',
+  mint: 'bg-mint text-block-ink',
+  coral: 'bg-coral text-block-ink',
+  navy: 'bg-navy text-block-ink-inverse',
+};
+---
+
+<Tag
+  aria-labelledby={labelledby}
+  class:list={[
+    'px-6 py-12 sm:rounded-md sm:px-12 sm:py-12',
+    // Full-bleed below 768px: cancel the parent gutter and drop the corners.
+    '-mx-4 sm:mx-0',
+    SURFACE[tone],
+    className,
+  ]}
+>
+  <slot />
+</Tag>

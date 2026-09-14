@@ -1,0 +1,175 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/percentage-change-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate percentage change?',
+    answer:
+      'Subtract the original value from the new value, divide by the original value, then multiply by 100. A positive answer is an increase and a negative one is a decrease.',
+  },
+  {
+    question: 'Is percentage change the same as percentage difference?',
+    answer:
+      'No, and the distinction matters. Percentage change measures a new value against an original one, so it has a direction and the order of the two numbers changes the answer. Percentage difference compares two values against their average, has no direction, and gives the same answer whichever order you enter them in.',
+  },
+  {
+    question: 'Can percentage change be negative?',
+    answer:
+      'Yes — a negative percentage change is a decrease. This calculator shows the size of the movement along with the word "increase" or "decrease", so the direction never depends on spotting a minus sign.',
+  },
+  {
+    question: 'What happens if the original value is zero?',
+    answer:
+      'Percentage change from zero is undefined. Any rise from nothing is infinitely large in percentage terms, so there is no meaningful answer — the calculator says so instead of showing a broken result.',
+  },
+  {
+    question: 'How do I calculate month-over-month change?',
+    answer:
+      'Use last month as the original value and this month as the new value. Comparing the same length of period each time is what keeps the series meaningful.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="change"
+  calculator={calculator}
+  title="Percentage Change Calculator"
+  description="Calculate the percentage change between two values in either direction. The result states whether the value rose or fell, with the full working shown."
+  h1="Percentage Change Calculator"
+  intro="One calculator for movement in either direction. Enter an original value and a new value — the result tells you the size of the change and whether it went up or down, so you never have to interpret a minus sign."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The percentage change formula</h2>
+    <p class="mt-3 text-body">
+      Percentage change is directional: it always measures the new value against the original one.
+      Swap the two numbers and you get a different answer, which is the clearest sign that this is
+      not the same thing as percentage difference.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="((New − Original) ÷ |Original|) × 100"
+        substituted="((125 − 100) ÷ 100) × 100 = 25%"
+        caption="A positive result is an increase, a negative one a decrease. When the value falls, this calculator presents the working as Original − New so the figure you read is the one you would quote."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="versus-heading" class="mt-24">
+    <h2 id="versus-heading" class="text-display-lg">Change vs. difference: the same numbers, two answers</h2>
+    <p class="mt-3 text-body">
+      Take the values 100 and 120. Both calculators accept them, and both give a defensible answer —
+      but they are answering different questions.
+    </p>
+
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full min-w-[32rem] border-collapse text-left">
+        <caption class="sr-only">
+          Comparison of percentage change and percentage difference for the values 100 and 120
+        </caption>
+        <thead>
+          <tr class="border-b border-hairline">
+            <th scope="col" class="py-3 pr-4 text-body font-medium text-ink">&nbsp;</th>
+            <th scope="col" class="py-3 pr-4 text-body font-medium text-ink">Percentage change</th>
+            <th scope="col" class="py-3 text-body font-medium text-ink">Percentage difference</th>
+          </tr>
+        </thead>
+        <tbody class="text-body">
+          <tr class="border-b border-hairline">
+            <th scope="row" class="py-3 pr-4 font-medium text-ink">Question</th>
+            <td class="py-3 pr-4">How much did it move from 100?</td>
+            <td class="py-3">How far apart are these two numbers?</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="py-3 pr-4 font-medium text-ink">Reference point</th>
+            <td class="py-3 pr-4">The original value (100)</td>
+            <td class="py-3">The average of both (110)</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="py-3 pr-4 font-medium text-ink">Answer</th>
+            <td class="py-3 pr-4 font-mono text-ink">20%</td>
+            <td class="py-3 font-mono text-ink">18.18%</td>
+          </tr>
+          <tr>
+            <th scope="row" class="py-3 pr-4 font-medium text-ink">Swap the inputs</th>
+            <td class="py-3 pr-4">Becomes −16.67% — order matters</td>
+            <td class="py-3">Still 18.18% — order does not matter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-4 text-body">
+      Use <strong class="text-ink">change</strong> when one value came before the other. Use{' '}
+      <a href="/percentage-difference-calculator" class="text-ink underline underline-offset-2 hover:opacity-70"
+        >difference</a
+      > when neither did.
+    </p>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example: monthly traffic</h2>
+    <div class="mt-6">
+      <WorkedExample
+        scenario="A site had 24,800 visits in March and 21,080 in April. What was the change?"
+        steps={[
+          { label: 'Find the movement.', expression: '24,800 − 21,080 = 3,720' },
+          { label: 'Divide by the original month.', expression: '3,720 ÷ 24,800 = 0.15' },
+          { label: 'Multiply by 100.', expression: '0.15 × 100 = 15%' },
+        ]}
+        answer="15% decrease"
+        href="/percentage-change-calculator?original=24800&final=21080"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Where percentage change is the right tool</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Reporting periods</strong> — month-over-month, quarter-over-quarter or
+          year-over-year figures.
+        </li>
+        <li>
+          <strong>Prices over time</strong> — how much something costs now against what it cost
+          before.
+        </li>
+        <li>
+          <strong>Stock and asset movements</strong> — a holding's change between two dates.
+        </li>
+        <li>
+          <strong>Metrics dashboards</strong> — conversion rate, churn or engagement against the
+          previous period.
+        </li>
+        <li>
+          <strong>Population and survey figures</strong> — growth or decline between two counts.
+        </li>
+      </ul>
+      <p>
+        If you already know which direction the value moved and want the answer framed that way, the{' '}
+        <a href="/percentage-increase-calculator">increase</a> and{' '}
+        <a href="/percentage-decrease-calculator">decrease</a> calculators are the same maths with the
+        wording to match.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-difference-calculator',
+      '/percentage-increase-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

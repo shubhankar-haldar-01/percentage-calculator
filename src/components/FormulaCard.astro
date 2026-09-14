@@ -1,0 +1,20 @@
+---
+interface Props {
+  /** The formula in words, e.g. "(Part ÷ Whole) × 100". */
+  formula: string;
+  /** The same formula with real numbers substituted in. */
+  substituted?: string;
+  /** Short note on when to reach for this formula. */
+  caption?: string;
+}
+
+const { formula, substituted, caption } = Astro.props;
+---
+
+<div class="rounded-lg border border-hairline bg-canvas p-6 sm:p-8">
+  <div class="rounded-md bg-surface-soft px-5 py-4">
+    <p class="numeric text-body">{formula}</p>
+    {substituted && <p class="numeric mt-1.5 text-body">{substituted}</p>}
+  </div>
+  {caption && <p class="mt-5 text-body">{caption}</p>}
+</div>

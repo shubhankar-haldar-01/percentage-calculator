@@ -1,0 +1,205 @@
+---
+import ContentLayout from '../layouts/ContentLayout.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import { related } from '../lib/calculators.ts';
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate a percentage without a calculator?',
+    answer:
+      'Find 10% by moving the decimal one place left, then build the number you need from it. 10% of 340 is 34, so 5% is 17, 20% is 68, and 25% is 85. Most everyday percentages can be assembled from 10%, 5% and 1%.',
+  },
+  {
+    question: 'What is the fastest way to work out 15%?',
+    answer:
+      'Take 10%, halve it to get 5%, and add the two together. On a $48 bill: $4.80 plus $2.40 is $7.20.',
+  },
+  {
+    question: 'Is "20% of 50" the same as "50% of 20"?',
+    answer:
+      'Yes — both are 10. Percentages are commutative, so you can swap the two numbers whenever it makes the arithmetic easier. Working out 50% of 20 in your head is far quicker than 20% of 50.',
+  },
+  {
+    question: 'How do I calculate percentage in Excel or Google Sheets?',
+    answer:
+      'Use a plain division and let the cell format do the rest: =B2/C2 with the cell formatted as a percentage. For a percentage of a number, =A2*0.2 gives 20% of A2.',
+  },
+  {
+    question: 'How do I calculate the percentage of marks for multiple subjects?',
+    answer:
+      'Add up all the marks you scored, add up all the marks available, then divide one by the other and multiply by 100. Averaging the individual subject percentages gives a different answer whenever the papers have different totals.',
+  },
+];
+---
+
+<ContentLayout
+  pageKey="how-to"
+  title="How to Calculate a Percentage"
+  description="Learn how to calculate percentages step by step, including mental shortcuts, worked examples and the mistakes that catch people out."
+  path="/how-to-calculate-percentage"
+  h1="How to calculate a percentage"
+  crumbLabel="How to calculate percentage"
+  ogType="article"
+  modified="2026-09-13"
+  intro="A practical guide to percentages: what they actually mean, how to work them out on paper or in your head, and the handful of mistakes that produce most wrong answers."
+>
+  <div class="prose-site">
+    <h2>What a percentage actually is</h2>
+    <p>
+      <strong>Per cent</strong> comes from the Latin <em>per centum</em> — “by the hundred”. Saying
+      20% is saying “20 out of every 100”. That is the entire concept; everything else is arithmetic.
+    </p>
+    <p>
+      Percentages exist because raw fractions are hard to compare. Is <code>17/40</code> better than{' '}
+      <code>21/50</code>? Hard to say at a glance. As percentages — 42.5% and 42% — the comparison is
+      immediate. Forcing every fraction onto the same denominator of 100 is what makes them useful.
+    </p>
+    <p>This means three forms are interchangeable, and converting between them is most of the skill:</p>
+    <ul>
+      <li><strong>Percentage:</strong> 25%</li>
+      <li><strong>Decimal:</strong> 0.25 — divide the percentage by 100</li>
+      <li><strong>Fraction:</strong> 25/100, which simplifies to 1/4</li>
+    </ul>
+
+    <h2>Step 1: work out which question you are asking</h2>
+    <p>
+      Almost every wrong percentage answer comes from solving the wrong question, not from bad
+      arithmetic. Three quantities are involved — the part, the whole and the percentage — and you
+      always know two of them. Identify the missing one and the method follows:
+    </p>
+    <ul>
+      <li>
+        Missing the <strong>part</strong>? “What is 20% of 500?” → divide the percentage by 100 and
+        multiply.
+      </li>
+      <li>
+        Missing the <strong>percentage</strong>? “25 out of 200 is what percent?” → divide, then
+        multiply by 100.
+      </li>
+      <li>
+        Missing the <strong>whole</strong>? “50 is 20% of what?” → divide by the percentage as a
+        decimal.
+      </li>
+    </ul>
+
+    <h2>Step 2: do the arithmetic</h2>
+    <p>
+      Converting the percentage to a decimal first keeps things simple, because it turns every
+      percentage problem into ordinary multiplication or division.
+    </p>
+  </div>
+
+  <div class="mt-6 flex flex-col gap-4">
+    <WorkedExample
+      scenario="What is 20% of 500?"
+      steps={[
+        { label: 'Convert the percentage to a decimal.', expression: '20 ÷ 100 = 0.2' },
+        { label: 'Multiply by the number.', expression: '0.2 × 500 = 100' },
+      ]}
+      answer="100"
+      href="/percentage-calculator?mode=percent-of&percent=20&value=500"
+    />
+    <WorkedExample
+      scenario="25 is what percent of 200?"
+      steps={[
+        { label: 'Divide the part by the whole.', expression: '25 ÷ 200 = 0.125' },
+        { label: 'Multiply by 100.', expression: '0.125 × 100 = 12.5%' },
+      ]}
+      answer="12.5%"
+      href="/what-percent-is-x-of-y?part=25&whole=200"
+    />
+  </div>
+
+  <div class="prose-site mt-10">
+    <h2>Doing it in your head</h2>
+    <p>
+      Mental percentages are almost always built from 10%, which you get by moving the decimal point
+      one place to the left. Everything else assembles from there.
+    </p>
+    <ul>
+      <li><strong>10%</strong> — move the decimal one place left. 10% of 340 is 34.</li>
+      <li><strong>5%</strong> — half of 10%. That is 17.</li>
+      <li><strong>1%</strong> — move the decimal two places left. That is 3.40.</li>
+      <li><strong>15%</strong> — 10% plus 5%. That is 51.</li>
+      <li><strong>20%</strong> — double 10%. That is 68.</li>
+      <li><strong>25%</strong> — a quarter, so halve it twice. That is 85.</li>
+    </ul>
+    <p>
+      One more trick worth knowing: <strong>X% of Y always equals Y% of X</strong>. Working out 4% of
+      75 is awkward, but 75% of 4 is obviously 3 — and they are the same question. Whenever one
+      direction looks unpleasant, try the other.
+    </p>
+
+    <h2>The mistakes that catch people out</h2>
+
+    <h3>Reversing a percentage by subtracting it</h3>
+    <p>
+      If a price rose 20% to $120, taking 20% off $120 gives $96 — not the $100 you started from. The
+      rise was calculated on $100 and the fall on $120, so they are percentages of different numbers.
+      To reverse it, divide by 1.2. The{' '}
+      <a href="/x-is-y-percent-of-what">find-the-whole calculator</a> does this directly.
+    </p>
+
+    <h3>Adding percentages of different totals</h3>
+    <p>
+      Scoring 80% on a 10-mark quiz and 60% on a 90-mark exam does not average to 70%. You scored 8 +
+      54 = 62 marks out of 100, which is 62%. Percentages can only be averaged directly when the
+      totals behind them are the same size.
+    </p>
+
+    <h3>Confusing percent with percentage points</h3>
+    <p>
+      An interest rate moving from 4% to 5% has risen by 1 percentage point — and by 25%. Both are
+      accurate; quoting whichever sounds more dramatic is a standard rhetorical move, and worth
+      spotting.
+    </p>
+
+    <h3>Stacking discounts</h3>
+    <p>
+      “20% off plus an extra 10%” is 28% off, not 30%, because the second reduction applies to the
+      already-reduced price. The <a href="/discount-calculator">discount calculator</a> works through
+      it.
+    </p>
+
+    <h2>Everyday situations</h2>
+    <ul>
+      <li>
+        <strong>Tipping</strong> — 15% or 20% of the bill, built from 10%.
+      </li>
+      <li>
+        <strong>Sale shopping</strong> — checking whether an advertised reduction matches the two
+        prices on the label.
+      </li>
+      <li>
+        <strong>Exam results</strong> — marks scored over marks available.
+      </li>
+      <li>
+        <strong>Pay rises</strong> — comparing a raise against inflation.
+      </li>
+      <li>
+        <strong>Loans and savings</strong> — the cash value of a quoted rate on your balance.
+      </li>
+      <li>
+        <strong>Business reporting</strong> — growth against the previous period.
+      </li>
+    </ul>
+    <p>
+      For the formulas themselves, laid out side by side with the distinctions between them, see the{' '}
+      <a href="/percentage-formula">percentage formula reference</a>.
+    </p>
+  </div>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-calculator',
+      '/what-percent-is-x-of-y',
+      '/percentage-increase-calculator',
+      '/discount-calculator',
+    ])}
+    heading="Try it with your own numbers"
+  />
+</ContentLayout>

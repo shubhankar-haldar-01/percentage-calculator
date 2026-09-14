@@ -1,0 +1,101 @@
+---
+/** Translated home page — one per locale that has content. */
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Calculator from '../../components/Calculator.astro';
+import { getCalculator } from '../../lib/calculators.ts';
+import { CALC_KEYS, pathFor, type Locale } from '../../i18n/config.ts';
+import { contentFor, translatedLocales } from '../../i18n/content/index.ts';
+import type { CalcPageKey } from '../../i18n/content/types.ts';
+import { ui } from '../../i18n/ui/index.ts';
+import { calculatorSchema } from '../../lib/schema.ts';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  translatedLocales().map((locale) => ({ params: { lang: locale }, props: { locale } }));
+
+const { locale } = Astro.props as { locale: Locale };
+const t = ui(locale);
+const content = contentFor(locale);
+const home = content.home;
+const labels = content.labels;
+const main = getCalculator('/percentage-calculator');
+const path = pathFor(locale, 'home');
+
+const ALL = CALC_KEYS as readonly CalcPageKey[];
+---
+
+<BaseLayout
+  locale={locale}
+  pageKey="home"
+  title={home.title}
+  description={home.description}
+  path={path}
+  schema={[calculatorSchema({ name: home.h1, description: home.description, path })]}
+>
+  <section class="mx-auto max-w-site px-4 pt-12 pb-16 sm:px-8 sm:pt-20 sm:pb-24">
+    <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
+      <div>
+        <p class="eyebrow">{t.hero.eyebrow}</p>
+        <h1 class="mt-6 text-display-xl text-balance">{home.h1}</h1>
+        <p class="mt-7 max-w-xl text-body-lg">{home.lead}</p>
+
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#calculator" class="btn-primary max-sm:h-12 max-sm:px-5 max-sm:text-body-sm">
+            {t.hero.start}
+          </a>
+          <a
+            href={pathFor(locale, 'how-to')}
+            class="btn-secondary max-sm:h-12 max-sm:px-5 max-sm:text-body-sm"
+          >
+            {t.hero.learn}
+          </a>
+        </div>
+      </div>
+
+      <div id="calculator" class="scroll-mt-20">
+        <Calculator calculator={main} locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-site px-4 sm:px-8">
+    <section aria-labelledby="tools-heading" class="mt-24">
+      <h2 id="tools-heading" class="text-display-lg">{t.sections.allCalculators}</h2>
+      <p class="mt-5 max-w-2xl text-body">{t.sections.allCalculatorsLead}</p>
+
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          ALL.map((key) => (
+            <li>
+              <a
+                href={pathFor(locale, key)}
+                class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+              >
+                <span class="text-card-title">{labels.names[key]}</span>
+                <span class="text-body">{labels.blurbs[key]}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="about-heading" class="mt-24">
+      <h2 id="about-heading" class="text-display-lg">{home.aboutHeading}</h2>
+      <div class="prose-site mt-5 max-w-3xl">
+        {home.about.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+  </div>
+
+  <div class="mx-auto max-w-site px-4 pt-24 pb-8 sm:px-8">
+    <div class="-mx-4 bg-navy px-6 py-12 text-center text-block-ink-inverse sm:mx-0 sm:rounded-lg sm:px-12">
+      <h2 class="mx-auto max-w-3xl text-display-lg text-balance">{t.cta.heading}</h2>
+      <p class="mx-auto mt-6 max-w-xl text-body-lg">{t.cta.lead}</p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={pathFor(locale, 'percentage-calculator')} class="btn-on-block">{t.cta.open}</a>
+        <a href={pathFor(locale, 'formulas')} class="btn-on-block">{t.cta.browse}</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

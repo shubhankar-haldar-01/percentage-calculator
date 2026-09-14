@@ -1,0 +1,113 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/win-percentage-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate win percentage?',
+    answer:
+      'Divide wins by games played, then multiply by 100. A 10–5 record is 10 ÷ 15 × 100 = 66.67%.',
+  },
+  {
+    question: 'How are ties counted in win percentage?',
+    answer:
+      'A tie counts as half a win. That is the standard convention in the NFL, hockey and football, and it is why a 10–5–2 record works out at 64.71% rather than 66.67%. The calculator also shows the rate with ties ignored so you can compare the two.',
+  },
+  {
+    question: 'What is a good win percentage?',
+    answer:
+      'It depends entirely on the sport and the level. Above 50% means more wins than losses; in most professional leagues a season above 60% is strong and above 70% is exceptional.',
+  },
+  {
+    question: 'Is win percentage the same as winning average?',
+    answer:
+      'Yes — baseball quotes it as a three-decimal "winning average" (.667) while other sports quote the percentage (66.7%). The same division produces both; one is simply not multiplied by 100.',
+  },
+  {
+    question: 'How do I calculate win rate for something other than sport?',
+    answer:
+      'The same way. Wins over total attempts works for sales pitches won, matches in a game, bids accepted or trades closed in profit — anything with a clean win-or-lose outcome.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="win"
+  calculator={calculator}
+  title="Win Percentage Calculator"
+  description="Free win percentage calculator for any win–loss record, with ties counted as half a win. Shows games played and the full working behind the result."
+  h1="Win Percentage Calculator"
+  intro="Enter a win–loss record and get the win percentage, with ties handled the way sports actually count them. Works for teams, players, esports, sales pitches or anything else with a win-or-lose outcome."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The win percentage formula</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      Win percentage is wins divided by games played. The only wrinkle is ties, which count as half a
+      win — so they pull the figure toward 50% rather than being ignored.
+    </p>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      <FormulaCard
+        formula="(Wins ÷ Games played) × 100"
+        substituted="(10 ÷ 15) × 100 = 66.67%"
+        caption="When the sport has no draws."
+      />
+      <FormulaCard
+        formula="((Wins + Ties ÷ 2) ÷ Games played) × 100"
+        substituted="((10 + 1) ÷ 17) × 100 = 64.71%"
+        caption="The standard convention when draws are possible."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-8">
+      <WorkedExample
+        scenario="A team finishes the season 10–5–2. What is their win percentage?"
+        steps={[
+          { label: 'Count every game played, ties included.', expression: '10 + 5 + 2 = 17' },
+          { label: 'Credit each tie as half a win.', expression: '10 + (2 ÷ 2) = 11' },
+          { label: 'Divide and multiply by 100.', expression: '11 ÷ 17 × 100 ≈ 64.71%' },
+        ]}
+        answer="≈ 64.71%"
+        href="/win-percentage-calculator?wins=10&losses=5&ties=2"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Where a win rate matters</h2>
+    <div class="prose-site mt-5">
+      <ul>
+        <li><strong>League standings</strong> — the figure teams are ranked by in most sports.</li>
+        <li><strong>Player and esports records</strong> — head-to-head or ranked match results.</li>
+        <li><strong>Sales pipelines</strong> — deals won against deals pitched.</li>
+        <li><strong>Tenders and bids</strong> — contracts won out of contracts entered.</li>
+        <li><strong>Legal and claims work</strong> — cases won out of cases taken.</li>
+      </ul>
+      <p>
+        To compare this season's rate against last season's, feed both percentages into the{' '}
+        <a href="/percentage-change-calculator">percentage change calculator</a> — that tells you how
+        much the form has moved rather than just where it stands.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/what-percent-is-x-of-y',
+      '/percentage-change-calculator',
+      '/average-percentage-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

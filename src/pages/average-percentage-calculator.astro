@@ -1,0 +1,129 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/average-percentage-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate the average of percentages?',
+    answer:
+      'Add the percentages together and divide by how many there are. That plain average is only correct when each percentage describes a group of the same size — otherwise you need the weighted average.',
+  },
+  {
+    question: 'Why can I not just average percentages?',
+    answer:
+      'Because a percentage hides the size of the group behind it. Scoring 80% on a 10-mark quiz and 60% on a 90-mark exam is not a 70% average — you scored 62 marks out of 100, so the real figure is 62%. The plain average treats the tiny quiz as equal to the huge exam.',
+  },
+  {
+    question: 'What is a weighted average percentage?',
+    answer:
+      'It is the average after each percentage has been scaled by the size of the group it came from. Enter the group sizes in the second field and the calculator shows both figures side by side so you can see the gap.',
+  },
+  {
+    question: 'How do I average percentages in Excel or Google Sheets?',
+    answer:
+      'For the plain average use =AVERAGE(A1:A5). For the weighted average use =SUMPRODUCT(A1:A5, B1:B5)/SUM(B1:B5), where column B holds the group sizes.',
+  },
+  {
+    question: 'Can I average percentage increases?',
+    answer:
+      'Not with a plain average if you are compounding them over time — growth of 10% then 10% is 21% overall, not 20%. For a like-for-like set of independent percentages the average is fine.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="average"
+  calculator={calculator}
+  title="Average Percentage Calculator"
+  description="Free average percentage calculator. Average a list of percentages and weight them by group size — the figure that is actually correct — side by side."
+  h1="Average Percentage Calculator"
+  intro="Average a list of percentages in one step — and see the weighted average alongside it. Averaging percentages from differently-sized groups is one of the most common statistical mistakes there is, so this calculator shows both numbers rather than letting you pick the wrong one by accident."
+>
+  <section aria-labelledby="trap-heading" class="mt-24">
+    <h2 id="trap-heading" class="text-display-lg">The averaging trap</h2>
+    <div class="prose-site mt-5">
+      <p>
+        Suppose you score <strong>80%</strong> on a 10-mark quiz and <strong>60%</strong> on a
+        90-mark exam. The plain average says 70%. Your actual result:
+      </p>
+      <ul>
+        <li>80% of 10 marks is <strong>8 marks</strong>.</li>
+        <li>60% of 90 marks is <strong>54 marks</strong>.</li>
+        <li>That is 62 marks out of 100 — <strong>62%</strong>, not 70%.</li>
+      </ul>
+      <p>
+        The plain average was out by eight percentage points because it treated a 10-mark quiz as
+        equal in importance to a 90-mark exam. Percentages only average directly when the groups
+        behind them are the same size. Whenever they are not, enter the group sizes and use the
+        weighted figure.
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">Both formulas</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      <FormulaCard
+        formula="Sum of percentages ÷ How many"
+        substituted="(80 + 60) ÷ 2 = 70%"
+        caption="The plain average. Correct only when every group is the same size."
+      />
+      <FormulaCard
+        formula="Σ(Percentage × Group size) ÷ Σ(Group size)"
+        substituted="((80×10) + (60×90)) ÷ 100 = 62%"
+        caption="The weighted average. Correct whenever the groups differ."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-8">
+      <WorkedExample
+        scenario="Three stores convert at 4%, 6% and 9%, on 1,000, 500 and 100 visitors respectively. What is the overall conversion rate?"
+        steps={[
+          { label: 'Turn each percentage back into a count.', expression: '40 + 30 + 9 = 79 conversions' },
+          { label: 'Add up the groups behind them.', expression: '1,000 + 500 + 100 = 1,600 visitors' },
+          { label: 'Divide and multiply by 100.', expression: '79 ÷ 1,600 × 100 ≈ 4.94%' },
+        ]}
+        answer="≈ 4.94% — not the 6.33% a plain average would suggest"
+        href="/average-percentage-calculator?values=4,%206,%209&weights=1000,%20500,%20100"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Where this comes up</h2>
+    <div class="prose-site mt-5">
+      <ul>
+        <li><strong>Grades across papers</strong> — each worth a different number of marks.</li>
+        <li><strong>Conversion rates across channels</strong> — each with very different traffic.</li>
+        <li><strong>Survey results across regions</strong> — each with a different sample size.</li>
+        <li><strong>Interest or return rates</strong> — across accounts holding different balances.</li>
+        <li><strong>Defect rates across production runs</strong> — of different batch sizes.</li>
+      </ul>
+      <p>
+        If you are averaging exam marks specifically, the{' '}
+        <a href="/grade-percentage-calculator">grade percentage calculator</a> converts each paper
+        first; bring the results back here with the mark allocations as group sizes.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/grade-percentage-calculator',
+      '/percentage-difference-calculator',
+      '/percentage-calculator',
+      '/win-percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

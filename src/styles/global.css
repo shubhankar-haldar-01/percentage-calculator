@@ -1,0 +1,500 @@
+/* `source(none)` disables automatic source detection, which otherwise scans the
+   whole project root — including any synced documentation under .claude/ — and
+   pulls example classes out of it. Sources are registered explicitly instead. */
+@import "tailwindcss" source(none);
+@source "../**/*.{astro,html,ts,js}";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — mapped from figma/DESIGN.md.
+   A rigorously monochrome editorial frame interrupted by oversized pastel
+   colour-block sections. Pills are the only button shape, hierarchy comes from
+   variable font weight rather than grey, and colour is a whole surface rather
+   than an accent.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Monochrome core */
+  --color-ink: #000000;
+  --color-canvas: #ffffff;
+  --color-inverse-canvas: #000000;
+  --color-inverse-ink: #ffffff;
+
+  --color-hairline: #e6e6e6;
+  --color-hairline-soft: #f1f1f1;
+  --color-surface-soft: #f7f7f5;
+
+  /* Colour blocks — whole-section surfaces, never accents */
+  --color-lime: #dceeb1;
+  --color-lilac: #c5b0f4;
+  --color-cream: #f4ecd6;
+  --color-pink: #efd4d4;
+  --color-mint: #c8e6cd;
+  --color-coral: #f3c9b6;
+  --color-navy: #1f1d3d;
+
+  /* One-shot promo colour and the comparison glyph */
+  --color-magenta: #ff3d8b;
+  --color-success: #1ea64a;
+
+  /* The only non-black text tone in the system: input placeholders, which are
+     UI affordance rather than content. Body hierarchy never uses grey. */
+  --color-placeholder: #8e8e8e;
+
+  /* Colour blocks keep their pastel surfaces in both themes, so text on them
+     is pinned rather than following the theme's ink. */
+  --color-block-ink: #000000;
+  --color-block-ink-inverse: #ffffff;
+
+  /* Type. figmaSans -> Inter across a variable weight axis. */
+  --font-weight-light: 320;
+  --font-weight-book: 330;
+  --font-weight-display: 340;
+  --font-weight-medium: 480;
+  --font-weight-strong: 540;
+  --font-weight-bold: 700;
+
+  /* Display sizes step down per the documented breakpoints (86 -> ~48). */
+  --text-display-xl: clamp(2.875rem, 6.4vw, 5.375rem);
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-xl--font-weight: 340;
+
+  --text-display-lg: clamp(2.25rem, 4.8vw, 4rem);
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.015em;
+  --text-display-lg--font-weight: 340;
+
+  --text-headline: clamp(1.375rem, 2vw, 1.625rem);
+  --text-headline--line-height: 1.35;
+  --text-headline--letter-spacing: -0.01em;
+  --text-headline--font-weight: 540;
+
+  --text-subhead: clamp(1.375rem, 2vw, 1.625rem);
+  --text-subhead--line-height: 1.35;
+  --text-subhead--letter-spacing: -0.01em;
+  --text-subhead--font-weight: 340;
+
+  --text-card-title: 1.5rem;
+  --text-card-title--line-height: 1.45;
+  --text-card-title--font-weight: 700;
+
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.4;
+  --text-body-lg--letter-spacing: -0.007em;
+  --text-body-lg--font-weight: 330;
+
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.45;
+  --text-body--letter-spacing: -0.014em;
+  --text-body--font-weight: 320;
+
+  --text-body-sm: 1rem;
+  --text-body-sm--line-height: 1.45;
+  --text-body-sm--letter-spacing: -0.009em;
+  --text-body-sm--font-weight: 330;
+
+  --text-link: 1.25rem;
+  --text-link--line-height: 1.4;
+  --text-link--letter-spacing: -0.005em;
+  --text-link--font-weight: 480;
+
+  --text-button: 1.25rem;
+  --text-button--line-height: 1.4;
+  --text-button--letter-spacing: -0.005em;
+  --text-button--font-weight: 480;
+
+  /* Mono is taxonomy only — eyebrows and captions, always uppercase. */
+  --text-eyebrow: 1.125rem;
+  --text-eyebrow--line-height: 1.3;
+  --text-eyebrow--letter-spacing: 0.03em;
+  --text-eyebrow--font-weight: 400;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.2;
+  --text-caption--letter-spacing: 0.05em;
+  --text-caption--font-weight: 400;
+
+  /* Shape — pills for CTAs, circles for icons, no square buttons anywhere. */
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 50px;
+
+  /* Shadow-light by design: colour blocks do the work elevation usually does. */
+  --shadow-soft: 0 4px 16px rgb(0 0 0 / 0.06);
+
+  --container-site: 1280px;
+}
+
+/* Font families alias Astro's generated variables, so they must be inlined —
+   otherwise `var()` resolves at the wrong point in the cascade. */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+
+/* ---------------------------------------------------------------------------
+   Theme.
+
+   figma/DESIGN.md states the marketing site ships no dark theme, so this is
+   derived rather than specified: the monochrome core simply swaps (the
+   documented `inverse-canvas` / `inverse-ink` pair becomes the page), while
+   every colour block keeps its pastel surface in both themes. That keeps the
+   system's signature intact — colour is still a whole surface, never a tint.
+
+   Three states: no attribute follows the OS, `data-theme` pins a choice.
+   --------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-canvas: #000000;
+  --color-ink: #ffffff;
+  /* The inverse pair swaps too, so the marquee stays a contrasting ribbon. */
+  --color-inverse-canvas: #ffffff;
+  --color-inverse-ink: #000000;
+
+  --color-hairline: #2b2b2b;
+  --color-hairline-soft: #1b1b1b;
+  --color-surface-soft: #121212;
+  --color-placeholder: #6f6f6f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --color-canvas: #000000;
+    --color-ink: #ffffff;
+    --color-inverse-canvas: #ffffff;
+    --color-inverse-ink: #000000;
+
+    --color-hairline: #2b2b2b;
+    --color-hairline-soft: #1b1b1b;
+    --color-surface-soft: #121212;
+    --color-placeholder: #6f6f6f;
+  }
+}
+
+/* --------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-light);
+    line-height: 1.45;
+    letter-spacing: -0.014em;
+    font-feature-settings: "kern";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-block-ink);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Component utilities. `@utility` (not @layer components) so they compose with
+   variants like hover:, focus: and md:.
+   --------------------------------------------------------------------------- */
+
+/* The black pill. Every primary action on the site. */
+/*
+ * Long words at display sizes.
+ *
+ * German compounds routinely exceed a 320px viewport in the hero type —
+ * "Prozentrechner" alone wants 327px at `text-display-xl` — and a word that
+ * cannot break sets a floor no container can shrink under, widening the page.
+ *
+ * `overflow-wrap` is the universal safety net; it only acts on words that do
+ * not fit, so type that already fits is untouched. Hyphenation is scoped to the
+ * languages whose compounding makes it necessary, because `hyphens: auto`
+ * changes line breaking everywhere it applies and English headings need none.
+ */
+:is(h1, h2, h3, h4) {
+  overflow-wrap: break-word;
+}
+
+:is(:lang(de), :lang(pt), :lang(es), :lang(it), :lang(fr)) :is(h1, h2, h3, h4, .numeric) {
+  hyphens: auto;
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-ink);
+  color: var(--color-inverse-ink);
+  font-size: var(--text-button);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  transition: transform 150ms ease, opacity 150ms ease;
+
+  &:hover { opacity: 0.88; }
+  /* The live system relies on micro-scale rather than a darkened fill. */
+  &:active { transform: scale(0.97); }
+}
+
+/* The white pill — the black pair's counterpart. */
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+  font-size: var(--text-button);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  transition: background-color 150ms ease, transform 150ms ease;
+
+  &:hover { background-color: var(--color-surface-soft); }
+  &:active { transform: scale(0.97); }
+}
+
+/* White pill sitting on a colour block or dark surface. */
+@utility btn-on-block {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.875rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-size: var(--text-button);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  transition: transform 150ms ease, opacity 150ms ease;
+
+  &:hover { opacity: 0.9; }
+  &:active { transform: scale(0.97); }
+}
+
+/* Plain text action with a pill hit target. */
+@utility btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.5rem;
+  padding-inline: 0.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  font-size: var(--text-link);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  transition: background-color 150ms ease;
+
+  &:hover { background-color: var(--color-surface-soft); }
+}
+
+/* 40px circular icon button, 44px on touch viewports. */
+@utility btn-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-surface-soft);
+  color: var(--color-ink);
+  transition: background-color 150ms ease;
+
+  @media (pointer: coarse) {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+/* Form field: 8px radius, hairline border, focus shown as a ring. */
+@utility input-field {
+  width: 100%;
+  min-height: 3rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-hairline);
+  background-color: var(--color-canvas);
+  padding: 0.75rem 0.875rem;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-light);
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+
+  &::placeholder {
+    color: var(--color-placeholder);
+    font-weight: var(--font-weight-light);
+  }
+
+  /* Focus is communicated via ring, not via fill change. */
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px var(--color-lime);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px var(--color-pink);
+  }
+}
+
+/* Hairline-stroked container — stroked rather than shadowed. */
+@utility card {
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+}
+
+/* Uppercase mono section marker. */
+@utility eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Smallest mono label — footer column heads, metadata. */
+@utility caption {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Every numeric value renders in mono. */
+@utility numeric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  /* Mono is wide, and these lines run at display sizes in every language. */
+  overflow-wrap: break-word;
+}
+
+/* Long-form editorial content. */
+@utility prose-site {
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-light);
+  line-height: 1.55;
+
+  & h2 {
+    font-size: var(--text-display-lg);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: var(--font-weight-display);
+    margin-block: 3.5rem 1.25rem;
+  }
+  & h3 {
+    font-size: var(--text-headline);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    font-weight: var(--font-weight-strong);
+    margin-block: 2.5rem 0.75rem;
+  }
+  & p { margin-block: 1.125rem; }
+  & ul, & ol { margin-block: 1.125rem; padding-inline-start: 1.5rem; }
+  & ul { list-style: disc; }
+  & ol { list-style: decimal; }
+  & li { margin-block: 0.625rem; padding-inline-start: 0.25rem; }
+  & a {
+    font-weight: var(--font-weight-medium);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  & a:hover { text-decoration-thickness: 2px; }
+  /* Emphasis comes from weight, never from colour. */
+  & strong { font-weight: var(--font-weight-strong); }
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--color-surface-soft);
+    border-radius: var(--radius-xs);
+    padding: 0.15em 0.4em;
+  }
+  & > :first-child { margin-block-start: 0; }
+  & > :last-child { margin-block-end: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces inside a colour block.
+
+   Colour blocks keep their light surface in both themes and pin their text to
+   `block-ink`, so anything that would normally take a theme-flipping surface
+   (inline code, wells) has to take a tint of the block instead — otherwise it
+   renders dark-on-dark once the theme flips.
+   --------------------------------------------------------------------------- */
+.text-block-ink :is(code, kbd, samp) {
+  background-color: rgb(0 0 0 / 0.08);
+  color: var(--color-block-ink);
+}
+
+.text-block-ink-inverse :is(code, kbd, samp) {
+  background-color: rgb(255 255 255 / 0.16);
+  color: var(--color-block-ink-inverse);
+}
+
+/* ---------------------------------------------------------------------------
+   Theme-toggle glyphs.
+
+   Handled in CSS rather than script so the right icon is painted on the first
+   frame — including when the OS is dark and no choice has been stored.
+   --------------------------------------------------------------------------- */
+[data-theme-toggle] [data-icon='sun'] { display: none; }
+[data-theme-toggle] [data-icon='moon'] { display: block; }
+
+:root[data-theme='dark'] [data-theme-toggle] [data-icon='sun'] { display: block; }
+:root[data-theme='dark'] [data-theme-toggle] [data-icon='moon'] { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-theme-toggle] [data-icon='sun'] { display: block; }
+  :root:not([data-theme='light']) [data-theme-toggle] [data-icon='moon'] { display: none; }
+}

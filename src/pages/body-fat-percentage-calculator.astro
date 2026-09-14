@@ -1,0 +1,154 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/body-fat-percentage-calculator');
+
+const bands = [
+  { label: 'Essential fat', men: '2–5%', women: '10–13%' },
+  { label: 'Athletic', men: '6–13%', women: '14–20%' },
+  { label: 'Fitness', men: '14–17%', women: '21–24%' },
+  { label: 'Average', men: '18–24%', women: '25–31%' },
+  { label: 'Above average', men: '25%+', women: '32%+' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How is body fat percentage calculated from measurements?',
+    answer:
+      'This calculator uses the US Navy circumference method, which estimates body fat from your height, neck and waist — plus hips for women. It is a statistical formula fitted to population data, not a direct measurement of fat.',
+  },
+  {
+    question: 'How accurate is the US Navy method?',
+    answer:
+      'Studies typically put it within about 3–4 percentage points of a DEXA scan for most people, which is reasonable for tracking change over time but not precise enough to treat as a clinical figure. It is least reliable at the extremes of body composition and for very muscular builds.',
+  },
+  {
+    question: 'Where exactly do I measure?',
+    answer:
+      'Neck just below the larynx, sloping slightly downward at the front. Waist at the navel for men and at the narrowest point for women. Hips at the widest point. Keep the tape snug but not tight, and measure after breathing out normally.',
+  },
+  {
+    question: 'What is a healthy body fat percentage?',
+    answer:
+      'The commonly cited ranges put fitness-level body fat at roughly 14–17% for men and 21–24% for women, with essential fat far lower. Healthy ranges vary with age, build and athletic background, so treat the bands as orientation rather than a target.',
+  },
+  {
+    question: 'Why do men and women use different formulas?',
+    answer:
+      'Body fat is distributed differently, so the women’s formula includes a hip measurement and uses different constants. Using the wrong one produces a meaningfully wrong estimate.',
+  },
+  {
+    question: 'Can I use inches instead of centimetres?',
+    answer:
+      'Yes — choose inches in the Units field and the calculator converts before applying the formula. Just make sure every measurement uses the unit you selected.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="body-fat"
+  calculator={calculator}
+  title="Body Fat Percentage Calculator"
+  description="Free body fat percentage calculator using the US Navy method. Estimate body fat from tape measurements in centimetres or inches, with category bands."
+  h1="Body Fat Percentage Calculator"
+  intro="Estimate your body fat percentage from a tape measure using the US Navy circumference method. Enter your measurements in centimetres or inches and the calculator shows the estimate along with the band it falls in."
+>
+  <div class="mt-8 rounded-lg border border-hairline bg-surface-soft p-6 sm:p-8">
+    <h2 class="text-card-title">An estimate, not a measurement</h2>
+    <p class="mt-3 text-body">
+      The US Navy method infers body fat from body proportions. It is useful for tracking change
+      over months, but it is not a body-composition scan and it is not medical advice. DEXA,
+      hydrostatic weighing and air-displacement plethysmography are all far more accurate. See the{' '}
+      <a href="/disclaimer" class="font-medium text-ink hover:opacity-70">full disclaimer</a>.
+    </p>
+  </div>
+
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The US Navy formula</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      The method works on the gap between your waist and neck — a proxy for how much mass sits
+      around the middle — scaled against your height. Women's measurements include the hips, and the
+      constants differ.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-4">
+      <FormulaCard
+        formula="495 ÷ (1.0324 − 0.19077 × log₁₀(waist − neck) + 0.15456 × log₁₀(height)) − 450"
+        caption="Men. All measurements in centimetres; inches are converted first."
+      />
+      <FormulaCard
+        formula="495 ÷ (1.29579 − 0.35004 × log₁₀(waist + hip − neck) + 0.221 × log₁₀(height)) − 450"
+        caption="Women. The hip measurement is required."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="measure-heading" class="mt-24">
+    <h2 id="measure-heading" class="text-display-lg">How to take the measurements</h2>
+    <div class="prose-site mt-5">
+      <p>
+        The formula is only as good as the tape work. Measure at the same time of day each time,
+        ideally in the morning, and take each measurement twice.
+      </p>
+      <ul>
+        <li><strong>Neck</strong> — just below the larynx, with the tape sloping slightly downward at the front. Do not flex.</li>
+        <li><strong>Waist</strong> — at the navel for men; at the narrowest point for women. Breathe out normally first and do not pull the tape tight.</li>
+        <li><strong>Hips</strong> — women only, at the widest point, with feet together.</li>
+        <li><strong>Height</strong> — without shoes, standing straight.</li>
+      </ul>
+      <p>
+        Small tape errors matter: a centimetre at the waist moves the estimate by roughly a full
+        percentage point, so consistency between readings matters more than absolute precision.
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="bands-heading" class="mt-24">
+    <h2 id="bands-heading" class="text-display-lg">Body fat categories</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      Commonly cited ranges, which differ between men and women because essential fat levels differ.
+      They are orientation, not a prescription.
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-lg border border-hairline">
+      <table class="w-full min-w-[26rem] border-collapse text-left">
+        <caption class="sr-only">Body fat percentage categories for men and women</caption>
+        <thead>
+          <tr class="border-b border-hairline bg-surface-soft">
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Category</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Men</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Women</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            bands.map((band) => (
+              <tr class="border-b border-hairline last:border-0">
+                <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">
+                  {band.label}
+                </th>
+                <td class="numeric px-6 py-3 text-body">{band.men}</td>
+                <td class="numeric px-6 py-3 text-body">{band.women}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/weight-loss-percentage-calculator',
+      '/percentage-change-calculator',
+      '/percentage-calculator',
+      '/average-percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

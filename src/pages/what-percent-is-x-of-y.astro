@@ -1,0 +1,131 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/what-percent-is-x-of-y');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I find what percent one number is of another?',
+    answer:
+      'Divide the part by the whole, then multiply by 100. For 25 out of 200: 25 ÷ 200 = 0.125, and 0.125 × 100 = 12.5%.',
+  },
+  {
+    question: '25 is what percent of 200?',
+    answer: '12.5%. Twenty-five is one eighth of two hundred, and one eighth expressed per hundred is 12.5.',
+  },
+  {
+    question: 'How do I calculate my exam percentage?',
+    answer:
+      'Divide the marks you scored by the total marks available, then multiply by 100. Scoring 437 out of 500 gives 437 ÷ 500 × 100 = 87.4%. For several papers, add all your marks together and divide by the combined total rather than averaging the individual percentages — papers with different totals do not carry equal weight.',
+  },
+  {
+    question: 'Which number goes on top?',
+    answer:
+      'The part — the smaller quantity you are describing — goes on top, and the whole it belongs to goes underneath. If your answer comes out above 100%, you have either swapped them or the part genuinely exceeds the whole.',
+  },
+  {
+    question: 'What if the total is zero?',
+    answer:
+      'There is no answer. Nothing can be a percentage of zero, because that would mean dividing by zero. The calculator explains this rather than returning an error code.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="what-percent"
+  calculator={calculator}
+  title="What Percent Is X of Y? Calculator"
+  description="Find out what percentage one number is of another. Enter a part and a total to get the percentage instantly, with the division and multiplication shown."
+  h1="What Percent Is X of Y?"
+  intro="Turn a score, a share or a portion into a percentage. Enter the part and the total it belongs to — this is the calculation behind exam results, completion rates and market share."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The formula</h2>
+    <p class="mt-3 text-body">
+      Dividing the part by the whole gives a decimal share of one. Multiplying by 100 restates that
+      share per hundred, which is all a percentage is.
+    </p>
+
+    <div class="mt-6">
+      <FormulaCard
+        formula="(Part ÷ Whole) × 100"
+        substituted="(25 ÷ 200) × 100 = 12.5%"
+        caption="A quick sanity check: if the part is less than half the whole, your answer must be under 50%."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="examples-heading" class="mt-24">
+    <h2 id="examples-heading" class="text-display-lg">Worked examples</h2>
+
+    <div class="mt-6 flex flex-col gap-4">
+      <WorkedExample
+        scenario="You scored 437 marks out of a possible 500. What is your percentage?"
+        steps={[
+          { label: 'Divide your marks by the total available.', expression: '437 ÷ 500 = 0.874' },
+          { label: 'Multiply by 100.', expression: '0.874 × 100 = 87.4%' },
+        ]}
+        answer="87.4%"
+        href="/what-percent-is-x-of-y?part=437&whole=500"
+      />
+
+      <WorkedExample
+        scenario="Your team closed 18 of the 240 deals in the pipeline. What share is that?"
+        steps={[
+          { label: 'Divide the closed deals by the total.', expression: '18 ÷ 240 = 0.075' },
+          { label: 'Multiply by 100.', expression: '0.075 × 100 = 7.5%' },
+        ]}
+        answer="7.5%"
+        href="/what-percent-is-x-of-y?part=18&whole=240"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Common uses</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Exam and test scores</strong> — converting marks out of any total into a percentage
+          that can be compared across subjects.
+        </li>
+        <li>
+          <strong>Attendance</strong> — days present out of days in the term.
+        </li>
+        <li>
+          <strong>Completion and progress</strong> — tasks finished out of tasks planned.
+        </li>
+        <li>
+          <strong>Market and vote share</strong> — one participant's count out of the total.
+        </li>
+        <li>
+          <strong>Conversion rates</strong> — purchases out of visits, or replies out of messages
+          sent.
+        </li>
+        <li>
+          <strong>Nutrition and composition</strong> — grams of one ingredient out of total weight.
+        </li>
+      </ul>
+      <p>
+        Working in the opposite direction — you know the percentage and want the total — is handled by
+        the <a href="/x-is-y-percent-of-what">X is Y% of what number calculator</a>.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/x-is-y-percent-of-what',
+      '/percentage-calculator',
+      '/percentage-change-calculator',
+      '/discount-calculator',
+    ])}
+  />
+</CalculatorLayout>

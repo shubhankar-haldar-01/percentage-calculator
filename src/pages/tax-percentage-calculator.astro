@@ -1,0 +1,140 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/tax-percentage-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate tax percentage on a price?',
+    answer:
+      'Multiply the pre-tax amount by the rate and divide by 100. On $100 at 8.25%: 100 × 8.25 ÷ 100 = $8.25 of tax, giving a $108.25 total.',
+  },
+  {
+    question: 'How do I remove tax from a total?',
+    answer:
+      'Divide by 1 plus the rate as a decimal — do not subtract the percentage. A $120 total including 20% tax is 120 ÷ 1.2 = $100 before tax. Subtracting 20% would give $96, which is wrong, because the tax was charged on the smaller figure.',
+  },
+  {
+    question: 'How do I find out what tax rate I was charged?',
+    answer:
+      'Subtract the pre-tax amount from the total to get the tax, divide that by the pre-tax amount, then multiply by 100. The "Find the rate" tab does it for you.',
+  },
+  {
+    question: 'Does this calculator know my local tax rate?',
+    answer:
+      'No, and deliberately so. Rates vary by country, state, city and product category, and they change. You enter the rate that applies to you, which keeps the tool accurate everywhere rather than wrong in most places.',
+  },
+  {
+    question: 'Does it work for VAT and GST as well as sales tax?',
+    answer:
+      'Yes. VAT, GST, sales tax and service tax are all a percentage added to a base amount, so the same three calculations cover them. Only the rate changes.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="tax"
+  calculator={calculator}
+  title="Tax Percentage Calculator"
+  description="Free tax percentage calculator — add tax, remove tax from a total, or find the rate you were charged. Works for sales tax, VAT and GST at any rate."
+  h1="Tax Percentage Calculator"
+  intro="Three tax calculations in one: add tax to a net amount, work backwards from a tax-inclusive total, or find the rate you were actually charged. Enter your own rate, so it works for sales tax, VAT and GST anywhere."
+  currency
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The three tax formulas</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      Adding tax is a multiplication. Removing it is a division — which is where most mistakes get
+      made.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-4">
+      <FormulaCard
+        formula="Amount + (Amount × Rate ÷ 100)"
+        substituted="100 + (100 × 20 ÷ 100) = 120"
+        caption="Adding tax to a pre-tax amount."
+      />
+      <FormulaCard
+        formula="Total ÷ (1 + Rate ÷ 100)"
+        substituted="120 ÷ 1.2 = 100"
+        caption="Removing tax from a tax-inclusive total."
+      />
+      <FormulaCard
+        formula="((Total − Amount) ÷ Amount) × 100"
+        substituted="((107.5 − 100) ÷ 100) × 100 = 7.5%"
+        caption="Finding the rate from a receipt that shows both figures."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="trap-heading" class="mt-24">
+    <h2 id="trap-heading" class="text-display-lg">Why you cannot just subtract the rate</h2>
+    <div class="prose-site mt-5">
+      <p>
+        This is the single most common tax error. A total of £120 includes 20% VAT. Taking 20% off
+        £120 gives £96 — but the correct pre-tax figure is £100.
+      </p>
+      <ul>
+        <li>The 20% was charged on <strong>£100</strong>, producing £20 of tax.</li>
+        <li>Taking 20% off £120 removes <strong>£24</strong> — too much, because it is 20% of the larger number.</li>
+        <li>Dividing by 1.2 undoes the original multiplication exactly.</li>
+      </ul>
+      <p>
+        The gap widens as the rate rises. At 25%, subtracting gives you 6.25% less than the true
+        pre-tax amount. The{' '}
+        <a href="/x-is-y-percent-of-what">find-the-whole calculator</a> works the same way for any
+        percentage, not just tax.
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-8">
+      <WorkedExample
+        scenario="An invoice totals $2,706 including 8.25% sales tax. What was the amount before tax?"
+        steps={[
+          { label: 'Convert the rate into a multiplier.', expression: '1 + (8.25 ÷ 100) = 1.0825' },
+          { label: 'Divide the total by that multiplier.', expression: '2,706 ÷ 1.0825 = 2,500' },
+          { label: 'The difference is the tax.', expression: '2,706 − 2,500 = 206' },
+        ]}
+        answer="$2,500 before tax, $206 of tax"
+        href="/tax-percentage-calculator?mode=tax-remove&total=2706&rate=8.25"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Common uses</h2>
+    <div class="prose-site mt-5">
+      <ul>
+        <li><strong>Quoting a price</strong> — adding sales tax, VAT or GST to a net figure.</li>
+        <li><strong>Bookkeeping</strong> — separating the tax portion out of a gross receipt.</li>
+        <li><strong>Expense claims</strong> — reporting the pre-tax amount from a till receipt.</li>
+        <li><strong>Checking an invoice</strong> — confirming the rate charged matches the rate agreed.</li>
+        <li><strong>Comparing cross-border prices</strong> — stripping different tax regimes out before comparing.</li>
+      </ul>
+      <p>
+        For a price reduction rather than an addition, use the{' '}
+        <a href="/discount-calculator">discount calculator</a>. Note that tax is normally applied
+        after a discount, so work the discount out first.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/discount-calculator',
+      '/x-is-y-percent-of-what',
+      '/percentage-increase-calculator',
+      '/percentage-calculator',
+    ])}
+  />
+</CalculatorLayout>

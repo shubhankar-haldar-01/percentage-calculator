@@ -1,0 +1,32 @@
+---
+import type { CalculatorDef } from '../lib/calculators.ts';
+
+interface Props {
+  calculators: CalculatorDef[];
+  heading?: string;
+}
+
+const { calculators, heading = 'Related calculators' } = Astro.props;
+---
+
+<section aria-labelledby="related-heading" class="mt-24">
+  <h2 id="related-heading" class="text-display-lg">{heading}</h2>
+
+  <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+    {
+      calculators.map((calculator) => (
+        <li>
+          <a
+            href={calculator.slug}
+            class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+          >
+            <span class="text-card-title">
+              {calculator.name}
+            </span>
+            <span class="text-body">{calculator.blurb}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,155 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/grade-percentage-calculator');
+
+const gradeScale = [
+  { grade: 'A+', range: '97–100%' },
+  { grade: 'A', range: '93–96%' },
+  { grade: 'A−', range: '90–92%' },
+  { grade: 'B+', range: '87–89%' },
+  { grade: 'B', range: '83–86%' },
+  { grade: 'B−', range: '80–82%' },
+  { grade: 'C+', range: '77–79%' },
+  { grade: 'C', range: '73–76%' },
+  { grade: 'C−', range: '70–72%' },
+  { grade: 'D', range: '60–69%' },
+  { grade: 'F', range: 'Below 60%' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate my grade percentage?',
+    answer:
+      'Divide the marks you scored by the total marks available, then multiply by 100. Scoring 38 out of 50 gives 38 ÷ 50 × 100 = 76%.',
+  },
+  {
+    question: 'How do I work out a test percentage for several papers?',
+    answer:
+      'Add up every mark you scored, add up every mark available, then divide one by the other. Averaging the individual paper percentages gives a different — and usually wrong — answer whenever the papers are worth different amounts.',
+  },
+  {
+    question: 'What percentage is a passing grade?',
+    answer:
+      'On the common US scale a D− at 60% is the lowest passing grade, though many courses set their own threshold. Check your syllabus rather than assuming, because pass marks vary widely between institutions and subjects.',
+  },
+  {
+    question: 'What letter grade is 85 percent?',
+    answer:
+      'A B on the standard US scale, which runs from 83% to 86%. The calculator shows the letter alongside the percentage for any score you enter.',
+  },
+  {
+    question: 'How do I calculate a weighted grade?',
+    answer:
+      'Multiply each component percentage by its weight, add the results, then divide by the total weight. The average percentage calculator does exactly this if you enter the weights as group sizes.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="grade"
+  calculator={calculator}
+  title="Grade Percentage Calculator"
+  description="Free grade percentage calculator — turn marks into a percentage and a letter grade. Doubles as a test percentage calculator, with the working shown."
+  h1="Grade Percentage Calculator"
+  intro="Turn marks out of any total into a percentage and a letter grade. It works just as well as a test percentage calculator — the arithmetic is the same whether the paper is a quiz, a midterm or a final."
+>
+  <section aria-labelledby="formula-heading" class="mt-24">
+    <h2 id="formula-heading" class="text-display-lg">The grade percentage formula</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      A grade percentage is simply your score expressed out of 100 instead of out of whatever the
+      paper happened to be marked out of. That is what makes a 38/50 comparable with a 61/80.
+    </p>
+
+    <div class="mt-8">
+      <FormulaCard
+        formula="(Marks scored ÷ Total marks) × 100"
+        substituted="(38 ÷ 50) × 100 = 76%"
+        caption="The same formula covers exam grades, test scores, quiz results and coursework marks."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="example-heading" class="mt-24">
+    <h2 id="example-heading" class="text-display-lg">Worked example</h2>
+    <div class="mt-8">
+      <WorkedExample
+        scenario="You scored 437 out of 500 across your final papers. What is your grade percentage?"
+        steps={[
+          { label: 'Divide your total marks by the marks available.', expression: '437 ÷ 500 = 0.874' },
+          { label: 'Multiply by 100.', expression: '0.874 × 100 = 87.4%' },
+          { label: 'Read the letter grade off the scale.', expression: '87.4% → B+' },
+        ]}
+        answer="87.4% — a B+"
+        href="/grade-percentage-calculator?score=437&total=500"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="scale-heading" class="mt-24">
+    <h2 id="scale-heading" class="text-display-lg">Letter grade scale</h2>
+    <p class="mt-5 max-w-2xl text-body">
+      The calculator uses the common US letter scale. Your institution may band differently, so treat
+      this as the default rather than the rule.
+    </p>
+
+    <div class="mt-8 overflow-hidden rounded-lg border border-hairline">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">Letter grades and the percentage ranges they cover</caption>
+        <thead>
+          <tr class="border-b border-hairline bg-surface-soft">
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Letter grade</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            gradeScale.map((row) => (
+              <tr class="border-b border-hairline last:border-0">
+                <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">
+                  {row.grade}
+                </th>
+                <td class="numeric px-6 py-3 text-body">{row.range}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Where students use this</h2>
+    <div class="prose-site mt-5">
+      <ul>
+        <li><strong>Exam and test scores</strong> — turning any mark into a comparable percentage.</li>
+        <li><strong>Quiz and assignment grades</strong> — checking a result before it appears in the gradebook.</li>
+        <li><strong>Predicting a final grade</strong> — seeing what a paper needs to be worth overall.</li>
+        <li><strong>Attendance requirements</strong> — days present out of days in the term.</li>
+        <li><strong>Comparing across subjects</strong> — a 61/80 and a 38/50 are not obviously comparable until both are percentages.</li>
+      </ul>
+      <p>
+        For several papers of different weights, use the{' '}
+        <a href="/average-percentage-calculator">average percentage calculator</a> and enter each
+        paper's mark allocation as the group size — that produces the weighted figure your transcript
+        will actually show.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/average-percentage-calculator',
+      '/what-percent-is-x-of-y',
+      '/percentage-calculator',
+      '/percentage-increase-calculator',
+    ])}
+  />
+</CalculatorLayout>

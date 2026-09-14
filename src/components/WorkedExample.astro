@@ -1,0 +1,56 @@
+---
+export type ExampleStep = { label: string; expression: string };
+
+interface Props {
+  /** Translated label above the answer. */
+  answerLabel?: string;
+  scenario: string;
+  steps: ExampleStep[];
+  answer: string;
+  /** Optional link that opens the calculator prefilled with these numbers. */
+  href?: string;
+}
+
+const { scenario, steps, answer, href, answerLabel = 'Answer' } = Astro.props;
+---
+
+<div class="rounded-lg border border-hairline bg-canvas p-6 sm:p-8">
+  <p class="text-card-title">{scenario}</p>
+
+  <ol class="mt-5 flex flex-col gap-4">
+    {
+      steps.map((step, index) => (
+        <li class="flex gap-3">
+          <span
+            aria-hidden="true"
+            class="numeric mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-surface-soft caption"
+          >
+            {index + 1}
+          </span>
+          <span class="flex flex-col gap-1">
+            <span class="text-body">{step.label}</span>
+            <span class="numeric text-body">{step.expression}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="mt-6 border-t border-hairline pt-6">
+    <span class="caption">{answerLabel}</span>
+    <span class="numeric mt-3 block text-display-lg">{answer}</span>
+  </p>
+
+  {
+    href && (
+      <p class="mt-4">
+        <a
+          href={href}
+          class="btn-text"
+        >
+          Open this example in the calculator →
+        </a>
+      </p>
+    )
+  }
+</div>

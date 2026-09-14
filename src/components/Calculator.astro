@@ -1,0 +1,260 @@
+---
+/**
+ * The calculator surface.
+ *
+ * Renders every mode's form into the HTML (inactive panels are hidden, not
+ * omitted) and hands them to the shared controller. Inputs are `type="text"`
+ * with `inputmode="decimal"` rather than `type="number"`: number inputs reject
+ * thousands separators and add spinners that fight touch input, and iOS
+ * silently discards values it considers malformed.
+ *
+ * Blue is kept scarce per DESIGN.md — Calculate is the single blue moment, and
+ * the selected mode uses the dark inversion the system uses elsewhere to mark a
+ * highlighted choice.
+ */
+import type { CalculatorDef } from '../lib/calculators.ts';
+import { DEFAULT_LOCALE, calcKeyForSlug, type Locale } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
+import { hasContent, contentFor } from '../i18n/content/index.ts';
+
+interface Props {
+  calculator: CalculatorDef;
+  /** Drives field labels, tabs and the client-side engine strings. */
+  locale?: Locale;
+  /** Renders the client-side recent-calculations list. */
+  showHistory?: boolean;
+  /** Adds a currency selector — only meaningful for money calculators. */
+  currency?: boolean;
+}
+
+const { calculator, locale = DEFAULT_LOCALE, showHistory = true, currency = false } = Astro.props;
+
+const t = ui(locale);
+const labels = hasContent(locale) ? contentFor(locale).labels : null;
+
+/** Field label, mode tab and hint lookups fall back to the English registry. */
+const fieldLabel = (name: string, fallback: string) => labels?.fields[name] ?? fallback;
+const tabLabel = (id: string, fallback: string) => labels?.tabs[id] ?? fallback;
+const hintFor = (modeId: string, name: string, fallback?: string) => {
+  if (!labels) return fallback;
+  // Waist is measured differently for men and women, so its hint is per mode.
+  if (name === 'waist') return labels.hints[modeId === 'body-fat-female' ? 'waistFemale' : 'waistMale'] ?? fallback;
+  return labels.hints[name] ?? fallback;
+};
+
+/** Strings the client script needs, handed over as one small JSON payload. */
+const clientStrings = JSON.stringify({
+  answer: t.calc.answer, calculation: t.calc.calculation, rounded: t.calc.rounded,
+  copyAnswer: t.calc.copyAnswer, copyWorking: t.calc.copyWorking, share: t.calc.share,
+  copied: t.calc.copied, pressCopy: t.calc.pressCopy,
+  linkCopied: t.calc.linkCopied, copyUrl: t.calc.copyUrl,
+});
+
+const calcKey = calcKeyForSlug(calculator.slug);
+const uid = calculator.slug.replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+const multiMode = calculator.modes.length > 1;
+---
+
+<section
+  class="card p-6 sm:p-8"
+  data-calculator
+  data-calc-slug={calculator.slug}
+  data-calc-name={(calcKey && labels?.names[calcKey]) || calculator.name}
+  data-locale={locale}
+  data-strings={clientStrings}
+>
+  {
+    multiMode && (
+      <div class="mb-6">
+        <div role="tablist" aria-label={t.calc.chooseCalculation} class="flex flex-wrap gap-2">
+          {calculator.modes.map((mode, index) => (
+            <button
+              type="button"
+              role="tab"
+              id={`${uid}-tab-${mode.id}`}
+              data-tab={mode.id}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-controls={`${uid}-panel-${mode.id}`}
+              tabindex={index === 0 ? 0 : -1}
+              class="inline-flex min-h-11 items-center rounded-pill border border-hairline bg-canvas px-5 text-body-sm font-medium transition-colors hover:bg-surface-soft aria-selected:border-ink aria-selected:bg-ink aria-selected:text-inverse-ink"
+            >
+              {tabLabel(mode.id, mode.tab)}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    calculator.modes.map((mode, index) => (
+      <div
+        id={`${uid}-panel-${mode.id}`}
+        data-panel={mode.id}
+        role={multiMode ? 'tabpanel' : undefined}
+        aria-labelledby={multiMode ? `${uid}-tab-${mode.id}` : undefined}
+        tabindex={multiMode ? 0 : undefined}
+        hidden={index !== 0}
+      >
+        <form data-mode-form data-mode-id={mode.id} data-operation={mode.operation} novalidate>
+          <fieldset class="m-0 border-0 p-0">
+            <legend class="sr-only">{mode.question}</legend>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              {mode.fields.map((field) => (
+                <div class:list={['flex flex-col gap-2', field.wide && 'sm:col-span-2']}>
+                  <label
+                    for={`${uid}-${mode.id}-${field.name}`}
+                    class="flex items-baseline gap-2 text-body-lg font-medium"
+                  >
+                    {fieldLabel(field.name, field.label)}
+                    {field.optional && <span class="font-normal text-ink">{t.calc.optional}</span>}
+                  </label>
+
+                  {field.kind === 'select' ? (
+                    <select
+                      id={`${uid}-${mode.id}-${field.name}`}
+                      name={field.name}
+                      data-field
+                      aria-describedby={`${uid}-${mode.id}-error`}
+                      class="input-field"
+                    >
+                      {(field.options ?? []).map((option) => (
+                        <option value={option.value}>
+                          {labels && field.name === 'unit'
+                            ? option.value === 'cm'
+                              ? labels.units.cm
+                              : labels.units.inches
+                            : option.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : field.kind === 'list' ? (
+                    <textarea
+                      id={`${uid}-${mode.id}-${field.name}`}
+                      name={field.name}
+                      data-field
+                      rows="2"
+                      autocomplete="off"
+                      autocorrect="off"
+                      spellcheck="false"
+                      placeholder={field.placeholder}
+                      aria-describedby={`${uid}-${mode.id}-error`}
+                      class="input-field h-auto resize-y py-3 leading-6"
+                    />
+                  ) : (
+                    <div class="relative">
+                      <input
+                        id={`${uid}-${mode.id}-${field.name}`}
+                        name={field.name}
+                        data-field
+                        type="text"
+                        inputmode="decimal"
+                        autocomplete="off"
+                        autocorrect="off"
+                        spellcheck="false"
+                        enterkeyhint="go"
+                        placeholder={field.placeholder}
+                        aria-describedby={`${uid}-${mode.id}-error`}
+                        class:list={['input-field', field.suffix && 'pr-11']}
+                      />
+                      {field.suffix && (
+                        <span
+                          aria-hidden="true"
+                          class="numeric pointer-events-none absolute inset-y-0 right-4 flex items-center text-body"
+                        >
+                          {field.suffix}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {hintFor(mode.id, field.name, field.hint) && (
+                    <p class="text-body-sm">{hintFor(mode.id, field.name, field.hint)}</p>
+                  )}
+                </div>
+              ))}
+
+              {currency && (
+                <div class="flex flex-col gap-2">
+                  <label for={`${uid}-${mode.id}-currency`} class="text-body-lg font-medium">
+                    {t.calc.currency}
+                  </label>
+                  <select id={`${uid}-${mode.id}-currency`} data-currency class="input-field">
+                    <option value="">{t.calc.currencyNone}</option>
+                    <option value="$">$ — Dollar</option>
+                    <option value="₹">₹ — Rupee</option>
+                    <option value="€">€ — Euro</option>
+                    <option value="£">£ — Pound</option>
+                    <option value="¥">¥ — Yen</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/*
+              role="alert" announces validation problems the moment they appear.
+              The fill stays neutral — the system reserves red for text only.
+            */}
+            <p
+              id={`${uid}-${mode.id}-error`}
+              data-error
+              role="alert"
+              hidden
+              class="mt-6 flex items-start gap-2.5 rounded-md bg-pink px-5 py-4 text-body font-medium text-block-ink"
+            />
+
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <button type="submit" class="btn-primary grow sm:grow-0 sm:px-8">{t.calc.calculate}</button>
+              <button type="reset" class="btn-secondary">{t.calc.reset}</button>
+              <button
+                type="button"
+                data-example={JSON.stringify(mode.example)}
+                class="ml-auto inline-flex h-11 items-center rounded-pill px-3 text-body-sm font-medium text-ink transition-colors hover:opacity-70"
+              >
+                {t.calc.tryExample}
+              </button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    ))
+  }
+
+  <div class="mt-8 border-t border-hairline pt-8">
+    <p
+      data-result-empty
+      class="flex min-h-24 items-center justify-center rounded-md bg-surface-soft px-5 py-8 text-center text-body"
+    >
+      {t.calc.empty}
+    </p>
+
+    <div data-result hidden role="status" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  {
+    showHistory && (
+      <div data-history hidden class="mt-8 border-t border-hairline pt-6">
+        <div class="flex items-center justify-between gap-4">
+          <h2 class="caption">{t.calc.recent}</h2>
+          <button
+            type="button"
+            data-history-clear
+            class="inline-flex h-9 items-center rounded-pill px-3 text-body-sm font-medium text-ink transition-colors hover:opacity-70"
+          >
+            {t.calc.clear}
+          </button>
+        </div>
+        <ul data-history-list class="mt-3 flex flex-col" />
+        <p class="mt-3 text-body-sm">
+          {t.calc.storedLocally}
+        </p>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  import { initCalculators } from '../scripts/calculator.ts';
+  initCalculators();
+</script>

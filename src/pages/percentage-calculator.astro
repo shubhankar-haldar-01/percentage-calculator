@@ -1,0 +1,187 @@
+---
+import CalculatorLayout from '../layouts/CalculatorLayout.astro';
+import FormulaCard from '../components/FormulaCard.astro';
+import WorkedExample from '../components/WorkedExample.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import RelatedCalculators from '../components/RelatedCalculators.astro';
+import { getCalculator, related } from '../lib/calculators.ts';
+
+const calculator = getCalculator('/percentage-calculator');
+
+const faqs: FaqItem[] = [
+  {
+    question: 'How do I calculate the percentage of a number by hand?',
+    answer:
+      'Move the decimal point in the percentage two places to the left, then multiply. 20% becomes 0.2, and 0.2 × 500 = 100. Dividing by 100 and moving the decimal two places are the same operation.',
+  },
+  {
+    question: 'How do I work out 15% of a bill for a tip?',
+    answer:
+      'Take 10% by moving the decimal one place left, halve that to get 5%, then add them together. On a $64 bill: 10% is $6.40, 5% is $3.20, so 15% is $9.60.',
+  },
+  {
+    question: 'Can a percentage be more than 100%?',
+    answer:
+      'Yes. 100% of a number is the number itself, so anything above 100% is larger than the original — 150% of 200 is 300. Percentages above 100 turn up constantly in growth figures and in comparisons against a baseline.',
+  },
+  {
+    question: 'What does "percent of" actually mean?',
+    answer:
+      '"Per cent" means "per hundred", so 20% means 20 out of every 100. "20% of 500" is asking what you get if you take 20 out of every 100 across all 500 — which is five groups of 20, or 100.',
+  },
+  {
+    question: 'Why does the calculator sometimes show ≈ before the answer?',
+    answer:
+      'Because the exact answer has more decimal places than are shown. 1 out of 3 is 33.333…%, which never terminates, so the displayed figure is rounded and marked with ≈ rather than presented as exact.',
+  },
+];
+---
+
+<CalculatorLayout
+  pageKey="percentage-calculator"
+  calculator={calculator}
+  title="Percentage Calculator"
+  description="Calculate a percentage of a number, find what percent one number is of another, or work backwards to the original total. Shows the formula and every step."
+  h1="Percentage Calculator"
+  intro="Three calculators in one, covering the questions that percentages are usually asked to answer. Pick the shape that matches your question, enter two numbers, and the full working appears underneath the answer."
+>
+  <section aria-labelledby="three-heading" class="mt-24">
+    <h2 id="three-heading" class="text-display-lg">The three percentage questions</h2>
+    <p class="mt-3 text-body">
+      Every percentage problem involves three quantities — the <strong class="text-ink">part</strong>,
+      the <strong class="text-ink">whole</strong> and the{' '}
+      <strong class="text-ink">percentage</strong>. If you know any two, the third follows. Which
+      formula you need depends only on which one is missing.
+    </p>
+
+    <div class="mt-6 flex flex-col gap-8">
+      <div>
+        <h3 class="text-card-title">1. What is X% of Y?</h3>
+        <p class="mt-2 text-body">
+          You know the percentage and the whole; you want the part. This is the one you reach for
+          when working out a tip, a commission, a tax amount or a share of a budget.
+        </p>
+        <div class="mt-4">
+          <FormulaCard
+            formula="(Percentage ÷ 100) × Number"
+            substituted="(20 ÷ 100) × 500 = 100"
+            caption="Dividing by 100 converts the percentage to a decimal; multiplying applies it."
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-card-title">2. X is what percent of Y?</h3>
+        <p class="mt-2 text-body">
+          You know the part and the whole; you want the percentage. This turns a raw score into a
+          comparable figure — 38 out of 50 becomes 76%.
+        </p>
+        <div class="mt-4">
+          <FormulaCard
+            formula="(Part ÷ Whole) × 100"
+            substituted="(25 ÷ 200) × 100 = 12.5%"
+            caption="Dividing gives a decimal share; multiplying by 100 expresses it per hundred."
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-card-title">3. X is Y% of what number?</h3>
+        <p class="mt-2 text-body">
+          You know the part and the percentage; you want the whole. This is the reverse of the first
+          question, and it is how you recover an original total from a deposit or a commission.
+        </p>
+        <div class="mt-4">
+          <FormulaCard
+            formula="Part ÷ (Percentage ÷ 100)"
+            substituted="50 ÷ (20 ÷ 100) = 250"
+            caption="Because multiplying by the percentage produced the part, dividing undoes it."
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="worked-heading" class="mt-24">
+    <h2 id="worked-heading" class="text-display-lg">Worked examples</h2>
+
+    <div class="mt-6 flex flex-col gap-4">
+      <WorkedExample
+        scenario="A jacket costs $500 and you have a 20% voucher. How much does the voucher take off?"
+        steps={[
+          { label: 'Turn the percentage into a decimal.', expression: '20 ÷ 100 = 0.2' },
+          { label: 'Multiply the decimal by the price.', expression: '0.2 × 500 = 100' },
+        ]}
+        answer="The voucher is worth $100"
+        href="/percentage-calculator?mode=percent-of&percent=20&value=500"
+      />
+
+      <WorkedExample
+        scenario="You scored 38 out of 50 in a test. What percentage is that?"
+        steps={[
+          { label: 'Divide your score by the total.', expression: '38 ÷ 50 = 0.76' },
+          { label: 'Multiply by 100.', expression: '0.76 × 100 = 76%' },
+        ]}
+        answer="76%"
+        href="/what-percent-is-x-of-y?part=38&whole=50"
+      />
+
+      <WorkedExample
+        scenario="You paid a $50 deposit, which the seller says is 20% of the total. What is the total?"
+        steps={[
+          { label: 'Turn the percentage into a decimal.', expression: '20 ÷ 100 = 0.2' },
+          { label: 'Divide the deposit by that decimal.', expression: '50 ÷ 0.2 = 250' },
+        ]}
+        answer="$250"
+        href="/x-is-y-percent-of-what?part=50&percent=20"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="uses-heading" class="mt-24">
+    <h2 id="uses-heading" class="text-display-lg">Where these come up</h2>
+    <div class="prose-site mt-4">
+      <ul>
+        <li>
+          <strong>Tips and service charges</strong> — 15% or 18% of a restaurant bill, worked out
+          before the card machine arrives.
+        </li>
+        <li>
+          <strong>Sales tax, VAT and GST</strong> — adding a percentage onto a pre-tax price, or
+          finding the tax portion of a total you have already paid.
+        </li>
+        <li>
+          <strong>Exam and assignment scores</strong> — converting marks out of an arbitrary total
+          into a percentage you can compare across subjects.
+        </li>
+        <li>
+          <strong>Commission and bonuses</strong> — what 3% of a sale is worth, or what total sale a
+          known commission implies.
+        </li>
+        <li>
+          <strong>Budgets and allocations</strong> — the share of a monthly budget that rent,
+          groceries or savings represents.
+        </li>
+        <li>
+          <strong>Interest and returns</strong> — the cash value of a quoted rate on a given balance.
+        </li>
+      </ul>
+      <p>
+        If you are comparing a value before and after it moved, you want a different family of
+        formula — see the <a href="/percentage-change-calculator">percentage change calculator</a> or
+        the full <a href="/percentage-formula">formula reference</a>.
+      </p>
+    </div>
+  </section>
+
+  <Faq items={faqs} />
+
+  <RelatedCalculators
+    calculators={related([
+      '/percentage-increase-calculator',
+      '/percentage-change-calculator',
+      '/what-percent-is-x-of-y',
+      '/discount-calculator',
+    ])}
+  />
+</CalculatorLayout>

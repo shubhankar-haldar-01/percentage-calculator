@@ -1,0 +1,52 @@
+---
+import ContentLayout from '../layouts/ContentLayout.astro';
+import { SITE } from '../lib/site.ts';
+---
+
+<ContentLayout
+  title="Contact"
+  description="Get in touch about an incorrect result, an unclear explanation, or a percentage calculator you would like to see added."
+  path="/contact"
+  h1="Contact"
+  intro="Corrections, questions and suggestions are all welcome."
+>
+  <div class="rounded-lg border border-hairline bg-canvas p-6">
+    <p class="eyebrow">Email</p>
+    <p class="mt-2">
+      <a
+        href={`mailto:${SITE.email}`}
+        class="text-body break-all text-ink underline underline-offset-4 transition-colors hover:opacity-70 sm:text-card-title"
+        >{SITE.email}</a
+      >
+    </p>
+  </div>
+
+  <div class="prose-site mt-10">
+    <h2>Reporting an incorrect result</h2>
+    <p>
+      Accuracy matters more than anything else here, so these reports get looked at first. Including
+      the following makes a problem much faster to reproduce:
+    </p>
+    <ul>
+      <li>Which calculator you were using.</li>
+      <li>The exact numbers you entered.</li>
+      <li>The answer you got, and the answer you expected.</li>
+      <li>Your browser and device, if the problem looks like a display issue.</li>
+    </ul>
+
+    <h2>Suggesting a calculator</h2>
+    <p>
+      If there is a percentage calculation you keep doing by hand, it is worth mentioning — a short
+      description of the situation is more useful than a formula, because it explains what the tool
+      would actually need to do.
+    </p>
+
+    <h2>What this address is not for</h2>
+    <p>
+      No personalised financial, tax, medical or legal advice can be offered, and homework cannot be
+      completed on request. The <a href="/how-to-calculate-percentage">how-to guide</a> and the{' '}
+      <a href="/percentage-formula">formula reference</a> explain the working behind every calculator
+      on the site.
+    </p>
+  </div>
+</ContentLayout>

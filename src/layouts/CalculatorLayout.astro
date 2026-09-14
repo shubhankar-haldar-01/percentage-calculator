@@ -1,0 +1,59 @@
+---
+/**
+ * Shell for a dedicated calculator page: breadcrumbs, H1, lead, the tool, then
+ * whatever page-specific content the page passes as children.
+ *
+ * The shell is shared; the content deliberately is not, so each page answers a
+ * different question rather than repeating one template.
+ */
+import BaseLayout from './BaseLayout.astro';
+import type { Locale, PageKey } from '../i18n/config.ts';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Calculator from '../components/Calculator.astro';
+import type { CalculatorDef } from '../lib/calculators.ts';
+import { breadcrumbSchema, calculatorSchema } from '../lib/schema.ts';
+
+interface Props {
+  /** Identifies the page across locales, for hreflang. */
+  pageKey?: PageKey;
+  locale?: Locale;
+  calculator: CalculatorDef;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  currency?: boolean;
+}
+
+const { calculator, title, description, h1, intro, currency = false, pageKey, locale } = Astro.props;
+
+const crumbs = [
+  { label: 'Home', path: '/' },
+  { label: calculator.name, path: calculator.slug },
+];
+---
+
+<BaseLayout
+  pageKey={pageKey}
+  locale={locale}
+  title={title}
+  description={description}
+  path={calculator.slug}
+  schema={[
+    calculatorSchema({ name: calculator.name, description, path: calculator.slug }),
+    breadcrumbSchema(crumbs),
+  ]}
+>
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <Breadcrumbs crumbs={crumbs} />
+
+    <h1 class="text-display-lg text-balance">{h1}</h1>
+    <p class="mt-5 max-w-2xl text-body">{intro}</p>
+
+    <div class="mt-10">
+      <Calculator calculator={calculator} currency={currency} />
+    </div>
+
+    <slot />
+  </div>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+/**
+ * Every translated calculator and guide page.
+ *
+ * One route generates all of them: the locale and the localized slug come from
+ * `src/i18n/config.ts`, the words from the content registry. Only locales that
+ * actually have content are generated, which is what keeps hreflang honest.
+ */
+import type { GetStaticPaths } from 'astro';
+import LocalizedCalculator from '../../components/LocalizedCalculator.astro';
+import LocalizedGuide from '../../components/LocalizedGuide.astro';
+import { CALC_KEYS, GUIDE_KEYS, SLUGS, type Locale, type PageKey } from '../../i18n/config.ts';
+import { translatedLocales } from '../../i18n/content/index.ts';
+import type { CalcPageKey } from '../../i18n/content/types.ts';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  translatedLocales().flatMap((locale) => [
+    ...CALC_KEYS.map((key) => ({
+      params: { lang: locale, slug: SLUGS[locale][key as PageKey] },
+      props: { locale, pageKey: key as CalcPageKey, kind: 'calculator' as const },
+    })),
+    ...GUIDE_KEYS.map((key) => ({
+      params: { lang: locale, slug: SLUGS[locale][key] },
+      props: { locale, pageKey: key, kind: 'guide' as const },
+    })),
+  ]);
+
+type Props =
+  | { locale: Locale; pageKey: CalcPageKey; kind: 'calculator' }
+  | { locale: Locale; pageKey: 'how-to' | 'formulas'; kind: 'guide' };
+
+const props = Astro.props as Props;
+---
+
+{
+  props.kind === 'calculator' ? (
+    <LocalizedCalculator locale={props.locale} pageKey={props.pageKey} />
+  ) : (
+    <LocalizedGuide locale={props.locale} pageKey={props.pageKey} />
+  )
+}

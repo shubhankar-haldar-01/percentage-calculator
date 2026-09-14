@@ -1,11 +1,488 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Calculator from '../components/Calculator.astro';
+import ColorBlock from '../components/ColorBlock.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import { CALCULATORS, getCalculator } from '../lib/calculators.ts';
+import { calculatorSchema } from '../lib/schema.ts';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const main = getCalculator('/percentage-calculator');
+
+const examples = [
+  {
+    question: 'What is 20% of 500?',
+    answer: '100',
+    working: '20 ÷ 100 × 500',
+    href: '/percentage-calculator?mode=percent-of&percent=20&value=500',
+  },
+  {
+    question: '25 is what percent of 200?',
+    answer: '12.5%',
+    working: '25 ÷ 200 × 100',
+    href: '/what-percent-is-x-of-y?part=25&whole=200',
+  },
+  {
+    question: 'A price rises from $100 to $125',
+    answer: '25% increase',
+    working: '(125 − 100) ÷ 100 × 100',
+    href: '/percentage-increase-calculator?original=100&final=125',
+  },
+  {
+    question: '$100 item with 20% off',
+    answer: '$80',
+    working: '100 − (100 × 20 ÷ 100)',
+    href: '/discount-calculator?price=100&percent=20',
+  },
+];
+
+/**
+ * The homepage FAQ targets the questions people actually type around
+ * "percentage calculator". The first ten are those queries, kept close to the
+ * wording they are searched with; the last four cover the tool and the privacy
+ * position, which the query set does not reach.
+ */
+const faqs: FaqItem[] = [
+  {
+    question: 'How to calculate percentage with a calculator?',
+    answer:
+      'Divide the percentage by 100, then multiply by the number. On a basic calculator that is 20 ÷ 100 × 500 = 100, so 20% of 500 is 100. If your calculator has a % key you can press 500 × 20 % instead, which does the division for you. The calculator on this page takes both numbers at once and prints the two lines of working underneath the answer.',
+  },
+  {
+    question: 'What is a percentage increase calculator?',
+    answer:
+      'It measures how much a value has grown relative to where it started, using ((New − Original) ÷ Original) × 100. A salary going from 45,000 to 52,000 is a 15.56% increase. The original value is the reference, which is why the same 50 rise is a 50% increase on 100 but only a 5% increase on 1,000.',
+  },
+  {
+    question: 'How to use percentage on a calculator?',
+    answer:
+      'The % key divides by 100, so what it does depends on the operator in front of it. 500 × 20 % gives 100, which is 20% of 500. On most calculators 500 + 20 % gives 600, adding 20% rather than adding 20. Because that second behaviour varies between models, this page writes the arithmetic out instead of relying on a key.',
+  },
+  {
+    question: 'How do I calculate what percentage of a number?',
+    answer:
+      'To find what percentage one number is of another, divide the part by the total and multiply by 100. For 25 out of 200: 25 ÷ 200 = 0.125, and 0.125 × 100 = 12.5%. The smaller quantity goes on top — if the answer comes out above 100%, either the two numbers are the wrong way round or the part genuinely exceeds the total.',
+  },
+  {
+    question: 'What is what percent of what?',
+    answer:
+      'It is shorthand for the three questions percentages ask. "What is X% of Y" finds a part. "X is what percent of Y" finds the percentage. "X is Y% of what" finds the total. Three quantities are involved — part, total and percentage — and you always know two of them. Spotting which one is missing tells you which calculation to run, and that recognition is where most wrong answers come from, not the arithmetic.',
+  },
+  {
+    question: 'How is percent (%) calculated?',
+    answer:
+      'Percent means "per hundred", so a percentage is a fraction written with 100 underneath. The base formula is (Part ÷ Total) × 100. Every other percentage formula is that one rearranged to solve for a different unknown: multiply to find a part, divide to find a total, and divide then multiply by 100 to find the percentage itself.',
+  },
+  {
+    question: 'What is 60% of an amount?',
+    answer:
+      'Multiply the amount by 0.6, since 60 ÷ 100 = 0.6. So 60% of 250 is 250 × 0.6 = 150. To do it mentally, halve the amount for 50% (125) and move the decimal point one place for 10% (25), then add the two: 150.',
+  },
+  {
+    question: 'How to calculate % of total?',
+    answer:
+      'Divide the part by the total and multiply by 100. If 79 sales came from 1,600 visits, that is 79 ÷ 1,600 × 100 = 4.94% of the total. When you are combining several groups, add the raw counts first and divide once — averaging the individual percentages gives a different and usually wrong answer unless every group is the same size.',
+  },
+  {
+    question: 'How do you use a percentage calculator?',
+    answer:
+      'Choose the form that matches your question, type two numbers, and press Calculate or the Enter key. The answer appears with the formula, your own numbers substituted into it, and each step written in plain words, so you can check the result instead of taking it on trust. Nothing you type is sent to a server.',
+  },
+  {
+    question: 'How do I calculate the original number from a percentage?',
+    answer:
+      'Divide the part by the percentage written as a decimal. If 50 is 20% of a number, 20% is 0.2, and 50 ÷ 0.2 = 250. This is how you recover a price before a discount or an amount before tax — and note that a total which already includes 20% tax is 120% of the original, so you divide by 1.2 rather than subtracting 20%, which would give a smaller, wrong answer.',
+  },
+  {
+    question: 'What is the difference between percentage change and percentage difference?',
+    answer:
+      'Percentage change has a direction: it measures a new value against an original one, so going from 100 to 120 is a 20% increase. Percentage difference has no direction — it compares two values against their average, so 100 and 120 differ by 18.18%. Use change when one value came first, and difference when neither did.',
+  },
+  {
+    question: 'Are my calculations sent anywhere?',
+    answer:
+      'No. Every calculation runs in your browser using JavaScript on the page. Nothing you type is transmitted to a server, and your recent calculations are stored only in your own browser until you clear them.',
+  },
+  {
+    question: 'Can I use decimals, negative numbers and large values?',
+    answer:
+      'Yes. Decimals, negatives and very large numbers all work, and you can type thousands separators such as 1,234,567 or 12,34,567 — both grouping styles are understood.',
+  },
+  {
+    question: 'Do I need to create an account?',
+    answer: 'No. Every calculator is free and works immediately, with no account and no sign-up.',
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title="Percentage Calculator Online — Free, with Full Working"
+  description="Free online percentage calculator with step-by-step working. Calculate percentage increase, decrease, change, difference, grade, win, tax and discount percentages."
+  path="/"
+  pageKey="home"
+  schema={[
+    calculatorSchema({
+      name: 'Percentage Calculator',
+      description:
+        'Free online percentage calculator that shows step-by-step working for percentage of a number, percentage increase, decrease, change, difference and discounts.',
+      path: '/',
+    }),
+  ]}
+>
+  {/*
+    White hero — the monochrome frame this system opens on. The calculator
+    itself sits in the hero as a hairline card so the tool is reachable in the
+    first screen.
+  */}
+  <section class="mx-auto max-w-site px-4 pt-12 pb-16 sm:px-8 sm:pt-20 sm:pb-24">
+    <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
+      <div>
+        <p class="eyebrow">Free · No sign-up</p>
+        <h1 class="mt-6 text-display-xl text-balance">Percentage calculator that shows the working.</h1>
+        <p class="mt-7 max-w-xl text-body-lg">
+          Enter two numbers and get the answer, the formula and every step behind it. Every
+          calculation runs in your browser — nothing you type is ever sent to a server.
+        </p>
+
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#calculator" class="btn-primary">Start calculating</a>
+          <a href="/how-to-calculate-percentage" class="btn-secondary">Learn the method</a>
+        </div>
+      </div>
+
+      <div id="calculator" class="scroll-mt-20">
+        <Calculator calculator={main} />
+      </div>
+    </div>
+  </section>
+
+  {/*
+    `marquee-strip` — the thin black ribbon under the hero. Rendered static
+    rather than animated: a scrolling ribbon is a motion hazard, and these
+    entries are useful links rather than decoration.
+  */}
+  <div class="bg-inverse-canvas">
+    <div
+      class="mx-auto flex max-w-site items-center gap-8 overflow-x-auto px-4 py-3 whitespace-nowrap sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      <span class="caption shrink-0 text-inverse-ink opacity-60">Try one</span>
+      {
+        examples.map((example) => (
+          <a
+            href={example.href}
+            class="caption shrink-0 text-inverse-ink underline-offset-4 transition-opacity hover:opacity-70 hover:underline"
+          >
+            {example.question} = {example.answer}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-site px-4 sm:px-8">
+    {/* Calculator directory */}
+    <section aria-labelledby="tools-heading" class="mt-24">
+      <h2 id="tools-heading" class="text-display-lg">All percentage calculators</h2>
+      <p class="mt-5 max-w-2xl text-body">
+        Each one is a dedicated page with its formula, a worked example and the situations it suits.
+      </p>
+
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          CALCULATORS.map((calculator) => (
+            <li>
+              <a
+                href={calculator.slug}
+                class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+              >
+                <span class="text-card-title">
+                  {calculator.name}
+                </span>
+                <span class="text-body">{calculator.blurb}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {/* How it works */}
+    <section aria-labelledby="how-heading" class="mt-24">
+      <h2 id="how-heading" class="max-w-3xl text-display-lg">How percentage calculations work</h2>
+      <div class="prose-site mt-6 max-w-3xl">
+        <p>
+          <strong>Per cent</strong> means “per hundred”. A percentage is a way of writing a fraction
+          whose bottom number is always 100, which is what makes percentages easy to compare: 37% and
+          42% can be judged against each other instantly, while <code>37/94</code> and{' '}
+          <code>42/107</code> cannot.
+        </p>
+        <p>
+          Almost every percentage question is one of three shapes, and knowing which one you are
+          looking at is most of the work:
+        </p>
+        <ul>
+          <li>
+            <strong>You have the percentage and the whole</strong>, and want the part — “what is 20%
+            of 500?”. Divide by 100 and multiply.
+          </li>
+          <li>
+            <strong>You have the part and the whole</strong>, and want the percentage — “25 out of
+            200 is what percent?”. Divide, then multiply by 100.
+          </li>
+          <li>
+            <strong>You have the part and the percentage</strong>, and want the whole — “50 is 20% of
+            what?”. Divide by the percentage as a decimal.
+          </li>
+        </ul>
+        <p>
+          Comparisons between two numbers are a separate family: <a href="/percentage-change-calculator"
+            >percentage change</a
+          >, <a href="/percentage-increase-calculator">increase</a>,{' '}
+          <a href="/percentage-decrease-calculator">decrease</a> and{' '}
+          <a href="/percentage-difference-calculator">difference</a> each answer a slightly different
+          question. The <a href="/percentage-formula">formula reference</a> sets out exactly when to reach
+          for which.
+        </p>
+      </div>
+    </section>
+
+    {/* Common examples */}
+    <section aria-labelledby="examples-heading" class="mt-24">
+      <h2 id="examples-heading" class="text-display-lg">Common examples</h2>
+      <p class="mt-5 max-w-2xl text-body">
+        Each example opens the calculator with the numbers already filled in.
+      </p>
+
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          examples.map((example) => (
+            <li>
+              <a
+                href={example.href}
+                class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+              >
+                <span class="text-body">{example.question}</span>
+                <span class="numeric text-display-lg">{example.answer}</span>
+                <span class="numeric text-body-sm">{example.working}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Faq items={faqs} heading="Frequently asked questions" />
+
+    {/*
+      Long-form explainer. This is the page's substantive content for search:
+      it covers what the tool does, which calculation answers which question,
+      and where each one is used. Written to be read, not to hit a density.
+    */}
+    <section aria-labelledby="about-heading" class="mt-24">
+      <h2 id="about-heading" class="text-display-lg">About this percentage calculator</h2>
+
+      <div class="prose-site mt-5">
+        <p>
+          A percentage calculator turns an awkward piece of arithmetic into a single answer. You
+          know two numbers, you need the third, and you need it before the conversation moves on —
+          the tip on a restaurant bill, the real saving on a sale sticker, the pay rise you have just
+          been offered, the mark you actually scored. This is a free online percentage calculator
+          built for exactly that moment: type two numbers, press Calculate, and read the answer with
+          the working underneath it.
+        </p>
+        <p>
+          The reason for showing the working is simple. An answer you cannot check is an answer you
+          have to trust blindly, and percentages are the one piece of everyday maths people most
+          often get subtly wrong. Every result here comes with the formula, your own numbers
+          substituted into it, and each step written in plain language — so you can confirm the
+          calculator did what you meant, and repeat it yourself next time.
+        </p>
+
+        <h3>The three questions behind almost every percentage</h3>
+        <p>
+          Percentage problems look endlessly varied, but nearly all of them involve the same three
+          quantities: a <strong>part</strong>, a <strong>whole</strong>, and the{' '}
+          <strong>percentage</strong> connecting them. You always know two. Identifying which one is
+          missing tells you which calculation you need, and that identification — not the arithmetic
+          — is where most mistakes happen.
+        </p>
+        <ul>
+          <li>
+            <strong>What is X% of Y?</strong> You have the percentage and the whole, and want the
+            part. This is tips, commission, tax amounts and shares of a budget.
+          </li>
+          <li>
+            <strong>X is what percent of Y?</strong> You have the part and the whole, and want the
+            percentage. This turns 38 out of 50 into 76% —
+            <a href="/what-percent-is-x-of-y">calculate it here</a>.
+          </li>
+          <li>
+            <strong>X is Y% of what number?</strong> You have the part and the percentage, and want
+            the whole. This is how you{' '}
+            <a href="/x-is-y-percent-of-what">recover an original price</a> from a deposit or a
+            post-discount total.
+          </li>
+        </ul>
+        <p>
+          All three live on the <a href="/percentage-calculator">main percentage calculator</a>,
+          switchable with a single tap, so you do not have to work out which page you need before
+          you can start.
+        </p>
+
+        <h3>Measuring change: increase, decrease, difference</h3>
+        <p>
+          The second family of calculations compares two numbers rather than relating a part to a
+          whole. These are the ones that get muddled most often, because three different formulas
+          all sound like they are answering the same question.
+        </p>
+        <p>
+          An <a href="/percentage-increase-calculator">increase percentage calculator</a> measures
+          growth against where you started: 100 to 150 is a 50% increase. A{' '}
+          <a href="/percentage-decrease-calculator">percentage decrease</a> does the same in the
+          other direction. The <a href="/percentage-change-calculator">percentage change
+          calculator</a> handles either, and states which one happened rather than leaving you to
+          interpret a minus sign.
+        </p>
+        <p>
+          <a href="/percentage-difference-calculator">Percentage difference</a> is the one that is
+          genuinely different. It compares two values against their <em>average</em>, so neither is
+          treated as the baseline and swapping them gives the same answer. Use change when one value
+          came before the other; use difference when they are simply two readings. On the values 100
+          and 120, change says 20% and difference says 18.18% — both correct, answering different
+          questions.
+        </p>
+
+        <h3>Percentage calculators for specific jobs</h3>
+        <p>
+          Most percentage questions arrive wearing the vocabulary of a particular task, so each one
+          has its own page with the right field labels, the right secondary figures and the
+          conventions that apply to it:
+        </p>
+        <ul>
+          <li>
+            The <a href="/grade-percentage-calculator">grade percentage calculator</a> converts marks
+            into a percentage and a letter grade. It doubles as a test percentage calculator — the
+            arithmetic is identical whether the paper was a quiz or a final.
+          </li>
+          <li>
+            The <a href="/average-percentage-calculator">average percentage calculator</a> averages a
+            list of percentages, and weights them by group size. Averaging percentages from
+            differently-sized groups without weighting is one of the most common statistical errors
+            there is, so it shows both answers.
+          </li>
+          <li>
+            The <a href="/win-percentage-calculator">win percentage calculator</a> turns a win–loss
+            record into a win rate, counting ties as half a win the way league tables do.
+          </li>
+          <li>
+            The <a href="/tax-percentage-calculator">tax percentage calculator</a> adds tax, strips
+            it back out of a total, or works out the rate you were charged — for sales tax, VAT or
+            GST at any rate you enter.
+          </li>
+          <li>
+            The <a href="/discount-calculator">discount calculator</a> shows the money off and the
+            price you actually pay, and explains why stacked discounts never add up the way the sign
+            implies.
+          </li>
+        </ul>
+
+        <h3>Health and fitness percentages</h3>
+        <p>
+          Two more tools cover the percentages people track about themselves. The{' '}
+          <a href="/weight-loss-percentage-calculator">weight loss percentage calculator</a> works
+          out what share of a starting weight has gone, which is the fair way to compare progress
+          between people who started at different weights — and the reason challenges are scored
+          this way rather than in raw pounds. The{' '}
+          <a href="/body-fat-percentage-calculator">body fat percentage calculator</a> estimates body
+          fat from tape measurements using the US Navy method, in centimetres or inches.
+        </p>
+        <p>
+          Both are arithmetic tools, not clinical ones. They are useful for tracking a direction of
+          travel over weeks and months; they are not a substitute for advice from a doctor or a
+          body-composition scan, and neither page pretends otherwise.
+        </p>
+
+        <h3>Built to be quick, honest and private</h3>
+        <p>
+          Speed matters more than features on a tool like this. You arrive from a search, you need
+          one number, and you should be gone within seconds. Every page is static, the calculator
+          loads with the page rather than after it, and the whole thing weighs a few kilobytes of
+          JavaScript — so it works on a slow phone connection as well as it does on a laptop.
+        </p>
+        <p>
+          Everything here runs as a percentage calculator online — nothing to install, no account to
+          create, and no waiting on a server. It is also honest about precision: when a result is a
+          repeating decimal it is marked with ≈ rather than presented as exact, and the calculation
+          behind it always ends at the figure shown. Invalid input produces a plain-English explanation rather than <code>NaN</code>, and
+          the cases that genuinely have no answer — a percentage of zero, a change from zero — say so
+          instead of returning something misleading.
+        </p>
+        <p>
+          Nothing you type is sent anywhere. Every calculation runs in your own browser, there is no
+          account, the site sets no cookies, and even the fonts are served from this domain rather
+          than a third party. Your recent calculations are saved in your browser alone, and the Clear
+          button removes them.
+        </p>
+        <p>
+          If you want the reasoning rather than the answer, the{' '}
+          <a href="/how-to-calculate-percentage">guide to calculating percentages</a> covers the
+          method and the mental shortcuts, and the{' '}
+          <a href="/percentage-formula">formula reference</a> sets out every formula side by side
+          with the distinctions between them made explicit.
+        </p>
+      </div>
+    </section>
+
+    {/* Trust / utility */}
+    <section aria-labelledby="trust-heading" class="mt-24">
+      <h2 id="trust-heading" class="text-display-lg">Why this calculator</h2>
+      <dl class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          [
+            {
+              term: 'The working, not just the answer',
+              detail:
+                'Every result shows the formula, the numbers substituted into it, and each step in plain language.',
+            },
+            {
+              term: 'Nothing leaves your browser',
+              detail:
+                'The maths runs on your device. No accounts, no calculation logs, no values sent to a server.',
+            },
+            {
+              term: 'Honest about rounding',
+              detail:
+                'Repeating decimals are marked with ≈ rather than presented as exact, so you know when a result is rounded.',
+            },
+            {
+              term: 'Built to be fast',
+              detail:
+                'A static page with a few kilobytes of JavaScript — it loads quickly on a phone and on a slow connection.',
+            },
+          ].map((item) => (
+            <div class="rounded-lg border border-hairline bg-canvas p-8">
+              <dt class="text-card-title">{item.term}</dt>
+              <dd class="mt-2 text-body">{item.detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+  </div>
+
+  {/* Closing story block — navy, the only inverse surface above the footer. */}
+  <div class="mx-auto max-w-site px-4 pt-24 pb-8 sm:px-8">
+    <ColorBlock tone="navy" class="text-center">
+      <h2 class="mx-auto max-w-3xl text-display-lg text-balance">
+        Every percentage question, answered with its working.
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-body-lg">
+        Fourteen calculators, no account, and nothing sent to a server.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href="/percentage-calculator" class="btn-on-block">Open the calculator</a>
+        <a href="/percentage-formula" class="btn-on-block">Browse the formulas</a>
+      </div>
+    </ColorBlock>
+  </div>
+
+</BaseLayout>

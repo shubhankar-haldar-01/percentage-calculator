@@ -1,0 +1,74 @@
+---
+/**
+ * FAQ accordion built on native <details>/<summary> — no JavaScript needed to
+ * open, and the answers stay in the HTML for crawlers and in-page search.
+ *
+ * Emits `FAQPage` JSON-LD built from the same `items` array the accordion
+ * renders, so the structured data and the visible answers cannot drift apart —
+ * which is the condition search engines actually check.
+ *
+ * Worth knowing: Google retired FAQ rich results from Search in May 2026, so
+ * this will not produce a rich result there. It remains valid schema.org
+ * markup that other engines and answer engines read, and exactly one page of
+ * the site renders one <Faq>, so there is never more than one FAQPage per URL.
+ */
+
+export type FaqItem = { question: string; answer: string };
+
+interface Props {
+  items: FaqItem[];
+  heading?: string;
+  id?: string;
+}
+
+const { items, heading = 'Frequently asked questions', id = 'faq' } = Astro.props;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+
+<section aria-labelledby={`${id}-heading`} class="mt-24">
+  <h2 id={`${id}-heading`} class="text-display-lg">{heading}</h2>
+
+  <div class="mt-8 divide-y divide-hairline overflow-hidden rounded-lg border border-hairline bg-canvas">
+    {
+      items.map((item) => (
+        <details class="group" data-faq>
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-headline transition-colors hover:bg-surface-soft [&::-webkit-details-marker]:hidden"
+          >
+            <span>{item.question}</span>
+            <span
+              aria-hidden="true"
+              class="grid size-7 shrink-0 place-items-center rounded-full bg-surface-soft text-body transition-transform group-open:rotate-45"
+            >
+              +
+            </span>
+          </summary>
+          <div class="max-w-3xl px-6 pb-6 text-body">{item.answer}</div>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  import { track } from '../lib/analytics.ts';
+
+  for (const item of document.querySelectorAll<HTMLDetailsElement>('[data-faq]')) {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      const question = item.querySelector('summary')?.textContent?.trim() ?? '';
+      track('faq_opened', { question });
+    });
+  }
+</script>

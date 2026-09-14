@@ -1,0 +1,37 @@
+---
+import type { Crumb } from '../lib/schema.ts';
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="mb-6">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-body-sm">
+    {
+      crumbs.map((crumb, index) => {
+        const isLast = index === crumbs.length - 1;
+        return (
+          <li class="flex items-center gap-2">
+            {index > 0 && (
+              <span aria-hidden="true" class="text-ink">
+                /
+              </span>
+            )}
+            {isLast ? (
+              <span aria-current="page" class="text-body">
+                {crumb.label}
+              </span>
+            ) : (
+              <a href={crumb.path} class="transition-colors hover:opacity-70">
+                {crumb.label}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

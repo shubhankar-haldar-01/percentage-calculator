@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CALCULATORS } from '../lib/calculators.ts';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist. Browse the percentage calculators instead."
+  path="/404"
+  noindex
+>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="mt-5 text-display-lg text-balance">This page doesn't exist</h1>
+    <p class="mt-4 max-w-xl text-body">
+      The link may be out of date, or the address may have a typo in it. Every calculator on the site
+      is listed below.
+    </p>
+
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a href="/" class="btn-primary">Go to the calculator</a>
+      <a href="/percentage-formula" class="btn-secondary">Browse the formulas</a>
+    </div>
+
+    <section aria-labelledby="all-heading" class="mt-24">
+      <h2 id="all-heading" class="text-display-lg">All calculators</h2>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        {
+          CALCULATORS.map((calculator) => (
+            <li>
+              <a
+                href={calculator.slug}
+                class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+              >
+                <span class="text-card-title">
+                  {calculator.name}
+                </span>
+                <span class="text-body">{calculator.blurb}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
