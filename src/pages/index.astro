@@ -133,6 +133,13 @@ const faqs: FaqItem[] = [
     itself sits in the hero as a hairline card so the tool is reachable in the
     first screen.
   */}
+  {/*
+    A warm ground behind the hero. One surface at the point of first impression
+    does more than tinting many smaller things, and the calculator card reads as
+    an object sitting on it. This one follows the theme rather than pinning a
+    pastel, because it wraps interactive surfaces.
+  */}
+  <div class="bg-hero">
   <section class="mx-auto max-w-site px-4 pt-12 pb-16 sm:px-8 sm:pt-20 sm:pb-24">
     <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
       <div>
@@ -155,21 +162,28 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
+  </div>
+
   {/*
-    `marquee-strip` — the thin black ribbon under the hero. Rendered static
-    rather than animated: a scrolling ribbon is a motion hazard, and these
-    entries are useful links rather than decoration.
+    `marquee-strip` — the thin ribbon under the hero. Rendered static rather
+    than animated: a scrolling ribbon is a motion hazard, and these entries are
+    useful links rather than decoration.
+
+    Lime rather than the inverse canvas. It is the one full-width surface high
+    enough on the page to carry colour without becoming a section, and pastel
+    grounds hold their colour in both themes, so the band reads the same way in
+    dark mode instead of flipping to white.
   */}
-  <div class="bg-inverse-canvas">
+  <div class="bg-lime text-block-ink">
     <div
       class="mx-auto flex max-w-site items-center gap-8 overflow-x-auto px-4 py-3 whitespace-nowrap sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
-      <span class="caption shrink-0 text-inverse-ink opacity-60">Try one</span>
+      <span class="caption shrink-0 opacity-70">Try one</span>
       {
         examples.map((example) => (
           <a
             href={example.href}
-            class="caption shrink-0 text-inverse-ink underline-offset-4 transition-opacity hover:opacity-70 hover:underline"
+            class="caption shrink-0 underline-offset-4 transition-opacity hover:opacity-70 hover:underline"
           >
             {example.question} = {example.answer}
           </a>
@@ -258,7 +272,7 @@ const faqs: FaqItem[] = [
             <li>
               <a
                 href={example.href}
-                class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
+                class="flex h-full flex-col gap-2 rounded-lg bg-coral p-8 text-block-ink transition-shadow hover:shadow-soft"
               >
                 <span class="text-body">{example.question}</span>
                 <span class="numeric text-display-lg">{example.answer}</span>
@@ -439,27 +453,41 @@ const faqs: FaqItem[] = [
         {
           [
             {
+              tone: 'lime',
               term: 'The working, not just the answer',
               detail:
                 'Every result shows the formula, the numbers substituted into it, and each step in plain language.',
             },
             {
+              tone: 'mint',
               term: 'Nothing leaves your browser',
               detail:
                 'The maths runs on your device. No accounts, no calculation logs, no values sent to a server.',
             },
             {
+              tone: 'cream',
               term: 'Honest about rounding',
               detail:
                 'Repeating decimals are marked with ≈ rather than presented as exact, so you know when a result is rounded.',
             },
             {
+              tone: 'lilac',
               term: 'Built to be fast',
               detail:
                 'A static page with a few kilobytes of JavaScript — it loads quickly on a phone and on a slow connection.',
             },
           ].map((item) => (
-            <div class="rounded-lg border border-hairline bg-canvas p-8">
+            <div
+              class:list={[
+                'rounded-lg p-8',
+                // Pastel grounds keep their colour in both themes, so text on
+                // them is pinned rather than following the theme's ink.
+                'text-block-ink',
+                { lime: 'bg-lime', mint: 'bg-mint', cream: 'bg-cream', lilac: 'bg-lilac' }[
+                  item.tone
+                ],
+              ]}
+            >
               <dt class="text-card-title">{item.term}</dt>
               <dd class="mt-2 text-body">{item.detail}</dd>
             </div>

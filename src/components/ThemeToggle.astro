@@ -56,7 +56,8 @@
   function resolved(): 'light' | 'dark' {
     const pinned = root.dataset.theme;
     if (pinned === 'light' || pinned === 'dark') return pinned;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Unset means light: dark is opt-in, not inherited from the OS.
+    return 'light';
   }
 
   function paint() {

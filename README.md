@@ -238,20 +238,26 @@ still says "increase" or "decrease".
 
 ### Theming
 
-`figma/DESIGN.md` documents no dark theme, so this one is **derived rather than
-specified**: the monochrome core simply swaps — the spec's own `inverse-canvas`
-/ `inverse-ink` pair becomes the page — while every colour block keeps its
-pastel surface in both themes. That preserves the system's signature, since
-colour is still a whole surface rather than a tint.
+Three states: **unset is light**, `data-theme="light"` and `data-theme="dark"`
+pin a choice.
 
-Because blocks stay light in both themes, text on them is pinned to
-`--color-block-ink` instead of following the flipping ink token. The same
-applies to the mint/pink result panels.
+Dark is deliberately opt-in rather than inherited from `prefers-color-scheme`,
+so a first-time visitor lands in light whatever their device is set to. Because
+that lives in the palette rather than in script, it holds even when JavaScript
+never runs — a dark-OS visitor with scripting disabled still gets light.
 
-Three states: with nothing stored the page follows the OS through
-`prefers-color-scheme`; the toggle pins `data-theme` on `<html>` and stores it.
-A tiny inline script in `<head>` applies a stored choice before first paint, so
-a pinned dark theme never flashes white.
+A stored choice always outranks the OS. The toggle writes `pc:theme` to
+`localStorage`, and a small inline script in `<head>` stamps `data-theme` before
+first paint, which is what stops a returning dark-mode visitor seeing a white
+flash.
+
+`theme-color` carries no `prefers-color-scheme` variant for the same reason: the
+page does not follow the OS, so the browser chrome must not either. The toggle
+rewrites it when a visitor picks dark.
+
+Colour blocks keep their pastel surfaces in both themes and pin their text to
+`--color-block-ink`, so a lime card reads the same either way. The hero band is
+the exception — it wraps the calculator, so it follows the theme instead.
 
 ### Deviations from the spec
 

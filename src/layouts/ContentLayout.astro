@@ -42,15 +42,21 @@ const crumbs = [
   ogType={ogType}
   modified={modified}
 >
-  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
-    <Breadcrumbs crumbs={crumbs} />
+  {/*
+    The same warm band the homepage hero uses, so every page in the site opens
+    the same way instead of the inner pages reading as a plainer sibling.
+  */}
+  <div class="bg-hero">
+    <div class="mx-auto max-w-3xl px-4 pt-10 pb-12 sm:px-6 sm:pt-16 sm:pb-16">
+      <Breadcrumbs crumbs={crumbs} />
 
-    <h1 class="text-display-lg text-balance">{h1}</h1>
-    {updated && <p class="mt-4 text-body-sm">Last updated {updated}</p>}
-    {intro && <p class="mt-5 max-w-2xl text-body">{intro}</p>}
-
-    <div class="mt-12">
-      <slot />
+      <h1 class="text-display-lg text-balance">{h1}</h1>
+      {updated && <p class="mt-4 text-body-sm">Last updated {updated}</p>}
+      {intro && <p class="mt-5 max-w-2xl text-body">{intro}</p>}
     </div>
+  </div>
+
+  <div class="mx-auto max-w-3xl px-4 pt-12 pb-16 sm:px-6">
+    <slot />
   </div>
 </BaseLayout>

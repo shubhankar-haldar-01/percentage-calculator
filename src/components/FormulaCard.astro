@@ -12,7 +12,12 @@ const { formula, substituted, caption } = Astro.props;
 ---
 
 <div class="rounded-lg border border-hairline bg-canvas p-6 sm:p-8">
-  <div class="rounded-md bg-surface-soft px-5 py-4">
+  {/*
+    Cream rather than the grey soft surface: the formula is the thing this site
+    exists to show, and a pastel ground holds its colour in both themes, so the
+    panel reads the same in dark mode. Text is pinned to the block ink.
+  */}
+  <div class="rounded-md bg-cream px-5 py-4 text-block-ink">
     <p class="numeric text-body">{formula}</p>
     {substituted && <p class="numeric mt-1.5 text-body">{substituted}</p>}
   </div>

@@ -58,8 +58,12 @@ const allSchema = [websiteSchema(), organizationSchema(), ...schema];
       }
     </script>
 
+    {/*
+      No `prefers-color-scheme` variant: the page does not follow the OS, so the
+      browser chrome must not either. The toggle rewrites this when a visitor
+      picks dark.
+    */}
     <meta name="theme-color" content="#ffffff" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
 
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

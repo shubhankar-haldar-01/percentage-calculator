@@ -18,9 +18,19 @@
   --color-inverse-canvas: #000000;
   --color-inverse-ink: #ffffff;
 
+  /* The page ground sits a shade warmer than the card surface, so cards read
+     as objects lifting off it rather than dissolving into it. Pure white on
+     pure white left every card defined only by a hairline. */
+  --color-ground: #faf9f7;
+
+  /* The hero ground. Unlike the pastel cards, this one follows the theme: it
+     wraps the calculator, and a pinned cream surface under a dark card looks
+     like two pages stitched together. */
+  --color-hero: #f4ecd6;
+
   --color-hairline: #e6e6e6;
   --color-hairline-soft: #f1f1f1;
-  --color-surface-soft: #f7f7f5;
+  --color-surface-soft: #f3f1ed;
 
   /* Colour blocks — whole-section surfaces, never accents */
   --color-lime: #dceeb1;
@@ -144,7 +154,11 @@
    every colour block keeps its pastel surface in both themes. That keeps the
    system's signature intact — colour is still a whole surface, never a tint.
 
-   Three states: no attribute follows the OS, `data-theme` pins a choice.
+   Three states: no attribute is light, `data-theme` pins a choice. Dark is
+   deliberately opt-in rather than inherited from `prefers-color-scheme`, so a
+   first-time visitor always lands in light whatever their device is set to —
+   and because that lives in the palette rather than in script, it holds even
+   if JavaScript never runs.
    --------------------------------------------------------------------------- */
 :root {
   color-scheme: light;
@@ -153,7 +167,9 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-canvas: #000000;
+  --color-ground: #0a0a0b;
+  --color-hero: #121216;
+  --color-canvas: #101012;
   --color-ink: #ffffff;
   /* The inverse pair swaps too, so the marquee stays a contrasting ribbon. */
   --color-inverse-canvas: #ffffff;
@@ -161,27 +177,30 @@
 
   --color-hairline: #2b2b2b;
   --color-hairline-soft: #1b1b1b;
-  --color-surface-soft: #121212;
+  --color-surface-soft: #191919;
   --color-placeholder: #6f6f6f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-
-    --color-canvas: #000000;
-    --color-ink: #ffffff;
-    --color-inverse-canvas: #ffffff;
-    --color-inverse-ink: #000000;
-
-    --color-hairline: #2b2b2b;
-    --color-hairline-soft: #1b1b1b;
-    --color-surface-soft: #121212;
-    --color-placeholder: #6f6f6f;
-  }
-}
 
 /* --------------------------------------------------------------------------- */
+
+/*
+ * Hero heading on phones.
+ *
+ * `--text-display-xl` is clamp(2.875rem, 6.4vw, 5.375rem), but 6.4vw does not
+ * reach the 2.875rem floor until a 719px viewport — so every phone rendered it
+ * at a flat 46px regardless of width, and "Percentage calculator that shows the
+ * working." stacked into four short lines that read as a narrow centred column
+ * rather than a heading.
+ *
+ * Below the `sm` breakpoint it scales with the viewport instead, reaching
+ * exactly 46px at 640px so it meets the original clamp with no step.
+ */
+@media (max-width: 639px) {
+  :root {
+    --text-display-xl: clamp(1.75rem, 0.64rem + 5.6vw, 2.875rem);
+  }
+}
 
 @layer base {
   html {
@@ -199,7 +218,7 @@
   }
 
   body {
-    background-color: var(--color-canvas);
+    background-color: var(--color-ground);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -486,7 +505,8 @@
    Theme-toggle glyphs.
 
    Handled in CSS rather than script so the right icon is painted on the first
-   frame — including when the OS is dark and no choice has been stored.
+   frame. The moon is the default: an unset page is light, and the button
+   offers the theme you would move to.
    --------------------------------------------------------------------------- */
 [data-theme-toggle] [data-icon='sun'] { display: none; }
 [data-theme-toggle] [data-icon='moon'] { display: block; }
@@ -494,7 +514,3 @@
 :root[data-theme='dark'] [data-theme-toggle] [data-icon='sun'] { display: block; }
 :root[data-theme='dark'] [data-theme-toggle] [data-icon='moon'] { display: none; }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) [data-theme-toggle] [data-icon='sun'] { display: block; }
-  :root:not([data-theme='light']) [data-theme-toggle] [data-icon='moon'] { display: none; }
-}
