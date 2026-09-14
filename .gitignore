@@ -22,3 +22,16 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Agent tooling — local to this machine, not part of the site.
+# .agents holds a synced snapshot of tailwindlabs/tailwindcss.com, which is
+# source-available but not open-source: it is re-created with the skill's own
+# sync script rather than redistributed here. .claude is a symlink into it.
+.agents/
+.claude/
+
+# Editor settings
+.vscode/
+
+# Superseded design iteration — figma/DESIGN.md is the source of truth.
+coinbase/
