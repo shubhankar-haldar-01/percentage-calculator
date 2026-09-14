@@ -344,6 +344,38 @@ back to. Hosts that look for the nearest `404.html` up the directory tree
 (Netlify and Cloudflare Pages among them) would use a localised one if it
 existed; adding `src/pages/[lang]/404.astro` would generate them.
 
+## Deploying
+
+Cloudflare Pages, project `percentage-calculator`, live at
+`https://percentage-calculator-5zn.pages.dev`.
+
+```
+npm run deploy           # build, then upload dist/ to the production branch
+npm run deploy:preview   # same, onto a preview branch
+```
+
+The site is static, so no adapter is involved — the deploy is just an upload of
+`dist/`. Two things Pages gets right without configuration: `404.html` is served
+for unmatched paths with a real 404 status, and `robots.txt`, the sitemaps and
+the manifest all come back with correct content types.
+
+`--commit-dirty=true` is set because the deploy runs from the working tree
+rather than a clean checkout; drop it if this ever moves to CI.
+
+**Worth knowing.** Cloudflare has folded Pages into Workers and now steers new
+projects there — `wrangler pages project create` delegates to Workers unless
+`--force` is passed, which is why this project was created with it. Nothing
+needs `--force` again. A static site runs fine on either, so this is a migration
+to make on your own schedule rather than a problem.
+
+**Not yet configured.** Two Pages features this build would benefit from:
+
+- `_redirects` would turn `/x-is-what-percent-of-y` into a real 301. Right now
+  the static build emits a meta-refresh stub, which search engines treat more
+  weakly than a server redirect.
+- `_headers` would let you send a CSP and the usual security headers, which is
+  straightforward here because the site loads no third-party scripts.
+
 ## Before deploying
 
 - Confirm the contact address in `src/lib/site.ts` (currently

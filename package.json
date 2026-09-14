@@ -10,6 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=percentage-calculator --branch=main --commit-dirty=true",
+    "deploy:preview": "npm run build && wrangler pages deploy dist --project-name=percentage-calculator --branch=preview --commit-dirty=true",
     "astro": "astro",
     "test": "node --test src/lib/",
     "check": "astro check",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.131.2"
   }
 }
