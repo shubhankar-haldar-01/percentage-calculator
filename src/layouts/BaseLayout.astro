@@ -42,6 +42,24 @@ const allSchema = [websiteSchema(), organizationSchema(), ...schema];
 <!doctype html>
 <html lang={LOCALE_META[locale].tag}>
   <head>
+    {/*
+      Google tag (gtag.js). Placed first in <head> per Google's instructions.
+      `async` so it never blocks rendering — the calculator stays interactive
+      whether or not this loads.
+
+      It sets the _ga cookies and calls googletagmanager.com, so the privacy
+      policy states that plainly. The numbers typed into a calculator are not
+      sent anywhere: the engine runs in the browser and no event carries them.
+    */}
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-60HTQBPZEL"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-60HTQBPZEL');
+    </script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />

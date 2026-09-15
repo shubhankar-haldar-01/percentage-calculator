@@ -280,19 +280,30 @@ self-hosted via Astro's font pipeline, so no request leaves the origin.
 
 ## Privacy
 
-Calculations never leave the browser. The site sets no cookies and loads no
-third-party scripts. `localStorage` holds only calculation history and the
-currency preference, both clearable from the UI.
+Calculations never leave the browser. `percentage.ts` runs on the page, there is
+no calculation endpoint, and no analytics event carries an input, a result or the
+saved history — `qa/best.mjs` proves that by typing distinctive numbers and
+asserting they appear in no outbound request.
 
-`src/lib/analytics.ts` pushes events onto `window.dataLayer` and forwards them to
-`gtag` when a tag is present, so GA4 or Tag Manager can be added later without
-touching calculator code. No analytics vendor is currently bundled — if one is
-added, update `/privacy-policy` first. Events never include the numbers a user
-typed.
+Two things are stored on the device: up to twelve recent calculations and the
+discount calculator's currency preference, both in `localStorage`, both cleared
+by the in-page Clear button or by clearing site data.
 
-Tracked events: `calculator_used`, `calculation_completed`,
-`calculator_mode_changed`, `calculator_reset`, `result_copied`,
-`result_shared`, `history_cleared`, `faq_opened`.
+Google Analytics (`G-60HTQBPZEL`) is the one third party. It loads from
+`googletagmanager.com`, sets the `_ga` cookies, and measures page visits and
+which calculators get used. Fonts are self-hosted, so no request reaches Google
+Fonts. Nothing else is embedded.
+
+The privacy policy says all of this in plain words. **Keep it that way**: if the
+analytics change, or anything else third-party is added, the policy is part of
+the change, not a follow-up. A privacy claim the code contradicts is worse than
+no claim at all.
+
+**Not yet handled: consent.** GA4 sets cookies before asking, and the site is
+published in German, French, Spanish, Italian and Portuguese as well as English.
+Under GDPR/ePrivacy those visitors should be asked first. That needs either a
+consent banner gating `gtag('config', …)`, or Google Consent Mode v2 defaulting
+to denied.
 
 ## SEO notes
 
@@ -388,6 +399,7 @@ to make on your own schedule rather than a problem.
   `hello@prcentagecalc.com`).
 - Serve over HTTPS — the Clipboard API needs a secure context. A copy fallback
   handles insecure contexts, but sharing is a better experience without it.
-- Consider security headers at the CDN or host: a CSP is straightforward here
-  because the site loads no third-party scripts and uses no inline scripts beyond
-  JSON-LD.
+- Consider security headers at the CDN or host. A CSP needs to allow
+  `googletagmanager.com` and `google-analytics.com` for the analytics tag, plus
+  the two inline scripts (the theme bootstrap and the gtag config) — everything
+  else is first-party.
