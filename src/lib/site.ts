@@ -3,13 +3,13 @@
 export const SITE = {
   name: 'Percentage Calculator',
   shortName: 'PercentageCalculator',
-  url: 'https://percentagecalculator.com',
+  url: 'https://prcentagecalc.com',
   /** Used as the default meta description and the WebSite schema description. */
   description:
     'Free online percentage calculators with step-by-step working. Find a percentage of a number, percentage increase, decrease, change, difference and discounts — instantly, in your browser.',
   locale: 'en_US',
   /** Contact address on the domain the site owns. */
-  email: 'hello@percentagecalculator.com',
+  email: 'hello@prcentagecalc.com',
   /** First year in the footer copyright range. */
   founded: 2026,
 } as const;

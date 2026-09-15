@@ -1,2 +1,4 @@
-https://project.pages.dev/*
+# Keep the .pages.dev alias out of search results so it cannot compete with
+# prcentagecalc.com for the same content. The real domain sends no such header.
+https://percentage-calculator-5zn.pages.dev/*
   X-Robots-Tag: noindex

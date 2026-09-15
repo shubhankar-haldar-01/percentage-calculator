@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://percentagecalculator.com',
+  site: 'https://prcentagecalc.com',
   trailingSlash: 'never',
   build: { format: 'file' },
   // English at the root, every other locale under its own prefix.

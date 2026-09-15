@@ -297,7 +297,7 @@ Tracked events: `calculator_used`, `calculation_completed`,
 ## SEO notes
 
 - `site` in `astro.config.mjs` drives canonicals and the sitemap. Change it before
-  deploying anywhere other than `percentagecalculator.com`.
+  deploying anywhere other than `prcentagecalc.com`.
 - Query strings are shareable links, not pages. Every page canonicalises to its
   clean URL and `robots.txt` disallows `/*?`.
 - `/x-is-what-percent-of-y` permanently redirects to `/what-percent-is-x-of-y`;
@@ -385,7 +385,7 @@ to make on your own schedule rather than a problem.
 ## Before deploying
 
 - Confirm the contact address in `src/lib/site.ts` (currently
-  `hello@percentagecalculator.com`).
+  `hello@prcentagecalc.com`).
 - Serve over HTTPS — the Clipboard API needs a secure context. A copy fallback
   handles insecure contexts, but sharing is a better experience without it.
 - Consider security headers at the CDN or host: a CSP is straightforward here
