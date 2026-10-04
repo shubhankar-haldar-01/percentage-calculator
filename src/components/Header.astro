@@ -179,9 +179,14 @@ const isCurrent = (key: PageKey) => path === pathFor(locale, key);
       <LanguageSwitcher locale={locale} pageKey={pageKey} />
       <ThemeToggle />
 
+      {/*
+        Below 320px (folded phones) the bar cannot hold this as well as the
+        mark, menu and utility buttons, and it is the one item the menu already
+        duplicates, so it goes rather than pushing the page sideways.
+      */}
       <a
         href={pathFor(locale, 'percentage-calculator')}
-        class="btn-primary min-h-10 py-1.5 text-body-sm max-[359px]:px-4"
+        class="btn-primary min-h-10 py-1.5 text-body-sm max-[359px]:px-4 max-[320px]:hidden"
       >
         <span class="sm:hidden">{t.nav.calculateShort}</span>
         <span class="hidden sm:inline">{t.nav.openCalculator}</span>

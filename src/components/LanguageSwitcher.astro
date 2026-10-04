@@ -21,7 +21,7 @@ const options = alternates(pageKey);
 
 {
   options.length > 1 && (
-    <details class="group relative shrink-0" name="lang-menu">
+    <details class="group shrink-0 sm:relative" name="lang-menu">
       <summary
         aria-label={t.nav.language}
         class="btn-icon cursor-pointer list-none [&::-webkit-details-marker]:hidden"
@@ -31,9 +31,14 @@ const options = alternates(pageKey);
         </span>
       </summary>
 
+      {/*
+        Below `sm` the panel hangs from the header row's right edge, not from
+        this button: the button sits mid-bar on a phone, and a 12rem panel
+        right-aligned to it ran up to 43px off the left of a 320px screen.
+      */}
       <nav
         aria-label={t.nav.language}
-        class="absolute top-12 right-0 z-50 w-48 rounded-md border border-hairline bg-canvas p-2 shadow-soft"
+        class="absolute top-full right-4 z-50 mt-2 w-48 rounded-md border border-hairline bg-canvas p-2 shadow-soft sm:top-12 sm:right-0 sm:mt-0"
       >
         <ul class="flex flex-col">
           {options.map((option) => (

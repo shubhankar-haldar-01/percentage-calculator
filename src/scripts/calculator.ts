@@ -326,6 +326,9 @@ const FIELD_ALIASES: Record<string, string> = {
 
 function setupCalculator(root: HTMLElement): void {
   const calculatorName = root.dataset.calcName ?? 'Calculator';
+  // The route slug, which is the same in every language — unlike the display
+  // name above, which is translated — so analytics can group by it.
+  const calculatorSlug = root.dataset.calcSlug?.replace(/^\//, '') || 'unknown';
   let T: ClientStrings = FALLBACK_STRINGS;
   try {
     T = { ...FALLBACK_STRINGS, ...(JSON.parse(root.dataset.strings ?? '{}') as ClientStrings) };
@@ -344,8 +347,6 @@ function setupCalculator(root: HTMLElement): void {
 
   const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-tab]'));
   const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-panel]'));
-
-  let hasCalculated = false;
 
   /* Mode switching ------------------------------------------------------- */
   function selectMode(modeId: string, focusTab = false): void {
@@ -433,11 +434,6 @@ function setupCalculator(root: HTMLElement): void {
     const currency = root.querySelector<HTMLSelectElement>('[data-currency]');
     const inputs = currency ? { ...values, currency: currency.value } : values;
 
-    if (!hasCalculated && !options.silent) {
-      track('calculator_used', { calculator: calculatorName, mode: form.dataset.modeId });
-      hasCalculated = true;
-    }
-
     const outcome = calculate(operation, inputs);
 
     if (!outcome.ok) {
@@ -452,7 +448,16 @@ function setupCalculator(root: HTMLElement): void {
     if (resultEmpty) resultEmpty.hidden = true;
 
     recordHistory({ text: outcome.result.headline, href: shareUrl, at: Date.now() });
-    track('calculation_completed', { calculator: calculatorName, mode: form.dataset.modeId });
+
+    // The one success event, and the one to mark as a key event in GA4. Silent
+    // runs — a shared link prefilling the form on load, or a currency switch
+    // redrawing a result — are not new calculations, so they are not counted.
+    if (!options.silent) {
+      track('calculator_used', {
+        calculator_name: calculatorSlug,
+        calculation_type: form.dataset.modeId!.replace(/-/g, '_'),
+      });
+    }
   }
 
   for (const form of forms) {

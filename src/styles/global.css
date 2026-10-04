@@ -260,15 +260,20 @@
  * cannot break sets a floor no container can shrink under, widening the page.
  *
  * `overflow-wrap` is the universal safety net; it only acts on words that do
- * not fit, so type that already fits is untouched. Hyphenation is scoped to the
- * languages whose compounding makes it necessary, because `hyphens: auto`
- * changes line breaking everywhere it applies and English headings need none.
+ * not fit, so type that already fits is untouched. It is set on the body, not
+ * just headings: body copy has the same problem with compounds and with
+ * spreadsheet formulas, which the translated FAQs write without spaces
+ * ("=SUMAPRODUCTO(A1:A5;B1:B5)") and which overflowed 320–430px screens.
+ *
+ * Hyphenation is scoped to the languages whose compounding makes it necessary,
+ * because `hyphens: auto` changes line breaking everywhere it applies and
+ * English headings need none.
  */
-:is(h1, h2, h3, h4) {
+body {
   overflow-wrap: break-word;
 }
 
-:is(:lang(de), :lang(pt), :lang(es), :lang(it), :lang(fr)) :is(h1, h2, h3, h4, .numeric) {
+:is(:lang(de), :lang(pt), :lang(es), :lang(it), :lang(fr)) :is(h1, h2, h3, h4, .numeric, .text-card-title) {
   hyphens: auto;
 }
 
