@@ -12,7 +12,27 @@ export const SITE = {
   email: 'hello@prcentagecalc.com',
   /** First year in the footer copyright range. */
   founded: 2026,
+  /**
+   * Google AdSense publisher ID, e.g. 'pub-1234567890123456'. Setting it adds
+   * the AdSense verification meta tag to every page, publishes /ads.txt and
+   * adds the advertising sections to the privacy policy — change that page's
+   * `updated` date when you set it. Left empty, none of this is built.
+   */
+  adsensePublisherId: '' as string,
+  /**
+   * Google Search Console verification for the "HTML tag" method: the code,
+   * or the whole <meta> tag Search Console shows. Not needed if the domain
+   * is verified with a DNS record instead.
+   */
+  googleSiteVerification: '' as string,
 } as const;
+
+/** The AdSense publisher ID as `pub-…`, whether or not it was pasted with the `ca-` prefix. */
+export const adsensePublisherId = SITE.adsensePublisherId.trim().replace(/^ca-/, '');
+
+/** The Search Console verification code, whether the code alone or the whole tag was pasted. */
+export const googleSiteVerification =
+  SITE.googleSiteVerification.match(/content="([^"]+)"/)?.[1] ?? SITE.googleSiteVerification.trim();
 
 export type NavItem = { href: string; label: string };
 

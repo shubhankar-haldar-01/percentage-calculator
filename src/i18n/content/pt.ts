@@ -77,7 +77,7 @@ export const contentPt: LocaleContent = {
       'Quase todos os problemas de percentagem giram em torno de três quantidades: a parte, o total e a percentagem. Duas delas sabe sempre. Perceber qual é a que falta diz-lhe que cálculo fazer — e é esse reconhecimento, não a aritmética, a verdadeira origem dos erros.',
       'A segunda família compara dois números em vez de ligar uma parte a um total. O aumento percentual mede o crescimento face ao ponto de partida, a diminuição faz o mesmo no sentido contrário, e a variação cobre ambos dizendo-lhe qual dos dois aconteceu. A diferença percentual é a verdadeira exceção: mede face à média dos dois valores, pelo que nenhum serve de referência e a ordem não altera nada.',
       'Cada pergunta chega com o vocabulário de uma tarefa concreta, por isso cada uma tem a sua página: notas e exames, médias ponderadas, percentagem de vitórias, impostos, descontos, perda de peso e gordura corporal. Todas partilham o mesmo motor de cálculo e os mesmos passos.',
-      'Numa ferramenta como esta, a rapidez conta mais do que as funcionalidades. Chega de uma pesquisa, precisa de um número e deve poder sair em poucos segundos. Cada página é estática e a calculadora carrega com ela, não depois. Nada do que escreve sai do seu dispositivo: sem conta, sem cookies, e até os tipos de letra são servidos a partir deste domínio.',
+      'Numa ferramenta como esta, a rapidez conta mais do que as funcionalidades. Chega de uma pesquisa, precisa de um número e deve poder sair em poucos segundos. Cada página é estática e a calculadora carrega com ela, não depois. Nada do que escreve sai do seu dispositivo: sem conta, e até os tipos de letra são servidos a partir deste domínio.',
     ],
   },
   calculators: {

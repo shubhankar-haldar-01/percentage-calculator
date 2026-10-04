@@ -5,6 +5,7 @@ import Hreflang from '../components/Hreflang.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { organizationSchema, websiteSchema } from '../lib/schema.ts';
+import { adsensePublisherId, googleSiteVerification } from '../lib/site.ts';
 import { DEFAULT_LOCALE, LOCALE_META, type Locale, type PageKey } from '../i18n/config.ts';
 import '../styles/global.css';
 
@@ -43,21 +44,41 @@ const allSchema = [websiteSchema(), organizationSchema(), ...schema];
 <html lang={LOCALE_META[locale].tag}>
   <head>
     {/*
-      Google tag (gtag.js). Placed first in <head> per Google's instructions.
-      `async` so it never blocks rendering — the calculator stays interactive
-      whether or not this loads.
+      Google tag (gtag.js). The dataLayer stub runs immediately so the page
+      view and any early events queue up, but the 180 KB library itself is
+      fetched on the visitor's first interaction, or 5 s after `load` for
+      anyone who only reads. Loaded eagerly — even with `async` — it competes
+      for bandwidth with the page's own CSS, fonts and scripts, and its
+      evaluation is the only long main-thread task on the page.
 
       It sets the _ga cookies and calls googletagmanager.com, so the privacy
       policy states that plainly. The numbers typed into a calculator are not
       sent anywhere: the engine runs in the browser and no event carries them.
     */}
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-60HTQBPZEL"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-60HTQBPZEL');
+      // The address without its query string: a shared calculator link
+      // carries its numbers there, and they must not reach analytics.
+      gtag('config', 'G-60HTQBPZEL', { page_location: location.origin + location.pathname });
+
+      (function () {
+        var events = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+        var loaded = false;
+        function load() {
+          if (loaded) return;
+          loaded = true;
+          events.forEach(function (e) { removeEventListener(e, load, { passive: true }); });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-60HTQBPZEL';
+          document.head.appendChild(s);
+        }
+        events.forEach(function (e) { addEventListener(e, load, { once: true, passive: true }); });
+        addEventListener('load', function () { setTimeout(load, 5000); });
+      })();
     </script>
 
     <meta charset="utf-8" />
@@ -88,6 +109,13 @@ const allSchema = [websiteSchema(), organizationSchema(), ...schema];
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="percentage calculator" />
+    {/*
+      Ownership verification for Search Console and AdSense, each emitted only
+      once its value is set in SITE. The AdSense tag is used rather than the
+      AdSense script because it proves ownership without loading any ad code.
+    */}
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
+    {adsensePublisherId && <meta name="google-adsense-account" content={`ca-${adsensePublisherId}`} />}
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 

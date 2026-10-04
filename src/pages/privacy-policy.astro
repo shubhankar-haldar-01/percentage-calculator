@@ -1,16 +1,24 @@
 ---
 import ContentLayout from '../layouts/ContentLayout.astro';
-import { SITE } from '../lib/site.ts';
+import { SITE, adsensePublisherId } from '../lib/site.ts';
+
+// The advertising disclosures appear once an AdSense publisher ID is set in
+// SITE, so the policy never describes ads the site does not show.
+const ads = adsensePublisherId !== '';
 ---
 
 <ContentLayout
   title="Privacy Policy"
-  description="How Percentage Calculator handles your data: calculations stay in your browser, no accounts, and Google Analytics for page visits only."
+  description={ads
+    ? 'How Percentage Calculator handles your data: calculations stay in your browser, Google Analytics counts visits, and Google AdSense may show ads. Cookies and opt-outs explained.'
+    : 'How Percentage Calculator handles your data: calculations stay in your browser, there are no accounts, and Google Analytics counts visits. Cookies and opt-outs explained.'}
   path="/privacy-policy"
   h1="Privacy policy"
   crumbLabel="Privacy policy"
-  updated="13 September 2026"
-  intro="The short version: your calculations never leave your browser, and this site does not currently set cookies or run analytics."
+  updated="4 October 2026"
+  intro={ads
+    ? 'The short version: the numbers you type never leave your browser. Google Analytics counts visits, pages may show ads from Google AdSense, and both use cookies you can opt out of.'
+    : 'The short version: the numbers you type never leave your browser, and Google Analytics counts visits using cookies you can opt out of.'}
 >
   <div class="prose-site">
     <h2>Your calculations</h2>
@@ -18,6 +26,12 @@ import { SITE } from '../lib/site.ts';
       Every calculator on this site runs entirely in your browser. The numbers you type are processed
       on your own device by JavaScript that was downloaded with the page. They are not transmitted to
       this site or to any third party, and there is no server-side component that could receive them.
+      Analytics records which calculator was used, never the numbers entered.
+    </p>
+    <p>
+      Shared links are the one exception. A link made with the Share button carries its numbers in the
+      web address, and like any web address it is seen by the host that serves the page{ads && ' and by the ad service when it shows an ad on that page'}.
+      Analytics records the page without that part of the address.
     </p>
 
     <h2>What is stored on your device</h2>
@@ -41,18 +55,69 @@ import { SITE } from '../lib/site.ts';
     </p>
 
     <h2>Cookies</h2>
+    <p>The calculators do not need cookies. The cookies this site does use come from Google:</p>
+    <ul>
+      <li>
+        <strong>Google Analytics</strong> sets the <code>_ga</code> and <code>_ga_*</code> cookies to
+        tell a new visit from a returning one. By default they last two years.
+      </li>
+      {ads && (
+        <li>
+          <strong>Google AdSense</strong> and its partners use advertising cookies to show ads, limit
+          how often you see the same one, measure them and prevent fraud.
+        </li>
+      )}
+    </ul>
     <p>
-      This site does not set cookies. There are no advertising cookies, no tracking pixels and no
-      third-party embeds.
+      You can block or delete cookies in your browser settings. The calculators work exactly the same
+      without them.
     </p>
 
     <h2>Analytics</h2>
     <p>
-      No analytics service is running on this site at present, and no analytics scripts are loaded. If
-      privacy-respecting analytics are added in future, this page will be updated before they go live
-      to say what is collected. Any such measurement would record page visits and which calculators
-      are used — never the numbers you enter.
+      This site uses Google Analytics to understand how it is used. It records the pages you visit, the
+      site that referred you, your device and browser type, your approximate location, and how you use
+      the calculators — for example switching mode, copying a result or sharing it. Your location is
+      derived from your IP address, which Google Analytics does not store. The numbers you enter are
+      never recorded.
     </p>
+    <p>
+      Google handles this data as described in{' '}
+      <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites that use its services</a>.
+      You can opt out of Google Analytics on every website with Google's{' '}
+      <a href="https://tools.google.com/dlpage/gaoptout">opt-out browser add-on</a>.
+    </p>
+    <p>
+      Cloudflare, which hosts the site, also provides visit counts through Cloudflare Web Analytics.
+      It uses no cookies or other stored identifiers.
+    </p>
+
+    {ads && (
+      <>
+        <h2>Advertising</h2>
+        <p>
+          Pages on this site may show ads served by Google AdSense. Third-party vendors, including
+          Google, use cookies to serve ads based on your prior visits to this website or other
+          websites. Google's use of advertising cookies enables it and its partners to serve ads to you
+          based on your visits to this site and/or other sites on the internet. Google may also allow
+          certified third-party ad networks to show ads here, and they can use cookies in the same way.
+        </p>
+        <p>You can opt out of personalised advertising:</p>
+        <ul>
+          <li>
+            from Google, in <a href="https://www.google.com/settings/ads">Ads Settings</a>;
+          </li>
+          <li>
+            from many other ad networks, at <a href="https://www.aboutads.info/choices/">aboutads.info</a>{' '}
+            or, in Europe, at <a href="https://www.youronlinechoices.eu/">youronlinechoices.eu</a>.
+          </li>
+        </ul>
+        <p>
+          If you are in the European Economic Area, the United Kingdom or Switzerland, personalised ads
+          are shown only with your consent. Without it, any ads shown are not personalised.
+        </p>
+      </>
+    )}
 
     <h2>Server logs</h2>
     <p>
@@ -64,27 +129,36 @@ import { SITE } from '../lib/site.ts';
 
     <h2>Third-party services</h2>
     <p>
-      Fonts are self-hosted and served from this domain, so loading a page does not make requests to
-      Google Fonts or any other external service. The site loads no third-party scripts.
+      Fonts are self-hosted and served from this domain, so loading a page makes no request to Google
+      Fonts. The only third-party services the site uses are the ones named on this page:{' '}
+      {ads ? 'Google Analytics, Google AdSense and Cloudflare' : 'Google Analytics and Cloudflare'}.
     </p>
 
     <h2>Children</h2>
     <p>
-      This site is a general-purpose calculator and does not knowingly collect personal information
-      from anyone, including children.
+      This site is a general-purpose calculator, not a service directed at children, and it does not
+      knowingly collect personal information from children.
     </p>
 
     <h2>Your rights</h2>
     <p>
-      Because no personal data is collected through this site, there is no account to access, no
-      profile to correct and no record to delete. Data stored locally in your browser is under your
-      control and can be cleared at any time through the “Clear” button or your browser settings.
+      The site has no accounts, so it holds no profile of you to access, correct or delete.{' '}
+      {ads ? 'Analytics and advertising data is' : 'Analytics data is'} held by Google, which explains
+      how to view and control it in its{' '}
+      <a href="https://policies.google.com/privacy">privacy policy</a>. Depending on where you live,
+      you may have the right to access or delete personal data, or to object to its use; email us and
+      we will help with any request we can act on.
+    </p>
+    <p>
+      Data stored locally in your browser is under your control and can be cleared at any time through
+      the “Clear” button or your browser settings.
     </p>
 
     <h2>Changes to this policy</h2>
     <p>
       If this policy changes, the “last updated” date above will change with it. Material changes —
-      such as introducing analytics or advertising — will be described here before they take effect.
+      such as adding a new analytics or advertising service — will be described here before they
+      take effect.
     </p>
 
     <h2>Contact</h2>

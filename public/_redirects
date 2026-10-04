@@ -1,0 +1,4 @@
+# Mirrors `redirects` in astro.config.mjs. A static Astro build can only emit a
+# meta-refresh page for a redirect, which answers 200; this makes Cloudflare
+# Pages answer with a real 301 so search engines consolidate the two URLs.
+/x-is-what-percent-of-y /what-percent-is-x-of-y 301

@@ -77,7 +77,7 @@ export const contentIt: LocaleContent = {
       'Quasi tutti i problemi di percentuale ruotano attorno a tre quantità: la parte, il totale e la percentuale. Due le conosci sempre. Capire quale manca ti dice quale calcolo fare — ed è proprio quel riconoscimento, non l’aritmetica, la vera fonte degli errori.',
       'La seconda famiglia confronta due numeri invece di legare una parte a un totale. L’aumento percentuale misura la crescita rispetto al punto di partenza, la diminuzione fa lo stesso nell’altra direzione e la variazione copre entrambe dicendoti quale delle due è avvenuta. La differenza percentuale è la vera eccezione: misura rispetto alla media dei due valori, così nessuno dei due fa da riferimento e l’ordine non conta.',
       'Ogni domanda arriva con il vocabolario di un compito preciso, perciò ognuna ha la sua pagina: voti ed esami, medie ponderate, percentuale di vittorie, imposte, sconti, perdita di peso e massa grassa. Tutte condividono lo stesso motore di calcolo e gli stessi passaggi.',
-      'In uno strumento come questo la velocità conta più delle funzioni. Arrivi da una ricerca, ti serve un numero e dovresti andartene in pochi secondi. Ogni pagina è statica e il calcolatore si carica insieme a essa, non dopo. Nulla di ciò che digiti lascia il tuo dispositivo: niente account, niente cookie, e persino i caratteri sono serviti da questo dominio.',
+      'In uno strumento come questo la velocità conta più delle funzioni. Arrivi da una ricerca, ti serve un numero e dovresti andartene in pochi secondi. Ogni pagina è statica e il calcolatore si carica insieme a essa, non dopo. Nulla di ciò che digiti lascia il tuo dispositivo: niente account, e persino i caratteri sono serviti da questo dominio.',
     ],
   },
   calculators: {
