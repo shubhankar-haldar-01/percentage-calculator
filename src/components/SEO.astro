@@ -44,13 +44,13 @@ const ogImage = absoluteUrl('/og.png');
 // The brand suffix is a nicety, not a requirement, so it is appended only when
 // the result still fits what Google shows. Pages whose own title already
 // contains the site name (the main calculator, the homepage) would otherwise
-// render "Percentage Calculator | Percentage Calculator"; translated titles
-// carry the keyword in their own language and are long enough that the English
-// brand would simply be truncated away, taking real words with it.
+// render "Percentage Calculator | Percentage Calculator". Keep translated
+// titles entirely in their own language; an English brand suffix creates
+// mixed-language titles on otherwise short names.
 const TITLE_BUDGET = 60;
 const suffix = ` | ${SITE.name}`;
 const fullTitle =
-  title.includes(SITE.name) || displayWidth(title + suffix) > TITLE_BUDGET
+  locale !== DEFAULT_LOCALE || title.includes(SITE.name) || displayWidth(title + suffix) > TITLE_BUDGET
     ? title
     : title + suffix;
 const imageAlt = `${SITE.name} — free online percentage calculators with step-by-step working`;

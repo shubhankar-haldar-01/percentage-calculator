@@ -44,6 +44,7 @@ export function calculatorSchema(options: {
   name: string;
   description: string;
   path: string;
+  inLanguage?: string;
 }): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -55,7 +56,7 @@ export function calculatorSchema(options: {
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript',
     isAccessibleForFree: true,
-    inLanguage: 'en',
+    inLanguage: options.inLanguage ?? 'en',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     publisher: { '@id': `${SITE.url}/#organization` },
   };

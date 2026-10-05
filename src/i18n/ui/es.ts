@@ -46,6 +46,8 @@ export const es: UIStrings = {
     schoolSport: 'Estudios y deporte', health: 'Salud', site: 'Sitio',
     copyright: 'Todos los cálculos se hacen en tu navegador',
     formulasLink: 'Consulta las fórmulas detrás de cada resultado',
+    about: 'Acerca de', contact: 'Contacto', privacy: 'Política de privacidad',
+    terms: 'Términos', disclaimer: 'Aviso legal',
   },
   cta: {
     heading: 'Cada pregunta de porcentaje, resuelta con su desarrollo.',

@@ -45,6 +45,8 @@ export const ko: UIStrings = {
     schoolSport: '학교·스포츠', health: '건강', site: '사이트',
     copyright: '모든 계산은 브라우저에서 실행됩니다',
     formulasLink: '모든 결과의 공식 보기',
+    about: '사이트 소개', contact: '문의', privacy: '개인정보 처리방침',
+    terms: '이용약관', disclaimer: '면책 조항',
   },
   cta: {
     heading: '모든 퍼센트 질문에 풀이 과정과 함께 답합니다.',

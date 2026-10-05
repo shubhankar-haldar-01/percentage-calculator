@@ -21,15 +21,9 @@ export default defineConfig({
       // crawler to fetch what it is then told to ignore. /404 is dropped by
       // default, /500 is not.
       filter: (page) => !/\/(404|500)$/.test(new URL(page).pathname),
-      // Only `xhtml` is used, for the hreflang alternates. Declaring the other
-      // three on every file is bytes a crawler parses and discards.
+      // Keep the sitemap compact. Localized slugs are mapped by reciprocal
+      // hreflang links in page HTML rather than inferred from matching paths.
       namespaces: { news: false, image: false, video: false },
-      // Emits the alternate-language links Google reads alongside the
-      // in-page hreflang tags.
-      i18n: {
-        defaultLocale: 'en',
-        locales: { en: 'en', es: 'es', ja: 'ja', fr: 'fr', de: 'de', pt: 'pt', ko: 'ko', it: 'it' },
-      },
     }),
   ],
   vite: { plugins: [tailwindcss()] },

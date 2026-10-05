@@ -47,6 +47,8 @@ export const ja: UIStrings = {
     schoolSport: '学校・スポーツ', health: '健康', site: 'サイト',
     copyright: 'すべての計算はブラウザー内で行われます',
     formulasLink: 'すべての答えの計算式を見る',
+    about: 'このサイトについて', contact: 'お問い合わせ',
+    privacy: 'プライバシーポリシー', terms: '利用規約', disclaimer: '免責事項',
   },
   cta: {
     heading: 'すべてのパーセントの疑問に、途中式つきで答えます。',

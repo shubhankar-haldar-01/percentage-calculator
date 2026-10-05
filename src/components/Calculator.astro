@@ -175,21 +175,6 @@ const multiMode = calculator.modes.length > 1;
                 </div>
               ))}
 
-              {currency && (
-                <div class="flex flex-col gap-2">
-                  <label for={`${uid}-${mode.id}-currency`} class="text-body-lg font-medium">
-                    {t.calc.currency}
-                  </label>
-                  <select id={`${uid}-${mode.id}-currency`} data-currency class="input-field">
-                    <option value="">{t.calc.currencyNone}</option>
-                    <option value="$">$ — Dollar</option>
-                    <option value="₹">₹ — Rupee</option>
-                    <option value="€">€ — Euro</option>
-                    <option value="£">£ — Pound</option>
-                    <option value="¥">¥ — Yen</option>
-                  </select>
-                </div>
-              )}
             </div>
 
             {/*
@@ -220,6 +205,22 @@ const multiMode = calculator.modes.length > 1;
       </div>
     ))
   }
+
+  {currency && (
+    <div class="mt-5 flex max-w-sm flex-col gap-2">
+      <label for={`${uid}-currency`} class="text-body-lg font-medium">
+        {t.calc.currency}
+      </label>
+      <select id={`${uid}-currency`} data-currency class="input-field">
+        <option value="">{t.calc.currencyNone}</option>
+        <option value="$">$ — Dollar</option>
+        <option value="₹">₹ — Rupee</option>
+        <option value="€">€ — Euro</option>
+        <option value="£">£ — Pound</option>
+        <option value="¥">¥ — Yen</option>
+      </select>
+    </div>
+  )}
 
   <div class="mt-8 border-t border-hairline pt-8">
     <p

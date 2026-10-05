@@ -46,6 +46,8 @@ export const de: UIStrings = {
     schoolSport: 'Schule & Sport', health: 'Gesundheit', site: 'Seite',
     copyright: 'Jede Berechnung läuft in deinem Browser',
     formulasLink: 'Die Formeln hinter jedem Ergebnis ansehen',
+    about: 'Über uns', contact: 'Kontakt', privacy: 'Datenschutzerklärung',
+    terms: 'Nutzungsbedingungen', disclaimer: 'Haftungsausschluss',
   },
   cta: {
     heading: 'Jede Prozentfrage – mit vollständigem Rechenweg beantwortet.',

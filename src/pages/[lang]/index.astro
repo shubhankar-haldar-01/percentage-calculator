@@ -4,7 +4,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Calculator from '../../components/Calculator.astro';
 import { getCalculator } from '../../lib/calculators.ts';
-import { CALC_KEYS, pathFor, type Locale } from '../../i18n/config.ts';
+import { CALC_KEYS, LOCALE_META, pathFor, type Locale } from '../../i18n/config.ts';
 import { contentFor, translatedLocales } from '../../i18n/content/index.ts';
 import type { CalcPageKey } from '../../i18n/content/types.ts';
 import { ui } from '../../i18n/ui/index.ts';
@@ -30,7 +30,12 @@ const ALL = CALC_KEYS as readonly CalcPageKey[];
   title={home.title}
   description={home.description}
   path={path}
-  schema={[calculatorSchema({ name: home.h1, description: home.description, path })]}
+  schema={[calculatorSchema({
+    name: home.h1,
+    description: home.description,
+    path,
+    inLanguage: LOCALE_META[locale].tag,
+  })]}
 >
   <section class="mx-auto max-w-site px-4 pt-12 pb-16 sm:px-8 sm:pt-20 sm:pb-24">
     <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">

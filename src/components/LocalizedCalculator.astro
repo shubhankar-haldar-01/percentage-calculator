@@ -13,7 +13,7 @@ import FormulaCard from './FormulaCard.astro';
 import WorkedExample from './WorkedExample.astro';
 import Faq from './Faq.astro';
 import { getCalculator } from '../lib/calculators.ts';
-import { CALC_KEYS, pathFor, SLUGS, type Locale, type PageKey } from '../i18n/config.ts';
+import { CALC_KEYS, LOCALE_META, pathFor, SLUGS, type Locale, type PageKey } from '../i18n/config.ts';
 import { contentFor } from '../i18n/content/index.ts';
 import type { CalcPageKey } from '../i18n/content/types.ts';
 import { ui } from '../i18n/ui/index.ts';
@@ -54,7 +54,12 @@ const related = (CALC_KEYS as readonly CalcPageKey[])
   description={page.description}
   path={path}
   schema={[
-    calculatorSchema({ name: page.h1, description: page.description, path }),
+    calculatorSchema({
+      name: page.h1,
+      description: page.description,
+      path,
+      inLanguage: LOCALE_META[locale].tag,
+    }),
     breadcrumbSchema(crumbs),
   ]}
 >

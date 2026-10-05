@@ -82,6 +82,8 @@ export const en = {
     site: 'Site',
     copyright: 'Every calculation runs in your browser',
     formulasLink: 'See the formulas behind every result',
+    about: 'About', contact: 'Contact', privacy: 'Privacy policy',
+    terms: 'Terms', disclaimer: 'Disclaimer',
   },
   cta: {
     heading: 'Every percentage question, answered with its working.',

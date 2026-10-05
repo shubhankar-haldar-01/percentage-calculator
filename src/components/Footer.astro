@@ -10,6 +10,20 @@
  * reads as deliberate at any width.
  */
 import { FOOTER_NAV, SITE } from '../lib/site.ts';
+import { DEFAULT_LOCALE, pathFor, type Locale } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
+
+interface Props { locale?: Locale }
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const t = ui(locale);
+const footerLabels: Record<string, string> = {
+  '/about': t.footer.about,
+  '/contact': t.footer.contact,
+  '/privacy-policy': t.footer.privacy,
+  '/terms': t.footer.terms,
+  '/disclaimer': t.footer.disclaimer,
+};
 
 const year = new Date().getFullYear();
 const copyrightRange = year > SITE.founded ? `${SITE.founded}–${year}` : `${year}`;
@@ -18,17 +32,17 @@ const copyrightRange = year > SITE.founded ? `${SITE.founded}–${year}` : `${ye
 <footer class="border-t border-hairline bg-canvas">
   <div class="mx-auto max-w-site px-4 py-16 text-center sm:px-8 sm:py-20">
     <p class="text-display-lg tracking-[-0.02em]">{SITE.name}</p>
-    <p class="mx-auto mt-4 max-w-sm text-body-sm">Every calculation runs in your browser.</p>
+    <p class="mx-auto mt-4 max-w-sm text-body-sm">{t.footer.copyright}.</p>
 
     {/* Secondary: the bar already carries the primary pill. */}
-    <a href="/percentage-calculator" class="btn-secondary mt-8 text-body-sm">
-      Open the calculator
+    <a href={pathFor(locale, 'percentage-calculator')} class="btn-secondary mt-8 text-body-sm">
+      {t.nav.openCalculator}
     </a>
 
     {
       FOOTER_NAV.map((group) => (
-        <nav aria-label={group.heading} class="mt-14">
-          <h2 class="caption">{group.heading}</h2>
+        <nav aria-label={t.footer.site} class="mt-14">
+          <h2 class="caption">{t.footer.site}</h2>
           {/*
             A wrapped row, not a column: five short links sit on one line on a
             desktop and break cleanly onto two or three on a phone.
@@ -40,7 +54,7 @@ const copyrightRange = year > SITE.founded ? `${SITE.founded}–${year}` : `${ye
                   href={item.href}
                   class="text-body-sm underline-offset-4 transition-all hover:underline"
                 >
-                  {item.label}
+                  {footerLabels[item.href] ?? item.label}
                 </a>
               </li>
             ))}

@@ -331,8 +331,9 @@ to denied.
 - `og:locale` follows the page's language, and `og:locale:alternate` lists the
   other seven — but only on pages that actually have translations, matching the
   hreflang set exactly.
-- The sitemap covers all eight locales. See **Languages** for how hreflang stays
-  reciprocal and why it is driven by the content registry.
+- The sitemap lists every generated locale URL. Localized slugs do not share a
+  common path stem, so reciprocal hreflang is emitted in each page's HTML from
+  the content registry instead of being inferred by the sitemap integration.
 
 ## Error pages
 

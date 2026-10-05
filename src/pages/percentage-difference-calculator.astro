@@ -43,18 +43,18 @@ const faqs: FaqItem[] = [
   title="Percentage Difference Calculator"
   description="Calculate the percentage difference between two values, measured against their average — and see exactly how it differs from percentage change."
   h1="Percentage Difference Calculator"
-  intro="Compare two values where neither came first. Percentage difference measures the gap between them against their average, which is what makes it symmetric — swap the inputs and the answer is unchanged."
+  intro="Compare two values where neither came first. Percentage difference measures the gap against the average of the two values' magnitudes, which makes it symmetric — swap the inputs and the answer is unchanged."
 >
   <section aria-labelledby="formula-heading" class="mt-24">
     <h2 id="formula-heading" class="text-display-lg">The percentage difference formula</h2>
     <p class="mt-3 text-body">
-      The gap between the two values goes on top; the average of the two goes underneath. Using the
+      The gap between the two values goes on top; the average of their magnitudes goes underneath. Using the
       average is the whole point — it refuses to privilege either value as the baseline.
     </p>
 
     <div class="mt-6">
       <FormulaCard
-        formula="(|A − B| ÷ ((A + B) ÷ 2)) × 100"
+        formula="(|A − B| ÷ ((|A| + |B|) ÷ 2)) × 100"
         substituted="(|100 − 120| ÷ 110) × 100 = 18.18%"
         caption="The vertical bars mean “ignore the sign” — a gap of 20 is a gap of 20 regardless of which value is larger."
       />

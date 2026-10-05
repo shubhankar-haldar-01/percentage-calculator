@@ -46,6 +46,8 @@ export const it: UIStrings = {
     schoolSport: 'Scuola e sport', health: 'Salute', site: 'Sito',
     copyright: 'Ogni calcolo avviene nel tuo browser',
     formulasLink: 'Guarda le formule dietro ogni risultato',
+    about: 'Chi siamo', contact: 'Contatti', privacy: 'Privacy',
+    terms: 'Termini', disclaimer: 'Esclusione di responsabilità',
   },
   cta: {
     heading: 'Ogni domanda sulle percentuali, risolta con il procedimento.',
