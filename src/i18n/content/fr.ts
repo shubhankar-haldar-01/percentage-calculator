@@ -9,7 +9,7 @@ export const contentFr: LocaleContent = {
       wins: 'Victoires', losses: 'Défaites', ties: 'Matchs nuls',
       values: 'Pourcentages', weights: 'Tailles des groupes',
       start: 'Poids de départ', current: 'Poids actuel',
-      amount: 'Montant hors taxe', rate: 'Taux de taxe',
+      amount: 'Montant hors taxe', rate: 'Taux de taxe', totalWithTax: 'Montant toutes taxes comprises',
       height: 'Taille', neck: 'Cou', waist: 'Tour de taille', hip: 'Hanches', unit: 'Unités',
     },
     hints: {
@@ -66,11 +66,11 @@ export const contentFr: LocaleContent = {
     units: { cm: 'Centimètres', inches: 'Pouces' },
   },
   home: {
-    title: 'Calculateur de pourcentage en ligne — gratuit et détaillé',
-    description: 'Calculateur de pourcentage en ligne et gratuit avec le détail du calcul : augmentation, diminution, variation, différence, notes, remises et taxes.',
-    h1: 'Le calculateur de pourcentage qui montre le détail.',
-    lead: 'Saisissez deux nombres et obtenez le résultat, la formule et chaque étape. Tous les calculs s’exécutent dans votre navigateur — rien de ce que vous tapez n’est envoyé à un serveur.',
-    aboutHeading: 'À propos de ce calculateur de pourcentage',
+    title: 'Calculateurs de pourcentage en ligne, gratuits et détaillés',
+    description: 'Calculateurs de pourcentage en ligne et gratuits avec le détail du calcul : augmentation, diminution, variation, différence, notes, remises, taxes et plus.',
+    h1: 'Des calculateurs de pourcentage qui montrent le détail.',
+    lead: 'Quatorze calculateurs pour les pourcentages du quotidien, chacun avec la formule et chaque étape. Utilisez celui ci-dessous pour les questions les plus courantes ou choisissez l’outil adapté à votre tâche : notes, remises, taxes et plus. Tout s’exécute dans votre navigateur.',
+    aboutHeading: 'À propos de ces calculateurs de pourcentage',
     about: [
       'Un calculateur de pourcentage transforme une opération pénible en réponse immédiate. Vous connaissez deux nombres, il vous faut le troisième, et il vous le faut avant que la conversation n’avance : le pourboire sur une addition, l’économie réelle sur une étiquette de soldes, l’augmentation qu’on vient de vous proposer, la note que vous avez vraiment obtenue. Voici un calculateur de pourcentage gratuit, en ligne, conçu exactement pour ce moment-là.',
       'Montrer le détail n’est pas un ornement. Un résultat que vous ne pouvez pas vérifier est un résultat auquel vous devez faire confiance à l’aveugle, et le pourcentage est la partie des mathématiques quotidiennes que le plus grand nombre se trompe sans s’en apercevoir. Chaque résultat s’accompagne de la formule, de vos propres nombres qui y sont substitués, et de chaque étape écrite en langage clair.',
@@ -82,10 +82,10 @@ export const contentFr: LocaleContent = {
   },
   calculators: {
     'percentage-calculator': {
-      title: 'Calculateur de pourcentage',
+      title: 'Calculateur de pourcentage : part, pourcentage ou total',
       description: 'Calculez le pourcentage d’un nombre, quel pourcentage un nombre représente d’un autre, ou le total à partir d’une part — avec la formule et chaque étape.',
-      h1: 'Calculateur de pourcentage',
-      intro: 'Trois calculateurs en un, pour les questions que l’on pose habituellement avec des pourcentages. Choisissez la forme qui correspond à votre question, saisissez deux nombres, et le détail complet apparaît sous le résultat.',
+      h1: 'Calculateur de pourcentage pour trois calculs courants',
+      intro: 'Utilisez ce calculateur pour trois problèmes courants : le pourcentage d’un nombre, le pourcentage qu’un nombre représente d’un autre, ou le total d’origine à partir d’une part et de son pourcentage. Choisissez le calcul qui correspond à votre question pour voir le résultat, la formule et chaque étape.',
       formulaCaption: 'Diviser par 100 transforme le pourcentage en décimal ; multiplier l’applique.',
       example: {
         scenario: 'Une veste coûte 500 € et vous avez un bon de 20 %. Combien le bon retire-t-il ?',
@@ -453,7 +453,7 @@ export const contentFr: LocaleContent = {
       intro: 'Trois calculs de taxe en un : ajouter la taxe à un montant hors taxe, remonter depuis un total TTC, ou trouver le taux réellement appliqué. Vous saisissez votre propre taux, ce qui le rend valable pour la TVA partout.',
       formulaCaption: 'Ajouter la taxe est une multiplication. La retirer est une division — et c’est là que se font la plupart des erreurs.',
       example: {
-        scenario: 'Une facture s’élève à 2 706 € taxe de 8,25 % comprise. Quel était le montant hors taxe ?',
+        scenario: 'Une facture s’élève à 2 706 € taxe de 8,25 % comprise (un taux donné à titre d’exemple). Quel était le montant hors taxe ?',
         steps: [
           { label: 'Convertissez le taux en multiplicateur.', expression: '1 + (8,25 ÷ 100) = 1,0825' },
           { label: 'Divisez le total par ce multiplicateur.', expression: '2 706 ÷ 1,0825 = 2 500' },

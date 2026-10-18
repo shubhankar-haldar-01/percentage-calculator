@@ -5,15 +5,29 @@
  * Three states: with no stored choice the page follows the OS, and pressing the
  * button pins an explicit one. Which icon shows is handled in CSS so the
  * correct glyph is painted on first frame, including in system-dark.
+ *
+ * Both accessible names are rendered in the page's language and handed to the
+ * script as data attributes, which swaps between them as the theme changes.
  */
+import { DEFAULT_LOCALE, type Locale } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const t = ui(locale);
 ---
 
 <button
   type="button"
   data-theme-toggle
+  data-label-dark={t.nav.toDark}
+  data-label-light={t.nav.toLight}
   class="btn-icon shrink-0"
-  aria-label="Switch to dark theme"
-  title="Switch theme"
+  aria-label={t.nav.toDark}
+  title={t.nav.switchTheme}
 >
   {/* Shown while the page is light — press for dark. */}
   <svg
@@ -64,7 +78,8 @@
     const theme = resolved();
     const next = theme === 'dark' ? 'light' : 'dark';
     for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
-      button.setAttribute('aria-label', `Switch to ${next} theme`);
+      const label = next === 'dark' ? button.dataset.labelDark : button.dataset.labelLight;
+      if (label) button.setAttribute('aria-label', label);
     }
     // Keep the browser chrome in step with the page.
     document

@@ -6,7 +6,7 @@ export const ja: UIStrings = {
     calculateShort: '計算', language: '言語',
     skipToContent: 'メインコンテンツへスキップ',
     toDark: 'ダークテーマに切り替える', toLight: 'ライトテーマに切り替える',
-    switchTheme: 'テーマを切り替える',
+    switchTheme: 'テーマを切り替える', breadcrumb: 'パンくずリスト',
   },
   hero: {
     eyebrow: '無料・登録不要', start: '計算をはじめる',
@@ -24,6 +24,9 @@ export const ja: UIStrings = {
     copied: 'コピーしました', pressCopy: 'Ctrl+C を押してください',
     linkCopied: 'リンクをコピーしました', copyUrl: 'URL をコピーしてください',
     optional: '任意', currency: '通貨', currencyNone: 'なし',
+    currencyDollar: 'ドル', currencyRupee: 'ルピー', currencyEuro: 'ユーロ',
+    currencyPound: 'ポンド', currencyYen: '円',
+    formulaLabel: '計算式',
   },
   sections: {
     related: '関連する計算機', faq: 'よくある質問', allCalculators: 'パーセント計算機の一覧',

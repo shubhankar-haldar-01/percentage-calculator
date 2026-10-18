@@ -12,6 +12,7 @@ export const en = {
     toDark: 'Switch to dark theme',
     toLight: 'Switch to light theme',
     switchTheme: 'Switch theme',
+    breadcrumb: 'Breadcrumb',
   },
   hero: {
     eyebrow: 'Free · No sign-up',
@@ -40,6 +41,10 @@ export const en = {
     optional: 'Optional',
     currency: 'Currency',
     currencyNone: 'None',
+    currencyDollar: 'Dollar', currencyRupee: 'Rupee', currencyEuro: 'Euro',
+    currencyPound: 'Pound', currencyYen: 'Yen',
+    /** Labels the formula line in the "Copy working" text. */
+    formulaLabel: 'Formula',
   },
   sections: {
     related: 'Related calculators',

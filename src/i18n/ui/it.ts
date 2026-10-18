@@ -5,7 +5,7 @@ export const it: UIStrings = {
     guides: 'Guide', openCalculator: 'Apri la calcolatrice',
     calculateShort: 'Calcola', language: 'Lingua',
     skipToContent: 'Vai al contenuto principale',
-    toDark: 'Passa al tema scuro', toLight: 'Passa al tema chiaro', switchTheme: 'Cambia tema',
+    toDark: 'Passa al tema scuro', toLight: 'Passa al tema chiaro', switchTheme: 'Cambia tema', breadcrumb: 'Percorso di navigazione',
   },
   hero: {
     eyebrow: 'Gratis · Senza registrazione', start: 'Inizia a calcolare',
@@ -22,6 +22,9 @@ export const it: UIStrings = {
     copyAnswer: 'Copia il risultato', copyWorking: 'Copia il procedimento', share: 'Condividi',
     copied: 'Copiato', pressCopy: 'Premi Ctrl+C', linkCopied: 'Link copiato',
     copyUrl: "Copia l'URL", optional: 'Facoltativo', currency: 'Valuta', currencyNone: 'Nessuna',
+    currencyDollar: 'Dollaro', currencyRupee: 'Rupia', currencyEuro: 'Euro',
+    currencyPound: 'Sterlina', currencyYen: 'Yen',
+    formulaLabel: 'Formula',
   },
   sections: {
     related: 'Calcolatrici correlate', faq: 'Domande frequenti',

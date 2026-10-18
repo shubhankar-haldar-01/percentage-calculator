@@ -5,7 +5,7 @@ export const ko: UIStrings = {
     guides: '가이드', openCalculator: '계산기 열기',
     calculateShort: '계산', language: '언어',
     skipToContent: '본문으로 건너뛰기',
-    toDark: '다크 테마로 전환', toLight: '라이트 테마로 전환', switchTheme: '테마 전환',
+    toDark: '다크 테마로 전환', toLight: '라이트 테마로 전환', switchTheme: '테마 전환', breadcrumb: '탐색 경로',
   },
   hero: {
     eyebrow: '무료 · 가입 불필요', start: '계산 시작하기',
@@ -22,6 +22,9 @@ export const ko: UIStrings = {
     copyAnswer: '답 복사', copyWorking: '풀이 복사', share: '공유',
     copied: '복사됨', pressCopy: 'Ctrl+C를 누르세요', linkCopied: '링크 복사됨',
     copyUrl: 'URL을 복사하세요', optional: '선택 사항', currency: '통화', currencyNone: '없음',
+    currencyDollar: '달러', currencyRupee: '루피', currencyEuro: '유로',
+    currencyPound: '파운드', currencyYen: '엔',
+    formulaLabel: '공식',
   },
   sections: {
     related: '관련 계산기', faq: '자주 묻는 질문', allCalculators: '모든 퍼센트 계산기',

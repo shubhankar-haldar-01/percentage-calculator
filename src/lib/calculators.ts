@@ -15,6 +15,13 @@ import type { OperationId } from './percentage.ts';
 export type CalculatorField = {
   name: string;
   label: string;
+  /**
+   * Translation key for the label, when this field's `name` means something
+   * else in another calculator. Translations are keyed by name, so without it
+   * the tax calculator's "total" (including tax) rendered the grade
+   * calculator's "total" (marks) in every translated locale. Defaults to `name`.
+   */
+  labelKey?: string;
   placeholder: string;
   /** Unit rendered inside the field, e.g. "%". */
   suffix?: string;
@@ -52,6 +59,12 @@ export type CalculatorDef = {
   shortName: string;
   /** One-line explanation used on directory cards. */
   blurb: string;
+  /**
+   * Hand-picked related calculators, in display order. The English page and
+   * every translation of it read this one list, so a translated page links the
+   * siblings that matter for its task rather than whichever come first.
+   */
+  related: string[];
   modes: CalculatorMode[];
 };
 
@@ -66,6 +79,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Percentage Calculator',
     shortName: 'Percentage calculator',
     blurb: 'Answer the three core percentage questions — a percentage of a number, a share as a percentage, and the missing total.',
+    related: [
+      '/percentage-increase-calculator',
+      '/percentage-change-calculator',
+      '/what-percent-is-x-of-y',
+      '/discount-calculator',
+    ],
     modes: [
       {
         id: 'percent-of',
@@ -107,6 +126,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Percentage Increase Calculator',
     shortName: 'Percentage increase',
     blurb: 'Measure how much a value has grown — a pay rise, a price rise or traffic growth.',
+    related: [
+      '/percentage-decrease-calculator',
+      '/percentage-change-calculator',
+      '/percentage-difference-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'increase',
@@ -123,6 +148,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Percentage Decrease Calculator',
     shortName: 'Percentage decrease',
     blurb: 'Measure how much a value has fallen — a price cut, a drop in sales or a reduced bill.',
+    related: [
+      '/percentage-increase-calculator',
+      '/percentage-change-calculator',
+      '/discount-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'decrease',
@@ -142,6 +173,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Percentage Change Calculator',
     shortName: 'Percentage change',
     blurb: 'One tool for movement in either direction — it tells you whether the value rose or fell.',
+    related: [
+      '/percentage-difference-calculator',
+      '/percentage-increase-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'change',
@@ -158,6 +195,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Percentage Difference Calculator',
     shortName: 'Percentage difference',
     blurb: 'Compare two values where neither came first — measured against their average.',
+    related: [
+      '/percentage-change-calculator',
+      '/percentage-increase-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'difference',
@@ -177,6 +220,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'What Percent Is X of Y?',
     shortName: 'What percent is X of Y',
     blurb: 'Turn a score, a share or a part into a percentage of the total.',
+    related: [
+      '/x-is-y-percent-of-what',
+      '/percentage-calculator',
+      '/percentage-change-calculator',
+      '/discount-calculator',
+    ],
     modes: [
       {
         id: 'what-percent',
@@ -196,6 +245,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'X Is Y% of What Number?',
     shortName: 'X is Y% of what',
     blurb: 'Work backwards from a part and a percentage to find the original total.',
+    related: [
+      '/what-percent-is-x-of-y',
+      '/percentage-calculator',
+      '/discount-calculator',
+      '/percentage-change-calculator',
+    ],
     modes: [
       {
         id: 'percent-of-what',
@@ -215,6 +270,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Discount Calculator',
     shortName: 'Discount calculator',
     blurb: 'See the money off and the price you actually pay before you get to the till.',
+    related: [
+      '/percentage-decrease-calculator',
+      '/x-is-y-percent-of-what',
+      '/percentage-calculator',
+      '/percentage-change-calculator',
+    ],
     modes: [
       {
         id: 'discount',
@@ -234,6 +295,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Grade Percentage Calculator',
     shortName: 'Grade percentage',
     blurb: 'Turn marks out of any total into a percentage and a letter grade.',
+    related: [
+      '/average-percentage-calculator',
+      '/what-percent-is-x-of-y',
+      '/percentage-calculator',
+      '/percentage-increase-calculator',
+    ],
     modes: [
       {
         id: 'grade',
@@ -253,6 +320,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Win Percentage Calculator',
     shortName: 'Win percentage',
     blurb: 'Turn a win–loss record into a win percentage, counting ties the way sports do.',
+    related: [
+      '/what-percent-is-x-of-y',
+      '/percentage-change-calculator',
+      '/average-percentage-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'win',
@@ -273,6 +346,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Average Percentage Calculator',
     shortName: 'Average percentage',
     blurb: 'Average several percentages — and weight them by group size, which is usually the figure you actually want.',
+    related: [
+      '/grade-percentage-calculator',
+      '/percentage-difference-calculator',
+      '/percentage-calculator',
+      '/win-percentage-calculator',
+    ],
     modes: [
       {
         id: 'average',
@@ -307,6 +386,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Weight Loss Percentage Calculator',
     shortName: 'Weight loss percentage',
     blurb: 'See what share of your starting weight you have lost, in any unit.',
+    related: [
+      '/body-fat-percentage-calculator',
+      '/percentage-decrease-calculator',
+      '/percentage-change-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'weight-loss',
@@ -326,6 +411,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Tax Percentage Calculator',
     shortName: 'Tax percentage',
     blurb: 'Add tax, strip tax out of a total, or work out the rate you were charged.',
+    related: [
+      '/discount-calculator',
+      '/x-is-y-percent-of-what',
+      '/percentage-increase-calculator',
+      '/percentage-calculator',
+    ],
     modes: [
       {
         id: 'tax-add',
@@ -344,7 +435,7 @@ export const CALCULATORS: CalculatorDef[] = [
         tab: 'Remove tax',
         question: 'What was the amount before tax?',
         fields: [
-          { name: 'total', label: 'Total including tax', placeholder: '120' },
+          { name: 'total', labelKey: 'totalWithTax', label: 'Total including tax', placeholder: '120' },
           { name: 'rate', label: 'Tax rate', placeholder: '20', suffix: '%' },
         ],
         example: { total: '120', rate: '20' },
@@ -356,7 +447,7 @@ export const CALCULATORS: CalculatorDef[] = [
         question: 'What tax rate was applied?',
         fields: [
           { name: 'amount', label: 'Amount before tax', placeholder: '100' },
-          { name: 'total', label: 'Total including tax', placeholder: '107.5' },
+          { name: 'total', labelKey: 'totalWithTax', label: 'Total including tax', placeholder: '107.5' },
         ],
         example: { amount: '100', total: '107.5' },
       },
@@ -367,6 +458,12 @@ export const CALCULATORS: CalculatorDef[] = [
     name: 'Body Fat Percentage Calculator',
     shortName: 'Body fat percentage',
     blurb: 'Estimate body fat from tape measurements using the US Navy method.',
+    related: [
+      '/weight-loss-percentage-calculator',
+      '/percentage-change-calculator',
+      '/percentage-calculator',
+      '/average-percentage-calculator',
+    ],
     modes: [
       {
         id: 'body-fat-male',

@@ -30,6 +30,7 @@ type ClientStrings = {
   answer: string; calculation: string; rounded: string;
   copyAnswer: string; copyWorking: string; share: string;
   copied: string; pressCopy: string; linkCopied: string; copyUrl: string;
+  formula: string;
 };
 
 const FALLBACK_STRINGS: ClientStrings = {
@@ -37,7 +38,7 @@ const FALLBACK_STRINGS: ClientStrings = {
   rounded: 'Rounded for display — the exact value has more decimal places.',
   copyAnswer: 'Copy answer', copyWorking: 'Copy working', share: 'Share',
   copied: 'Copied', pressCopy: 'Press Ctrl+C',
-  linkCopied: 'Link copied', copyUrl: 'Copy the URL',
+  linkCopied: 'Link copied', copyUrl: 'Copy the URL', formula: 'Formula',
 };
 
 const HISTORY_KEY = 'pc:history:v1';
@@ -250,7 +251,7 @@ function renderResult(
   const plainWorking = [
     result.headline,
     '',
-    `Formula: ${result.formula}`,
+    `${T.formula}: ${result.formula}`,
     result.substituted,
     '',
     ...result.steps.map((step, index) => `${index + 1}. ${step.label}\n   ${step.expression}`),

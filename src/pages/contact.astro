@@ -1,6 +1,6 @@
 ---
 import ContentLayout from '../layouts/ContentLayout.astro';
-import { SITE } from '../lib/site.ts';
+import EmailLink from '../components/EmailLink.astro';
 ---
 
 <ContentLayout
@@ -13,11 +13,9 @@ import { SITE } from '../lib/site.ts';
   <div class="rounded-lg border border-hairline bg-canvas p-6">
     <p class="eyebrow">Email</p>
     <p class="mt-2">
-      <a
-        href={`mailto:${SITE.email}`}
+      <EmailLink
         class="text-body break-all text-ink underline underline-offset-4 transition-colors hover:opacity-70 sm:text-card-title"
-        >{SITE.email}</a
-      >
+      />
     </p>
   </div>
 

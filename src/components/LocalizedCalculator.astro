@@ -13,7 +13,7 @@ import FormulaCard from './FormulaCard.astro';
 import WorkedExample from './WorkedExample.astro';
 import Faq from './Faq.astro';
 import { getCalculator } from '../lib/calculators.ts';
-import { CALC_KEYS, LOCALE_META, pathFor, SLUGS, type Locale, type PageKey } from '../i18n/config.ts';
+import { calcKeyForSlug, LOCALE_META, pathFor, SLUGS, type Locale, type PageKey } from '../i18n/config.ts';
 import { contentFor } from '../i18n/content/index.ts';
 import type { CalcPageKey } from '../i18n/content/types.ts';
 import { ui } from '../i18n/ui/index.ts';
@@ -36,15 +36,20 @@ const calculator = getCalculator(`/${SLUGS.en[pageKey as PageKey]}`);
 const path = pathFor(locale, pageKey);
 const currency = pageKey === 'discount' || pageKey === 'tax';
 
+// The display name labels the crumb and the app, as it does on the English
+// pages, so an H1 can describe the page's task without lengthening the
+// breadcrumb.
 const crumbs = [
   { label: t.sections.home, path: pathFor(locale, 'home') },
-  { label: page.h1, path },
+  { label: labels.names[pageKey], path },
 ];
 
-/** A few sibling calculators, excluding this one. */
-const related = (CALC_KEYS as readonly CalcPageKey[])
-  .filter((key) => key !== pageKey)
-  .slice(0, 4);
+/**
+ * The same hand-picked siblings as the English page. Taking the first four
+ * keys instead gave every translated calculator the same four links, so a tax
+ * page linked percentage change rather than the discount calculator.
+ */
+const related = calculator.related.map((slug) => calcKeyForSlug(slug) as CalcPageKey);
 ---
 
 <BaseLayout
@@ -55,7 +60,7 @@ const related = (CALC_KEYS as readonly CalcPageKey[])
   path={path}
   schema={[
     calculatorSchema({
-      name: page.h1,
+      name: labels.names[pageKey],
       description: page.description,
       path,
       inLanguage: LOCALE_META[locale].tag,
@@ -69,7 +74,7 @@ const related = (CALC_KEYS as readonly CalcPageKey[])
   */}
   <div class="bg-hero">
     <div class="mx-auto max-w-3xl px-4 pt-10 pb-12 sm:px-6 sm:pt-16 sm:pb-16">
-      <Breadcrumbs crumbs={crumbs} />
+      <Breadcrumbs crumbs={crumbs} locale={locale} />
 
       <h1 class="text-display-lg text-balance">{page.h1}</h1>
       <p class="mt-5 max-w-2xl text-body-lg">{page.intro}</p>

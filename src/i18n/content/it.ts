@@ -9,7 +9,7 @@ export const contentIt: LocaleContent = {
       wins: 'Vittorie', losses: 'Sconfitte', ties: 'Pareggi',
       values: 'Percentuali', weights: 'Dimensioni dei gruppi',
       start: 'Peso di partenza', current: 'Peso attuale',
-      amount: 'Importo senza imposta', rate: 'Aliquota',
+      amount: 'Importo senza imposta', rate: 'Aliquota', totalWithTax: 'Importo con imposta',
       height: 'Altezza', neck: 'Collo', waist: 'Vita', hip: 'Fianchi', unit: 'Unità',
     },
     hints: {
@@ -66,11 +66,11 @@ export const contentIt: LocaleContent = {
     units: { cm: 'Centimetri', inches: 'Pollici' },
   },
   home: {
-    title: 'Calcolatore di percentuale online — gratis, con i passaggi',
-    description: 'Calcolatore di percentuale online e gratuito con tutti i passaggi: aumento, diminuzione, variazione, differenza, voti, sconti e imposte.',
-    h1: 'Il calcolatore di percentuale che mostra i passaggi.',
-    lead: 'Inserisci due numeri e ottieni il risultato, la formula e ogni passaggio. Tutti i calcoli avvengono nel tuo browser — nulla di ciò che digiti viene inviato a un server.',
-    aboutHeading: 'Su questo calcolatore di percentuale',
+    title: 'Calcolatori di percentuale online, gratis e con i passaggi',
+    description: 'Calcolatori di percentuale online e gratuiti con tutti i passaggi: aumento, diminuzione, variazione, differenza, voti, sconti, imposte e altro.',
+    h1: 'I calcolatori di percentuale che mostrano i passaggi.',
+    lead: 'Quattordici calcolatori per le percentuali di tutti i giorni, ognuno con la formula e ogni passaggio. Usa quello qui sotto per le domande più comuni oppure scegli lo strumento adatto: voti, sconti, imposte e altro. Tutti i calcoli avvengono nel tuo browser.',
+    aboutHeading: 'Su questi calcolatori di percentuale',
     about: [
       'Un calcolatore di percentuale trasforma un conto fastidioso in una risposta immediata. Conosci due numeri, te ne serve un terzo, e ti serve prima che la conversazione vada avanti: la mancia sul conto, il risparmio vero su un cartellino in saldo, l’aumento che ti hanno appena proposto, il voto che hai davvero preso. Questo è un calcolatore di percentuale gratuito, online, pensato esattamente per quel momento.',
       'Mostrare i passaggi non è un ornamento. Un risultato che non puoi verificare è un risultato di cui devi fidarti alla cieca, e la percentuale è la parte della matematica quotidiana che più persone sbagliano senza accorgersene. Ogni risultato arriva con la formula, i tuoi numeri sostituiti dentro e ogni passaggio scritto in parole semplici.',
@@ -82,10 +82,10 @@ export const contentIt: LocaleContent = {
   },
   calculators: {
     'percentage-calculator': {
-      title: 'Calcolatore di percentuale',
+      title: 'Calcolatore di percentuale: parte, percentuale o totale',
       description: 'Calcola la percentuale di un numero, che percentuale è un numero di un altro, o il totale a partire da una parte — con formula e passaggi.',
-      h1: 'Calcolatore di percentuale',
-      intro: 'Tre calcolatori in uno, per le domande che di solito si fanno con le percentuali. Scegli la forma che corrisponde alla tua domanda, inserisci due numeri e i passaggi compaiono sotto il risultato.',
+      h1: 'Calcolatore di percentuale per tre calcoli comuni',
+      intro: 'Usa questo calcolatore per tre problemi comuni: la percentuale di un numero, che percentuale è un numero di un altro, o il totale di partenza a partire da una parte e dalla sua percentuale. Scegli il calcolo che corrisponde alla tua domanda per vedere il risultato, la formula e ogni passaggio.',
       formulaCaption: 'Dividere per 100 trasforma la percentuale in decimale; moltiplicare la applica.',
       example: {
         scenario: 'Una giacca costa 500 € e hai un buono del 20%. Quanto toglie il buono?',
@@ -453,7 +453,7 @@ export const contentIt: LocaleContent = {
       intro: 'Tre calcoli d’imposta in uno: aggiungere l’imposta a un imponibile, risalire da un totale lordo o trovare l’aliquota davvero applicata. L’aliquota la inserisci tu, il che lo rende valido ovunque.',
       formulaCaption: 'Aggiungere l’imposta è una moltiplicazione. Toglierla è una divisione — ed è lì che si concentrano gli errori.',
       example: {
-        scenario: 'Una fattura è di 2.706 € con l’imposta dell’8,25% inclusa. Qual era l’imponibile?',
+        scenario: 'Una fattura è di 2.706 € con l’imposta dell’8,25% inclusa (un’aliquota puramente indicativa). Qual era l’imponibile?',
         steps: [
           { label: 'Converti l’aliquota in moltiplicatore.', expression: '1 + (8,25 ÷ 100) = 1,0825' },
           { label: 'Dividi il totale per quel moltiplicatore.', expression: '2.706 ÷ 1,0825 = 2.500' },

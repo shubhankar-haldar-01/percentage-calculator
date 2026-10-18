@@ -5,7 +5,7 @@ export const es: UIStrings = {
     guides: 'Guías', openCalculator: 'Abrir calculadora',
     calculateShort: 'Calcular', language: 'Idioma',
     skipToContent: 'Saltar al contenido principal',
-    toDark: 'Cambiar al tema oscuro', toLight: 'Cambiar al tema claro', switchTheme: 'Cambiar tema',
+    toDark: 'Cambiar al tema oscuro', toLight: 'Cambiar al tema claro', switchTheme: 'Cambiar tema', breadcrumb: 'Ruta de navegación',
   },
   hero: {
     eyebrow: 'Gratis · Sin registro', start: 'Empezar a calcular',
@@ -22,6 +22,9 @@ export const es: UIStrings = {
     copyAnswer: 'Copiar resultado', copyWorking: 'Copiar desarrollo', share: 'Compartir',
     copied: 'Copiado', pressCopy: 'Pulsa Ctrl+C', linkCopied: 'Enlace copiado',
     copyUrl: 'Copia la URL', optional: 'Opcional', currency: 'Moneda', currencyNone: 'Ninguna',
+    currencyDollar: 'Dólar', currencyRupee: 'Rupia', currencyEuro: 'Euro',
+    currencyPound: 'Libra', currencyYen: 'Yen',
+    formulaLabel: 'Fórmula',
   },
   sections: {
     related: 'Calculadoras relacionadas', faq: 'Preguntas frecuentes',

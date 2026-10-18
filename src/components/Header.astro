@@ -177,7 +177,7 @@ const isCurrent = (key: PageKey) => path === pathFor(locale, key);
 
     <div class="ml-auto flex items-center gap-2">
       <LanguageSwitcher locale={locale} pageKey={pageKey} />
-      <ThemeToggle />
+      <ThemeToggle locale={locale} />
 
       {/*
         Below 320px (folded phones) the bar cannot hold this as well as the

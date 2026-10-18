@@ -1,0 +1,21 @@
+---
+/**
+ * The site's contact address as a mailto link, opted out of Cloudflare's Email
+ * Address Obfuscation with its `email_off` markers.
+ *
+ * That edge feature rewrites the address into a link to
+ * /cdn-cgi/l/email-protection, which answers 404 to crawlers and to anyone
+ * without JavaScript — on /contact it hid the page's only contact detail
+ * behind a broken link. The address is published to be used, so it opts out.
+ * The markers are emitted with set:html so they reach the HTML verbatim.
+ */
+import { SITE } from '../lib/site.ts';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Fragment set:html="<!--email_off-->" /><a href={`mailto:${SITE.email}`} class={className}>{SITE.email}</a><Fragment set:html="<!--/email_off-->" />

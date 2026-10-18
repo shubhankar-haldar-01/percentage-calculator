@@ -6,7 +6,7 @@ export const de: UIStrings = {
     calculateShort: 'Berechnen', language: 'Sprache',
     skipToContent: 'Zum Hauptinhalt springen',
     toDark: 'Zum dunklen Design wechseln', toLight: 'Zum hellen Design wechseln',
-    switchTheme: 'Design wechseln',
+    switchTheme: 'Design wechseln', breadcrumb: 'Brotkrümelnavigation',
   },
   hero: {
     eyebrow: 'Kostenlos · Ohne Anmeldung', start: 'Jetzt rechnen',
@@ -23,6 +23,9 @@ export const de: UIStrings = {
     copyAnswer: 'Ergebnis kopieren', copyWorking: 'Rechenweg kopieren', share: 'Teilen',
     copied: 'Kopiert', pressCopy: 'Strg+C drücken', linkCopied: 'Link kopiert',
     copyUrl: 'URL kopieren', optional: 'Optional', currency: 'Währung', currencyNone: 'Keine',
+    currencyDollar: 'Dollar', currencyRupee: 'Rupie', currencyEuro: 'Euro',
+    currencyPound: 'Pfund', currencyYen: 'Yen',
+    formulaLabel: 'Formel',
   },
   sections: {
     related: 'Verwandte Rechner', faq: 'Häufige Fragen', allCalculators: 'Alle Prozentrechner',

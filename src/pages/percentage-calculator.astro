@@ -40,10 +40,10 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="percentage-calculator"
   calculator={calculator}
-  title="Percentage Calculator"
-  description="Calculate a percentage of a number, find what percent one number is of another, or work backwards to the original total. Shows the formula and every step."
-  h1="Percentage Calculator"
-  intro="Three calculators in one, covering the questions that percentages are usually asked to answer. Pick the shape that matches your question, enter two numbers, and the full working appears underneath the answer."
+  title="Percentage Calculator: Find a Percentage or the Whole"
+  description="Calculate a percentage of a number, find what percent one number is of another, or find the original total. See formulas and step-by-step working."
+  h1="Percentage Calculator for Three Common Calculations"
+  intro="Use this percentage calculator to solve three common problems: find a percentage of a number, find what percentage one number is of another, or calculate the original whole from a known part and percentage. Choose the method that matches your question to see the answer, formula and step-by-step working."
 >
   <section aria-labelledby="three-heading" class="mt-24">
     <h2 id="three-heading" class="text-display-lg">The three percentage questions</h2>
@@ -169,7 +169,8 @@ const faqs: FaqItem[] = [
       <p>
         If you are comparing a value before and after it moved, you want a different family of
         formula — see the <a href="/percentage-change-calculator">percentage change calculator</a> or
-        the full <a href="/percentage-formula">formula reference</a>.
+        the full <a href="/percentage-formula">formula reference</a>. For tax, discounts, grades and
+        other specific jobs, browse <a href="/#all-calculators">all percentage calculators</a>.
       </p>
     </div>
   </section>
@@ -177,11 +178,6 @@ const faqs: FaqItem[] = [
   <Faq items={faqs} />
 
   <RelatedCalculators
-    calculators={related([
-      '/percentage-increase-calculator',
-      '/percentage-change-calculator',
-      '/what-percent-is-x-of-y',
-      '/discount-calculator',
-    ])}
+    calculators={related(calculator.related)}
   />
 </CalculatorLayout>

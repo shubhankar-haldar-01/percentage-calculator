@@ -1,14 +1,18 @@
 ---
 import type { Crumb } from '../lib/schema.ts';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
 
 interface Props {
   crumbs: Crumb[];
+  /** Names the landmark in the page's language for screen readers. */
+  locale?: Locale;
 }
 
-const { crumbs } = Astro.props;
+const { crumbs, locale = DEFAULT_LOCALE } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="mb-6">
+<nav aria-label={ui(locale).nav.breadcrumb} class="mb-6">
   <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-body-sm">
     {
       crumbs.map((crumb, index) => {

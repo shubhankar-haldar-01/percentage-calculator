@@ -145,11 +145,6 @@ const faqs: FaqItem[] = [
   <Faq items={faqs} />
 
   <RelatedCalculators
-    calculators={related([
-      '/average-percentage-calculator',
-      '/what-percent-is-x-of-y',
-      '/percentage-calculator',
-      '/percentage-increase-calculator',
-    ])}
+    calculators={related(calculator.related)}
   />
 </CalculatorLayout>

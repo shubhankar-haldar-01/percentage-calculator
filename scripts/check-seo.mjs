@@ -3,7 +3,8 @@
  *
  * Checks the signals Google uses to decide whether a page can be indexed and
  * which URL represents it: HTTP status, robots directives (meta, header and
- * robots.txt), canonicals, hreflang reciprocity, per-locale rendering, sitemap
+ * robots.txt), canonicals, hreflang reciprocity, per-locale rendering (no
+ * English chrome on translated pages), internal links, heading order, sitemap
  * coverage and duplicate or missing metadata.
  *
  * By default it reads the built output, so run it after `astro build`:
@@ -63,6 +64,12 @@ async function pool(items, size, task) {
 
 const attr = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`, 'i'))?.[1];
 const text = (html) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+/** The page's <main> element, or nothing if it has none. */
+const main = (html) => {
+  const start = html.indexOf('<main');
+  const end = html.indexOf('</main>');
+  return start === -1 ? '' : html.slice(start, end === -1 ? undefined : end);
+};
 
 function parsePage(html) {
   const head = html.slice(0, html.indexOf('</head>'));
@@ -86,6 +93,18 @@ function parsePage(html) {
     isRedirect: /<meta\s+http-equiv="refresh"/i.test(head),
     skipLink: text(html.match(/<a\s+href="#main"[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? ''),
     legends: [...html.matchAll(/<legend\b[^>]*>([\s\S]*?)<\/legend>/g)].map((m) => text(m[1])),
+    headings: [...html.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)].map((m) => ({ level: Number(m[1]), text: text(m[2]) })),
+    links: [...html.matchAll(/<a\b[^>]*>/g)].map((m) => ({ href: attr(m[0], 'href'), hreflang: attr(m[0], 'hreflang') })),
+    // Accessible names and option text that a translated page must not inherit
+    // from English: the theme button, landmarks in the main content, and each
+    // drop-down's options taken as a set.
+    themeLabels: ['aria-label', 'title', 'data-label-dark', 'data-label-light'].map(
+      (name) => attr(html.match(/<button\b[^>]*data-theme-toggle[^>]*>/)?.[0] ?? '', name) ?? '',
+    ),
+    navLabels: [...main(html).matchAll(/<nav\b[^>]*\baria-label="([^"]*)"/g)].map((m) => m[1]),
+    optionSets: [...main(html).matchAll(/<select\b[^>]*>([\s\S]*?)<\/select>/g)].map((m) =>
+      [...m[1].matchAll(/<option\b[^>]*>([\s\S]*?)<\/option>/g)].map((o) => text(o[1])),
+    ),
   };
 }
 
@@ -261,6 +280,7 @@ const expectedLang = (path) => {
 };
 
 const byTitle = new Map();
+const byH1 = new Map();
 const byDescription = new Map();
 for (const [url, page] of pages) {
   const path = new URL(url).pathname;
@@ -307,9 +327,64 @@ for (const [url, page] of pages) {
       for (const legend of page.legends) {
         if (english.legends.includes(legend)) fail('translated page has an untranslated form legend', `${url} ("${legend}")`);
       }
+      const latinWords = (value) => /[A-Za-z]{3}/.test(value);
+      page.themeLabels.forEach((label, index) => {
+        if (label && latinWords(label) && label === english.themeLabels[index]) {
+          fail('translated page has an untranslated theme-button label', `${url} ("${label}")`);
+        }
+      });
+      for (const label of page.navLabels) {
+        if (latinWords(label) && english.navLabels.includes(label)) fail('translated page has an untranslated landmark name', `${url} ("${label}")`);
+      }
+      // Option by option against the English page. Names such as "Euro" or
+      // "Yen" are legitimately spelled the same in several languages, so a
+      // drop-down fails only when most of its options are still English.
+      page.optionSets.forEach((options, index) => {
+        const englishOptions = english.optionSets[index] ?? [];
+        const same = options.filter((option, i) => latinWords(option) && option === englishOptions[i]);
+        if (same.length > options.length / 2) {
+          fail('translated page has untranslated drop-down options', `${url} (${same.slice(0, 3).join(', ')}…)`);
+        }
+      });
+    }
+  }
+
+  /* Headings: none skipped on the way down, so the outline stays navigable. */
+  let previous = 0;
+  for (const heading of page.headings) {
+    if (previous && heading.level > previous + 1) fail('heading level skipped', `${url}: h${previous} → h${heading.level} "${heading.text.slice(0, 40)}"`);
+    previous = heading.level;
+  }
+  if (page.h1s[0]) byH1.set(page.h1s[0], [...(byH1.get(page.h1s[0]) ?? []), url]);
+}
+for (const [h1, list] of byH1) if (list.length > 1) fail('duplicate <h1>', `"${h1}": ${list.join(', ')}`);
+
+/* Internal links: real destinations, no redirect hops, the reader's language, no orphans. */
+const redirectSources = new Set(redirects.map((rule) => rule.from));
+const inbound = new Map([...pages.keys()].map((url) => [url, 0]));
+for (const [url, page] of pages) {
+  for (const link of page.links) {
+    if (!link.href?.startsWith('/') || link.href.startsWith('//')) continue;
+    const path = link.href.split('#')[0].split('?')[0].replace(/(.)\/$/, '$1') || '/';
+    const target = `${ORIGIN}${path}`;
+    if (redirectSources.has(path)) {
+      fail('internal link goes through a redirect', `${url} → ${link.href}`);
+      continue;
+    }
+    if (!inSitemap.has(target)) {
+      fail('internal link to a page outside the sitemap', `${url} → ${link.href}`);
+      continue;
+    }
+    if (target !== url) inbound.set(target, inbound.get(target) + 1);
+    const destination = pages.get(target);
+    // The language switcher marks its links with hreflang; any other link from a
+    // translated page should stay in that language when a version exists.
+    if (!link.hreflang && destination?.hreflang.length && destination.lang !== page.lang && page.lang !== 'en') {
+      fail('translated page links to another language version', `${url} → ${link.href}`);
     }
   }
 }
+for (const [url, count] of inbound) if (count === 0) fail('orphan page: no internal link from any other page', url);
 for (const [title, list] of byTitle) if (list.length > 1) fail('duplicate <title>', `"${title}": ${list.join(', ')}`);
 for (const [description, list] of byDescription) {
   if (list.length > 1) fail('duplicate meta description', `"${description.slice(0, 60)}…": ${list.join(', ')}`);
@@ -357,5 +432,7 @@ if (failures.size) {
 }
 console.log(
   `SEO audit OK — ${target}: ${pages.size} sitemap pages indexable with self-canonicals, ` +
-    `reciprocal hreflang and unique metadata; robots.txt, _headers and ${redirects.length} redirect(s) consistent.`,
+    `reciprocal hreflang, unique titles, descriptions and H1s, ordered headings, translated page chrome ` +
+    `and internal links that resolve without redirects or orphans; robots.txt, _headers and ` +
+    `${redirects.length} redirect(s) consistent.`,
 );

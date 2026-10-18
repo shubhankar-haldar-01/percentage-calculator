@@ -6,7 +6,7 @@ export const fr: UIStrings = {
     calculateShort: 'Calculer', language: 'Langue',
     skipToContent: 'Aller au contenu principal',
     toDark: 'Passer au thème sombre', toLight: 'Passer au thème clair',
-    switchTheme: 'Changer de thème',
+    switchTheme: 'Changer de thème', breadcrumb: 'Fil d\'Ariane',
   },
   hero: {
     eyebrow: 'Gratuit · Sans inscription', start: 'Commencer à calculer',
@@ -23,6 +23,9 @@ export const fr: UIStrings = {
     copyAnswer: 'Copier le résultat', copyWorking: 'Copier le détail', share: 'Partager',
     copied: 'Copié', pressCopy: 'Appuyez sur Ctrl+C', linkCopied: 'Lien copié',
     copyUrl: "Copiez l'URL", optional: 'Facultatif', currency: 'Devise', currencyNone: 'Aucune',
+    currencyDollar: 'Dollar', currencyRupee: 'Roupie', currencyEuro: 'Euro',
+    currencyPound: 'Livre', currencyYen: 'Yen',
+    formulaLabel: 'Formule',
   },
   sections: {
     related: 'Calculateurs associés', faq: 'Questions fréquentes',

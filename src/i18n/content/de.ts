@@ -9,7 +9,7 @@ export const contentDe: LocaleContent = {
       wins: 'Siege', losses: 'Niederlagen', ties: 'Unentschieden',
       values: 'Prozentwerte', weights: 'Gruppengrößen',
       start: 'Startgewicht', current: 'Aktuelles Gewicht',
-      amount: 'Betrag ohne Steuer', rate: 'Steuersatz',
+      amount: 'Betrag ohne Steuer', rate: 'Steuersatz', totalWithTax: 'Betrag mit Steuer',
       height: 'Körpergröße', neck: 'Hals', waist: 'Taille', hip: 'Hüfte', unit: 'Einheiten',
     },
     hints: {
@@ -65,11 +65,11 @@ export const contentDe: LocaleContent = {
     units: { cm: 'Zentimeter', inches: 'Zoll' },
   },
   home: {
-    title: 'Prozentrechner online — kostenlos, mit Rechenweg',
-    description: 'Kostenloser Prozentrechner online mit vollständigem Rechenweg: prozentuale Zunahme, Abnahme, Veränderung, Differenz, Noten, Rabatte und Steuern.',
-    h1: 'Prozentrechner, der den Rechenweg zeigt.',
-    lead: 'Zwei Zahlen eingeben und Ergebnis, Formel und jeden Schritt erhalten. Jede Berechnung läuft in deinem Browser – nichts, was du eingibst, wird an einen Server gesendet.',
-    aboutHeading: 'Über diesen Prozentrechner',
+    title: 'Kostenlose Prozentrechner mit vollständigem Rechenweg',
+    description: 'Kostenlose Prozentrechner online mit vollständigem Rechenweg: prozentuale Zunahme und Abnahme, Veränderung, Differenz, Noten, Rabatte, Steuern und mehr.',
+    h1: 'Kostenlose Prozentrechner, die den Rechenweg zeigen.',
+    lead: 'Vierzehn Rechner für Prozentaufgaben, jeder mit Formel und allen Rechenschritten. Nutze den Rechner unten für die häufigsten Fragen oder wähl den passenden Rechner für Noten, Rabatte, Steuern und mehr. Alles läuft in deinem Browser.',
+    aboutHeading: 'Über diese Prozentrechner',
     about: [
       'Ein Prozentrechner macht aus einer unbequemen Rechnung eine sofortige Antwort. Du kennst zwei Zahlen, brauchst die dritte – und zwar bevor das Gespräch weitergeht: das Trinkgeld auf einer Rechnung, die tatsächliche Ersparnis auf einem Sale-Schild, die Gehaltserhöhung, die dir gerade angeboten wurde, die Note, die du wirklich geschrieben hast. Dieser Prozentrechner ist kostenlos, läuft online und ist genau für diesen Moment gebaut.',
       'Den Rechenweg zu zeigen ist kein Schmuck. Ein Ergebnis, das du nicht prüfen kannst, ist ein Ergebnis, dem du blind vertrauen musst – und Prozentrechnung ist der Teil der Alltagsmathematik, bei dem sich die meisten Menschen unbemerkt vertun. Jedes Ergebnis enthält die Formel, deine eigenen Zahlen darin eingesetzt und jeden Schritt in klarer Sprache.',
@@ -81,10 +81,10 @@ export const contentDe: LocaleContent = {
   },
   calculators: {
     'percentage-calculator': {
-      title: 'Prozentrechner',
+      title: 'Prozentrechner: Prozentwert, Prozentsatz oder Grundwert',
       description: 'Berechne den Prozentsatz einer Zahl, wie viel Prozent eine Zahl von einer anderen ist, oder den Gesamtwert aus einem Teil – mit Formel und Rechenweg.',
-      h1: 'Prozentrechner',
-      intro: 'Drei Rechner in einem, für die Fragen, die mit Prozenten üblicherweise gestellt werden. Wähl die Form, die zu deiner Frage passt, gib zwei Zahlen ein – der vollständige Rechenweg erscheint unter dem Ergebnis.',
+      h1: 'Prozentrechner für Prozentwert, Prozentsatz und Grundwert',
+      intro: 'Mit diesem Prozentrechner löst du die drei Grundaufgaben der Prozentrechnung: den Prozentwert berechnen (20 % von 500), den Prozentsatz bestimmen (wie viel Prozent sind 25 von 200?) oder den Grundwert aus Prozentwert und Prozentsatz ermitteln. Wähl die passende Aufgabe und du siehst Ergebnis, Formel und jeden Rechenschritt.',
       formulaCaption: 'Die Division durch 100 macht aus dem Prozentsatz eine Dezimalzahl; die Multiplikation wendet sie an.',
       example: {
         scenario: 'Eine Jacke kostet 500 € und du hast einen 20-%-Gutschein. Wie viel zieht der Gutschein ab?',
@@ -452,7 +452,7 @@ export const contentDe: LocaleContent = {
       intro: 'Drei Steuerrechnungen in einer: Steuer auf einen Nettobetrag aufschlagen, aus einem Bruttobetrag zurückrechnen oder den tatsächlich berechneten Satz ermitteln. Du gibst deinen eigenen Satz ein, es funktioniert also für die Mehrwertsteuer in jedem Land.',
       formulaCaption: 'Steuer aufschlagen ist eine Multiplikation. Sie herauszurechnen ist eine Division – und genau dort passieren die meisten Fehler.',
       example: {
-        scenario: 'Eine Rechnung beläuft sich auf 2.706 € inklusive 8,25 % Steuer. Wie hoch war der Nettobetrag?',
+        scenario: 'Eine Rechnung beläuft sich auf 2.706 € inklusive 8,25 % Steuer (ein reiner Beispielsatz). Wie hoch war der Nettobetrag?',
         steps: [
           { label: 'Wandle den Satz in einen Faktor um.', expression: '1 + (8,25 ÷ 100) = 1,0825' },
           { label: 'Teile den Bruttobetrag durch diesen Faktor.', expression: '2.706 ÷ 1,0825 = 2.500' },

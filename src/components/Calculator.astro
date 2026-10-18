@@ -47,7 +47,7 @@ const clientStrings = JSON.stringify({
   answer: t.calc.answer, calculation: t.calc.calculation, rounded: t.calc.rounded,
   copyAnswer: t.calc.copyAnswer, copyWorking: t.calc.copyWorking, share: t.calc.share,
   copied: t.calc.copied, pressCopy: t.calc.pressCopy,
-  linkCopied: t.calc.linkCopied, copyUrl: t.calc.copyUrl,
+  linkCopied: t.calc.linkCopied, copyUrl: t.calc.copyUrl, formula: t.calc.formulaLabel,
 });
 
 const calcKey = calcKeyForSlug(calculator.slug);
@@ -107,7 +107,7 @@ const multiMode = calculator.modes.length > 1;
                     for={`${uid}-${mode.id}-${field.name}`}
                     class="flex items-baseline gap-2 text-body-lg font-medium"
                   >
-                    {fieldLabel(field.name, field.label)}
+                    {fieldLabel(field.labelKey ?? field.name, field.label)}
                     {field.optional && <span class="font-normal text-ink">{t.calc.optional}</span>}
                   </label>
 
@@ -213,11 +213,11 @@ const multiMode = calculator.modes.length > 1;
       </label>
       <select id={`${uid}-currency`} data-currency class="input-field">
         <option value="">{t.calc.currencyNone}</option>
-        <option value="$">$ — Dollar</option>
-        <option value="₹">₹ — Rupee</option>
-        <option value="€">€ — Euro</option>
-        <option value="£">£ — Pound</option>
-        <option value="¥">¥ — Yen</option>
+        <option value="$">$ — {t.calc.currencyDollar}</option>
+        <option value="₹">₹ — {t.calc.currencyRupee}</option>
+        <option value="€">€ — {t.calc.currencyEuro}</option>
+        <option value="£">£ — {t.calc.currencyPound}</option>
+        <option value="¥">¥ — {t.calc.currencyYen}</option>
       </select>
     </div>
   )}

@@ -1,6 +1,7 @@
 ---
 import ContentLayout from '../layouts/ContentLayout.astro';
 import { SITE } from '../lib/site.ts';
+import EmailLink from '../components/EmailLink.astro';
 ---
 
 <ContentLayout
@@ -67,7 +68,7 @@ import { SITE } from '../lib/site.ts';
 
     <h2>Reporting a problem</h2>
     <p>
-      If a result looks wrong, please report it to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>{' '}
+      If a result looks wrong, please report it to <EmailLink />{' '}
       with the calculator, the numbers you entered and the answer you expected. Accuracy reports are
       the first thing looked at.
     </p>

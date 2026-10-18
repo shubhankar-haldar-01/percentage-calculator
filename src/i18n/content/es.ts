@@ -9,7 +9,7 @@ export const contentEs: LocaleContent = {
       wins: 'Victorias', losses: 'Derrotas', ties: 'Empates',
       values: 'Porcentajes', weights: 'Tamaños de grupo',
       start: 'Peso inicial', current: 'Peso actual',
-      amount: 'Importe sin impuestos', rate: 'Tipo impositivo',
+      amount: 'Importe sin impuestos', rate: 'Tipo impositivo', totalWithTax: 'Importe con impuestos',
       height: 'Altura', neck: 'Cuello', waist: 'Cintura', hip: 'Cadera', unit: 'Unidades',
     },
     hints: {
@@ -66,11 +66,11 @@ export const contentEs: LocaleContent = {
     units: { cm: 'Centímetros', inches: 'Pulgadas' },
   },
   home: {
-    title: 'Calculadora de porcentaje online — gratis y paso a paso',
-    description: 'Calculadora de porcentaje online y gratuita con el desarrollo paso a paso: aumento, disminución, variación, diferencia, notas, descuentos e impuestos.',
-    h1: 'Calculadora de porcentaje que muestra el desarrollo.',
-    lead: 'Introduce dos números y obtén el resultado, la fórmula y cada paso. Todos los cálculos se hacen en tu navegador: nada de lo que escribes se envía a un servidor.',
-    aboutHeading: 'Sobre esta calculadora de porcentaje',
+    title: 'Calculadoras de porcentaje online, gratis y paso a paso',
+    description: 'Calculadoras de porcentaje online y gratuitas con el desarrollo paso a paso: aumento, disminución, variación, diferencia, notas, descuentos, impuestos y más.',
+    h1: 'Calculadoras de porcentaje que muestran el desarrollo.',
+    lead: 'Catorce calculadoras para los porcentajes del día a día, cada una con la fórmula y cada paso. Usa la de abajo para las preguntas más habituales o elige la que corresponda a tu tarea: notas, descuentos, impuestos y más. Todo se calcula en tu navegador.',
+    aboutHeading: 'Sobre estas calculadoras de porcentaje',
     about: [
       'Una calculadora de porcentaje convierte una operación incómoda en una respuesta inmediata. Sabes dos números, necesitas el tercero y lo necesitas antes de que la conversación avance: la propina de una cuenta, el ahorro real de una rebaja, el aumento de sueldo que acaban de ofrecerte, la nota que has sacado de verdad. Esta es una calculadora de porcentaje online y gratuita pensada exactamente para ese momento.',
       'Mostrar el desarrollo no es un adorno. Un resultado que no puedes comprobar es un resultado en el que tienes que confiar a ciegas, y los porcentajes son la parte de las matemáticas cotidianas en la que más gente se equivoca sin darse cuenta. Cada resultado incluye la fórmula, tus propios números sustituidos en ella y cada paso explicado en lenguaje claro.',
@@ -82,10 +82,10 @@ export const contentEs: LocaleContent = {
   },
   calculators: {
     'percentage-calculator': {
-      title: 'Calculadora de porcentaje',
+      title: 'Calculadora de porcentaje: parte, porcentaje o total',
       description: 'Calcula el porcentaje de un número, qué porcentaje es un número de otro, o el total a partir de una parte. Con la fórmula y todos los pasos.',
-      h1: 'Calculadora de porcentaje',
-      intro: 'Tres calculadoras en una, para las preguntas que suelen hacerse con porcentajes. Elige la forma que encaje con tu pregunta, introduce dos números y el desarrollo completo aparece bajo el resultado.',
+      h1: 'Calculadora de porcentaje para tres cálculos habituales',
+      intro: 'Usa esta calculadora para tres problemas habituales: el porcentaje de un número, qué porcentaje es un número de otro, o el total original a partir de una parte y su porcentaje. Elige el cálculo que corresponda a tu pregunta para ver el resultado, la fórmula y cada paso.',
       formulaCaption: 'Dividir entre 100 convierte el porcentaje en decimal; multiplicar lo aplica.',
       example: {
         scenario: 'Una chaqueta cuesta 500 € y tienes un vale del 20 %. ¿Cuánto descuenta el vale?',
@@ -453,7 +453,7 @@ export const contentEs: LocaleContent = {
       intro: 'Tres cálculos de impuestos en uno: añadir impuestos a un importe neto, trabajar hacia atrás desde un total con impuestos incluidos, o averiguar el tipo que realmente te han cobrado. Introduces tu propio tipo, así que sirve para el IVA y cualquier otro impuesto en cualquier país.',
       formulaCaption: 'Añadir impuestos es una multiplicación. Quitarlos es una división, y ahí es donde se cometen la mayoría de los errores.',
       example: {
-        scenario: 'Una factura suma 2.706 € con un 8,25 % de impuestos incluidos. ¿Cuál era el importe sin impuestos?',
+        scenario: 'Una factura suma 2.706 € con un 8,25 % de impuestos incluidos (un tipo solo ilustrativo). ¿Cuál era el importe sin impuestos?',
         steps: [
           { label: 'Convierte el tipo en un multiplicador.', expression: '1 + (8,25 ÷ 100) = 1,0825' },
           { label: 'Divide el total entre ese multiplicador.', expression: '2.706 ÷ 1,0825 = 2.500' },

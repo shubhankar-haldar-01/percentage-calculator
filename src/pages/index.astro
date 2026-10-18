@@ -115,8 +115,8 @@ const faqs: FaqItem[] = [
 ---
 
 <BaseLayout
-  title="Percentage Calculator Online — Free, with Full Working"
-  description="Free online percentage calculator with step-by-step working. Calculate percentage increase, decrease, change, difference, grade, win, tax and discount percentages."
+  title="Free Percentage Calculators with Step-by-Step Working"
+  description="Calculate percentages online for free with step-by-step working. Explore percentage increase, decrease, difference, grades, tax, discounts and more."
   path="/"
   pageKey="home"
   schema={[
@@ -144,10 +144,11 @@ const faqs: FaqItem[] = [
     <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,32rem)] lg:gap-16">
       <div>
         <p class="eyebrow">Free · No sign-up</p>
-        <h1 class="mt-6 text-display-xl text-balance">Percentage calculator that shows the working.</h1>
+        <h1 class="mt-6 text-display-xl text-balance">Free percentage calculators with step-by-step working.</h1>
         <p class="mt-7 max-w-xl text-body-lg">
-          Enter two numbers and get the answer, the formula and every step behind it. Every
-          calculation runs in your browser — nothing you type is ever sent to a server.
+          Fourteen calculators, each showing the formula and every step behind the answer. Use the
+          one below for everyday percentages, or choose a dedicated calculator for grades, discounts,
+          tax and more. Nothing you type leaves your browser.
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">
@@ -194,7 +195,7 @@ const faqs: FaqItem[] = [
 
   <div class="mx-auto max-w-site px-4 sm:px-8">
     {/* Calculator directory */}
-    <section aria-labelledby="tools-heading" class="mt-24">
+    <section id="all-calculators" aria-labelledby="tools-heading" class="mt-24 scroll-mt-20">
       <h2 id="tools-heading" class="text-display-lg">All percentage calculators</h2>
       <p class="mt-5 max-w-2xl text-body">
         Each one is a dedicated page with its formula, a worked example and the situations it suits.
@@ -248,6 +249,10 @@ const faqs: FaqItem[] = [
           </li>
         </ul>
         <p>
+          <a href="/percentage-calculator">Use the percentage calculator</a> for any of the three: it
+          explains each formula with a worked example.
+        </p>
+        <p>
           Comparisons between two numbers are a separate family: <a href="/percentage-change-calculator"
             >percentage change</a
           >, <a href="/percentage-increase-calculator">increase</a>,{' '}
@@ -292,14 +297,14 @@ const faqs: FaqItem[] = [
       and where each one is used. Written to be read, not to hit a density.
     */}
     <section aria-labelledby="about-heading" class="mt-24">
-      <h2 id="about-heading" class="text-display-lg">About this percentage calculator</h2>
+      <h2 id="about-heading" class="text-display-lg">About these percentage calculators</h2>
 
       <div class="prose-site mt-5">
         <p>
           A percentage calculator turns an awkward piece of arithmetic into a single answer. You
           know two numbers, you need the third, and you need it before the conversation moves on —
           the tip on a restaurant bill, the real saving on a sale sticker, the pay rise you have just
-          been offered, the mark you actually scored. This is a free online percentage calculator
+          been offered, the mark you actually scored. These are free online percentage calculators
           built for exactly that moment: type two numbers, press Calculate, and read the answer with
           the working underneath it.
         </p>
@@ -447,7 +452,7 @@ const faqs: FaqItem[] = [
 
     {/* Trust / utility */}
     <section aria-labelledby="trust-heading" class="mt-24">
-      <h2 id="trust-heading" class="text-display-lg">Why this calculator</h2>
+      <h2 id="trust-heading" class="text-display-lg">Why these calculators</h2>
       <dl class="mt-8 grid gap-4 sm:grid-cols-2">
         {
           [

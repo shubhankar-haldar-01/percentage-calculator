@@ -1,6 +1,7 @@
 ---
 import ContentLayout from '../layouts/ContentLayout.astro';
-import { SITE, adsensePublisherId } from '../lib/site.ts';
+import { adsensePublisherId } from '../lib/site.ts';
+import EmailLink from '../components/EmailLink.astro';
 
 // The advertising disclosures appear once an AdSense publisher ID is set in
 // SITE, so the policy never describes ads the site does not show.
@@ -163,7 +164,7 @@ const ads = adsensePublisherId !== '';
 
     <h2>Contact</h2>
     <p>
-      Questions about privacy can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      Questions about privacy can be sent to <EmailLink />.
     </p>
   </div>
 </ContentLayout>
