@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import { organizationSchema, websiteSchema } from '../lib/schema.ts';
 import { adsensePublisherId, googleSiteVerification } from '../lib/site.ts';
 import { DEFAULT_LOCALE, LOCALE_META, type Locale, type PageKey } from '../i18n/config.ts';
+import { ui } from '../i18n/ui/index.ts';
 import '../styles/global.css';
 
 interface Props {
@@ -38,6 +39,7 @@ const {
 // The site-level graph is emitted on every page so the Organization and
 // WebSite nodes referenced by page schema always resolve.
 const allSchema = [websiteSchema(), organizationSchema(), ...schema];
+const t = ui(locale);
 ---
 
 <!doctype html>
@@ -142,7 +144,7 @@ const allSchema = [websiteSchema(), organizationSchema(), ...schema];
       href="#main"
       class="sr-only rounded-md bg-ink px-4 py-2 text-body-sm font-medium text-inverse-ink focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60]"
     >
-      Skip to main content
+      {t.nav.skipToContent}
     </a>
 
     <Header locale={locale} pageKey={pageKey} />

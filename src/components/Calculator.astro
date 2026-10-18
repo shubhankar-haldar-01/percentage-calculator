@@ -98,7 +98,7 @@ const multiMode = calculator.modes.length > 1;
       >
         <form data-mode-form data-mode-id={mode.id} data-operation={mode.operation} novalidate>
           <fieldset class="m-0 border-0 p-0">
-            <legend class="sr-only">{mode.question}</legend>
+            <legend class="sr-only">{tabLabel(mode.id, mode.question)}</legend>
 
             <div class="grid gap-5 sm:grid-cols-2">
               {mode.fields.map((field) => (
