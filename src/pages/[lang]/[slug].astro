@@ -5,17 +5,18 @@
  * One route generates all of them: the locale and the localized slug come from
  * `src/i18n/config.ts`, the words from the content registry. Only locales that
  * actually have content are generated, which is what keeps hreflang honest.
+ * The home calculator is skipped: it lives on `[lang]/index.astro`.
  */
 import type { GetStaticPaths } from 'astro';
 import LocalizedCalculator from '../../components/LocalizedCalculator.astro';
 import LocalizedGuide from '../../components/LocalizedGuide.astro';
-import { CALC_KEYS, GUIDE_KEYS, SLUGS, type Locale, type PageKey } from '../../i18n/config.ts';
+import { CALC_KEYS, GUIDE_KEYS, HOME_CALCULATOR, SLUGS, type Locale, type PageKey } from '../../i18n/config.ts';
 import { translatedLocales } from '../../i18n/content/index.ts';
 import type { CalcPageKey } from '../../i18n/content/types.ts';
 
 export const getStaticPaths: GetStaticPaths = () =>
   translatedLocales().flatMap((locale) => [
-    ...CALC_KEYS.map((key) => ({
+    ...CALC_KEYS.filter((key) => key !== HOME_CALCULATOR).map((key) => ({
       params: { lang: locale, slug: SLUGS[locale][key as PageKey] },
       props: { locale, pageKey: key as CalcPageKey, kind: 'calculator' as const },
     })),

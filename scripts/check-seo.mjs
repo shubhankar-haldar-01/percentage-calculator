@@ -232,6 +232,30 @@ for (const line of headersFile.split('\n')) {
   }
 }
 
+/**
+ * Pages kept out of search on purpose (a locale in NOINDEX_LOCALES) are not in
+ * the sitemap but are still real pages: the language switcher links to them and
+ * a retired URL in that locale redirects to one. Linking to such a page is fine
+ * as long as it exists and says noindex.
+ */
+const noindexPages = new Map();
+async function isNoindexPage(path) {
+  if (!noindexPages.has(path)) {
+    let robots = null;
+    if (LIVE) {
+      const res = await get(`${LIVE}${path}`);
+      if (res.status === 200 && !parsePage(res.body).isRedirect) {
+        robots = `${parsePage(res.body).robots} ${res.headers.get('x-robots-tag') ?? ''}`;
+      }
+    } else if (existsSync(distFile(path))) {
+      const page = parsePage(readFileSync(distFile(path), 'utf8'));
+      if (!page.isRedirect) robots = page.robots;
+    }
+    noindexPages.set(path, robots !== null && /\b(noindex|none)\b/i.test(robots));
+  }
+  return noindexPages.get(path);
+}
+
 const redirects = (readDist('_redirects') ?? '')
   .split('\n')
   .map((line) => line.trim())
@@ -243,7 +267,9 @@ const redirects = (readDist('_redirects') ?? '')
 for (const rule of redirects) {
   if (!['301', '308'].includes(rule.status)) fail('_redirects rule is not permanent', `${rule.from} ${rule.status}`);
   if (inSitemap.has(new URL(rule.from, ORIGIN).href)) fail('sitemap lists a redirected URL', rule.from);
-  if (!inSitemap.has(new URL(rule.to, ORIGIN).href)) fail('_redirects target is not an indexable sitemap URL', `${rule.from} → ${rule.to}`);
+  if (!inSitemap.has(new URL(rule.to, ORIGIN).href) && !(await isNoindexPage(rule.to))) {
+    fail('_redirects target is neither a sitemap URL nor a deliberately noindexed page', `${rule.from} → ${rule.to}`);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -372,7 +398,7 @@ for (const [url, page] of pages) {
       continue;
     }
     if (!inSitemap.has(target)) {
-      fail('internal link to a page outside the sitemap', `${url} → ${link.href}`);
+      if (!(await isNoindexPage(path))) fail('internal link to a page outside the sitemap', `${url} → ${link.href}`);
       continue;
     }
     if (target !== url) inbound.set(target, inbound.get(target) + 1);

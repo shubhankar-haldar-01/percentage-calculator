@@ -1,0 +1,60 @@
+---
+/**
+ * The explanation under a translated calculator: its formula, a worked example,
+ * where it is used, and the FAQ.
+ *
+ * Shared by the translated calculator pages and the translated home pages,
+ * which host the home calculator, so the core calculator keeps the same
+ * supporting content it had when it was a page of its own.
+ */
+import FormulaCard from './FormulaCard.astro';
+import WorkedExample from './WorkedExample.astro';
+import Faq from './Faq.astro';
+import { getCalculator } from '../lib/calculators.ts';
+import { SLUGS, type Locale, type PageKey } from '../i18n/config.ts';
+import { contentFor } from '../i18n/content/index.ts';
+import type { CalcPageKey } from '../i18n/content/types.ts';
+import { ui } from '../i18n/ui/index.ts';
+import { formulaFor } from '../i18n/engine/index.ts';
+
+interface Props {
+  locale: Locale;
+  pageKey: CalcPageKey;
+}
+
+const { locale, pageKey } = Astro.props;
+const t = ui(locale);
+const page = contentFor(locale).calculators[pageKey];
+const calculator = getCalculator(`/${SLUGS.en[pageKey as PageKey]}`);
+---
+
+<section aria-labelledby="formula-heading" class="mt-24">
+  <h2 id="formula-heading" class="text-display-lg">{t.sections.formula}</h2>
+  <div class="mt-8">
+    <FormulaCard
+      formula={formulaFor(locale, calculator.modes[0]!.operation)}
+      caption={page.formulaCaption}
+    />
+  </div>
+</section>
+
+<section aria-labelledby="example-heading" class="mt-24">
+  <h2 id="example-heading" class="text-display-lg">{t.sections.example}</h2>
+  <div class="mt-8">
+    <WorkedExample
+      scenario={page.example.scenario}
+      steps={page.example.steps}
+      answer={page.example.answer}
+      answerLabel={t.sections.answerLabel}
+    />
+  </div>
+</section>
+
+<section aria-labelledby="uses-heading" class="mt-24">
+  <h2 id="uses-heading" class="text-display-lg">{t.sections.uses}</h2>
+  <div class="prose-site mt-5">
+    <ul>{page.uses.map((use) => <li>{use}</li>)}</ul>
+  </div>
+</section>
+
+<Faq items={page.faq.map((entry) => ({ question: entry.q, answer: entry.a }))} heading={t.sections.faq} />

@@ -6,7 +6,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { organizationSchema, websiteSchema } from '../lib/schema.ts';
 import { adsensePublisherId, googleSiteVerification } from '../lib/site.ts';
-import { DEFAULT_LOCALE, LOCALE_META, type Locale, type PageKey } from '../i18n/config.ts';
+import { DEFAULT_LOCALE, LOCALE_META, isIndexable, type Locale, type PageKey } from '../i18n/config.ts';
 import { ui } from '../i18n/ui/index.ts';
 import '../styles/global.css';
 
@@ -40,6 +40,10 @@ const {
 // WebSite nodes referenced by page schema always resolve.
 const allSchema = [websiteSchema(), organizationSchema(), ...schema];
 const t = ui(locale);
+
+// A page in a locale kept out of search is noindex and drops out of hreflang,
+// whatever the page itself asked for.
+const indexable = !noindex && isIndexable(locale);
 ---
 
 <!doctype html>
@@ -124,7 +128,7 @@ const t = ui(locale);
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-jetbrains-mono" />
 
-    <Hreflang pageKey={pageKey} />
+    <Hreflang pageKey={indexable ? pageKey : undefined} />
 
     <SEO
       locale={locale}
@@ -132,7 +136,7 @@ const t = ui(locale);
       title={title}
       description={description}
       path={path}
-      noindex={noindex}
+      noindex={!indexable}
       schema={allSchema}
       ogType={ogType}
       modified={modified}

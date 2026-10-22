@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { NOINDEX_LOCALES, retiredRedirects } from './src/i18n/config.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,10 +18,14 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // Error pages are noindex; listing them in the sitemap would ask a
-      // crawler to fetch what it is then told to ignore. /404 is dropped by
-      // default, /500 is not.
-      filter: (page) => !/\/(404|500)$/.test(new URL(page).pathname),
+      // Error pages and locales kept out of search are noindex; listing them in
+      // the sitemap would ask a crawler to fetch what it is then told to
+      // ignore. /404 is dropped by default, /500 is not.
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        const hidden = NOINDEX_LOCALES.some((locale) => path === `/${locale}` || path.startsWith(`/${locale}/`));
+        return !/\/(404|500)$/.test(path) && !hidden;
+      },
       // Keep the sitemap compact. Localized slugs are mapped by reciprocal
       // hreflang links in page HTML rather than inferred from matching paths.
       namespaces: { news: false, image: false, video: false },
@@ -31,9 +36,15 @@ export default defineConfig({
 
   // `/x-is-what-percent-of-y` and `/what-percent-is-x-of-y` are two phrasings of a
   // single search intent. Serving both as pages would be duplicate content, so the
-  // alternate phrasing permanently redirects to the canonical page.
+  // alternate phrasing permanently redirects to the canonical page. The same goes
+  // for each locale's retired percentage-calculator page, which competed with
+  // that locale's home page: it now redirects there. `public/_redirects` mirrors
+  // all of these as real 301s on Cloudflare Pages.
   redirects: {
     '/x-is-what-percent-of-y': { status: 301, destination: '/what-percent-is-x-of-y' },
+    ...Object.fromEntries(
+      retiredRedirects().map(({ from, to }) => [from, { status: 301, destination: to }]),
+    ),
   },
 
   // DESIGN.md substitutes: figmaSans -> Inter, figmaMono -> JetBrains Mono.

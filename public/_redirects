@@ -2,3 +2,15 @@
 # meta-refresh page for a redirect, which answers 200; this makes Cloudflare
 # Pages answer with a real 301 so search engines consolidate the two URLs.
 /x-is-what-percent-of-y /what-percent-is-x-of-y 301
+
+# Each locale's retired percentage-calculator page, merged into that locale's
+# home page (see HOME_CALCULATOR in src/i18n/config.ts). routing.test.ts keeps
+# this list in step with SLUGS.
+/percentage-calculator / 301
+/es/calculadora-de-porcentaje /es 301
+/de/prozentrechner /de 301
+/fr/calculateur-de-pourcentage /fr 301
+/it/calcolo-percentuale /it 301
+/pt/calculadora-de-porcentagem /pt 301
+/ja/percentage-calculator /ja 301
+/ko/percentage-calculator /ko 301

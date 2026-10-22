@@ -2,12 +2,13 @@
 /**
  * hreflang alternates.
  *
- * Every locale variant of a page points at every other, including itself, plus
- * an `x-default` on the English URL — the reciprocal set Google expects.
- * Pages that exist only in English (the policy pages) pass no key and emit
- * nothing, which is correct: an incomplete set is worse than none.
+ * Every indexable locale variant of a page points at every other, including
+ * itself, plus an `x-default` on the English URL — the reciprocal set Google
+ * expects. Pages that exist only in English (the policy pages) and pages kept
+ * out of search pass no key and emit nothing, which is correct: an incomplete
+ * set is worse than none.
  */
-import { alternates, type PageKey } from '../i18n/config.ts';
+import { indexedAlternates, type PageKey } from '../i18n/config.ts';
 import { absoluteUrl } from '../lib/site.ts';
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const { pageKey } = Astro.props;
-const links = pageKey ? alternates(pageKey) : [];
+const links = pageKey ? indexedAlternates(pageKey) : [];
 ---
 
 {
@@ -24,7 +25,7 @@ const links = pageKey ? alternates(pageKey) : [];
   ))
 }
 {
-  pageKey && (
-    <link rel="alternate" hreflang="x-default" href={absoluteUrl(alternates(pageKey)[0]!.path)} />
+  links.length > 0 && (
+    <link rel="alternate" hreflang="x-default" href={absoluteUrl(links[0]!.path)} />
   )
 }

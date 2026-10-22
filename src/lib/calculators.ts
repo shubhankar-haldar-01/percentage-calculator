@@ -11,6 +11,7 @@
  */
 
 import type { OperationId } from './percentage.ts';
+import { calcKeyForSlug, DEFAULT_LOCALE, pathFor } from '../i18n/config.ts';
 
 export type CalculatorField = {
   name: string;
@@ -52,6 +53,10 @@ export type CalculatorMode = {
 };
 
 export type CalculatorDef = {
+  /**
+   * The English slug, which identifies the calculator. It is its URL too,
+   * except for the home calculator — link with `calculatorPath()`.
+   */
   slug: string;
   /** Full product name, used in breadcrumbs and card titles. */
   name: string;
@@ -523,4 +528,9 @@ export function getCalculator(slug: string): CalculatorDef {
 /** Resolve an explicit, hand-picked list of related calculators. */
 export function related(slugs: string[]): CalculatorDef[] {
   return slugs.map(getCalculator);
+}
+
+/** Where a calculator lives on the English site: `/` for the home calculator, its slug otherwise. */
+export function calculatorPath(calculator: CalculatorDef): string {
+  return pathFor(DEFAULT_LOCALE, calcKeyForSlug(calculator.slug)!);
 }

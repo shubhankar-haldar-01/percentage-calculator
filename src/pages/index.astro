@@ -2,18 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Calculator from '../components/Calculator.astro';
 import ColorBlock from '../components/ColorBlock.astro';
+import FormulaCard from '../components/FormulaCard.astro';
 import Faq, { type FaqItem } from '../components/Faq.astro';
-import { CALCULATORS, getCalculator } from '../lib/calculators.ts';
+import { CALCULATORS, calculatorPath, getCalculator } from '../lib/calculators.ts';
+import { HOME_CALCULATOR } from '../i18n/config.ts';
 import { calculatorSchema } from '../lib/schema.ts';
 
-const main = getCalculator('/percentage-calculator');
+/** The home calculator: the page used to have a twin at /percentage-calculator, now a 301 here. */
+const main = getCalculator(`/${HOME_CALCULATOR}`);
+/** The directory lists every other calculator; this one is at the top of the page. */
+const others = CALCULATORS.filter((calculator) => calculator !== main);
 
 const examples = [
   {
     question: 'What is 20% of 500?',
     answer: '100',
     working: '20 ÷ 100 × 500',
-    href: '/percentage-calculator?mode=percent-of&percent=20&value=500',
+    href: '/?mode=percent-of&percent=20&value=500',
   },
   {
     question: '25 is what percent of 200?',
@@ -39,7 +44,8 @@ const examples = [
  * The homepage FAQ targets the questions people actually type around
  * "percentage calculator". The first ten are those queries, kept close to the
  * wording they are searched with; the last four cover the tool and the privacy
- * position, which the query set does not reach.
+ * position, which the query set does not reach. The tip and over-100% answers
+ * came across from the standalone percentage calculator page this one absorbed.
  */
 const faqs: FaqItem[] = [
   {
@@ -96,6 +102,16 @@ const faqs: FaqItem[] = [
     question: 'What is the difference between percentage change and percentage difference?',
     answer:
       'Percentage change has a direction: it measures a new value against an original one, so going from 100 to 120 is a 20% increase. Percentage difference has no direction — it compares two values against their average, so 100 and 120 differ by 18.18%. Use change when one value came first, and difference when neither did.',
+  },
+  {
+    question: 'How do I work out 15% of a bill for a tip?',
+    answer:
+      'Take 10% by moving the decimal one place left, halve that to get 5%, then add them together. On a $64 bill: 10% is $6.40, 5% is $3.20, so 15% is $9.60.',
+  },
+  {
+    question: 'Can a percentage be more than 100%?',
+    answer:
+      'Yes. 100% of a number is the number itself, so anything above 100% is larger than the original — 150% of 200 is 300. Percentages above 100 turn up constantly in growth figures and in comparisons against a baseline.',
   },
   {
     question: 'Are my calculations sent anywhere?',
@@ -203,10 +219,10 @@ const faqs: FaqItem[] = [
 
       <ul class="mt-8 grid gap-4 sm:grid-cols-2">
         {
-          CALCULATORS.map((calculator) => (
+          others.map((calculator) => (
             <li>
               <a
-                href={calculator.slug}
+                href={calculatorPath(calculator)}
                 class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
               >
                 <span class="text-card-title">
@@ -232,26 +248,59 @@ const faqs: FaqItem[] = [
         </p>
         <p>
           Almost every percentage question is one of three shapes, and knowing which one you are
-          looking at is most of the work:
+          looking at is most of the work. The <a href="#calculator">calculator at the top of this
+          page</a> answers all three — pick the tab that matches your question.
         </p>
-        <ul>
-          <li>
-            <strong>You have the percentage and the whole</strong>, and want the part — “what is 20%
-            of 500?”. Divide by 100 and multiply.
-          </li>
-          <li>
-            <strong>You have the part and the whole</strong>, and want the percentage — “25 out of
-            200 is what percent?”. Divide, then multiply by 100.
-          </li>
-          <li>
-            <strong>You have the part and the percentage</strong>, and want the whole — “50 is 20% of
-            what?”. Divide by the percentage as a decimal.
-          </li>
-        </ul>
-        <p>
-          <a href="/percentage-calculator">Use the percentage calculator</a> for any of the three: it
-          explains each formula with a worked example.
-        </p>
+      </div>
+
+      <div class="mt-8 flex max-w-3xl flex-col gap-8">
+        <div>
+          <h3 class="text-card-title">1. What is X% of Y?</h3>
+          <p class="mt-2 text-body">
+            You have the percentage and the whole, and want the part — a tip, a commission, a tax
+            amount or a share of a budget.
+          </p>
+          <div class="mt-4">
+            <FormulaCard
+              formula="(Percentage ÷ 100) × Number"
+              substituted="(20 ÷ 100) × 500 = 100"
+              caption="Dividing by 100 converts the percentage to a decimal; multiplying applies it."
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-card-title">2. X is what percent of Y?</h3>
+          <p class="mt-2 text-body">
+            You have the part and the whole, and want the percentage. This turns a raw score into a
+            comparable figure — 38 out of 50 becomes 76%.
+          </p>
+          <div class="mt-4">
+            <FormulaCard
+              formula="(Part ÷ Whole) × 100"
+              substituted="(25 ÷ 200) × 100 = 12.5%"
+              caption="Dividing gives a decimal share; multiplying by 100 expresses it per hundred."
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-card-title">3. X is Y% of what number?</h3>
+          <p class="mt-2 text-body">
+            You have the part and the percentage, and want the whole — the reverse of the first
+            question, and how you recover an original total from a deposit or a commission.
+          </p>
+          <div class="mt-4">
+            <FormulaCard
+              formula="Part ÷ (Percentage ÷ 100)"
+              substituted="50 ÷ (20 ÷ 100) = 250"
+              caption="Because multiplying by the percentage produced the part, dividing undoes it."
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="prose-site mt-8 max-w-3xl">
         <p>
           Comparisons between two numbers are a separate family: <a href="/percentage-change-calculator"
             >percentage change</a
@@ -342,7 +391,7 @@ const faqs: FaqItem[] = [
           </li>
         </ul>
         <p>
-          All three live on the <a href="/percentage-calculator">main percentage calculator</a>,
+          All three live in the <a href="#calculator">calculator at the top of this page</a>,
           switchable with a single tap, so you do not have to work out which page you need before
           you can start.
         </p>
@@ -511,7 +560,7 @@ const faqs: FaqItem[] = [
         Fourteen calculators, no account, and nothing sent to a server.
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="/percentage-calculator" class="btn-on-block">Open the calculator</a>
+        <a href="#calculator" class="btn-on-block">Open the calculator</a>
         <a href="/percentage-formula" class="btn-on-block">Browse the formulas</a>
       </div>
     </ColorBlock>

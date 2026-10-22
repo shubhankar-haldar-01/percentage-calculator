@@ -7,7 +7,7 @@
  * onto the clean page instead of becoming duplicate URLs.
  */
 import { SITE, absoluteUrl, displayWidth } from '../lib/site.ts';
-import { DEFAULT_LOCALE, LOCALE_META, alternates, type Locale, type PageKey } from '../i18n/config.ts';
+import { DEFAULT_LOCALE, LOCALE_META, indexedAlternates, type Locale, type PageKey } from '../i18n/config.ts';
 
 interface Props {
   title: string;
@@ -55,10 +55,11 @@ const fullTitle =
     : title + suffix;
 const imageAlt = `${SITE.name} — free online percentage calculators with step-by-step working`;
 
-// Only pages that genuinely have translations advertise alternates, so the
-// English-only policy pages stay quiet here just as they do in hreflang.
-const ogAlternates = pageKey
-  ? alternates(pageKey)
+// Only indexable pages that genuinely have translations advertise alternates,
+// so this always matches the hreflang set, which is empty on the English-only
+// policy pages and on pages kept out of search.
+const ogAlternates = pageKey && !noindex
+  ? indexedAlternates(pageKey)
       .filter((entry) => entry.locale !== locale)
       .map((entry) => LOCALE_META[entry.locale].og)
   : [];

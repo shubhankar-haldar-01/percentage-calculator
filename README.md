@@ -52,7 +52,7 @@ Fourteen tools, all driven by one engine and one component:
 
 | Page | Targets |
 | --- | --- |
-| `/percentage-calculator` | percentage of a number, share, missing total |
+| `/` (home) | percentage of a number, share, missing total |
 | `/percentage-increase-calculator` | increase percentage calculator |
 | `/percentage-decrease-calculator` | percentage decrease |
 | `/percentage-change-calculator` | percentage change |
@@ -147,8 +147,18 @@ reaches first.
 
 Eight locales: English at the root, and `/es`, `/ja`, `/fr`, `/de`, `/pt`, `/ko`
 and `/it`. English pages are hand-authored; every other locale is generated from
-the content registry, so 17 pages x 8 locales = 136 translated routes plus the
-English-only extras.
+the content registry, so 16 pages x 8 locales = 128 routes plus the English-only
+extras.
+
+The core percentage calculator is each locale's home page (`HOME_CALCULATOR` in
+`i18n/config.ts`). It used to have a page of its own too, and with two pages per
+language answering the same search Google indexed one and dropped the other, so
+those URLs now 301 to the home page.
+
+Korean is built and stays in the language switcher, but is kept out of search
+(`NOINDEX_LOCALES`): its pages are `noindex`, have no hreflang and are not in the
+sitemap. Google had dropped 15 of its 17 pages; take `ko` out of that list once a
+native speaker has reviewed the translation.
 
 Strings are split three ways because they have different lifetimes and different
 consumers:
@@ -185,7 +195,8 @@ anyone's alternates until its content lands.
 
 ### hreflang
 
-Every page links all eight locales plus `x-default` on the English URL, and each
+Every page links every indexable locale (all but those in `NOINDEX_LOCALES`) plus
+`x-default` on the English URL, and each
 alternate is reciprocal. Pages that exist only in English — privacy, terms,
 contact, about — pass no `pageKey` and emit no alternates at all, which is
 correct: an incomplete set is worse than none.
@@ -312,7 +323,11 @@ to denied.
 - Query strings are shareable links, not pages. Every page canonicalises to its
   clean URL and `robots.txt` disallows `/*?`.
 - `/x-is-what-percent-of-y` permanently redirects to `/what-percent-is-x-of-y`;
-  they are one search intent, and serving both would be duplicate content.
+  they are one search intent, and serving both would be duplicate content. For
+  the same reason each locale's old percentage-calculator page (`/percentage-calculator`,
+  `/de/prozentrechner`, …) redirects to that locale's home page. `astro.config.mjs`
+  builds these from `retiredRedirects()`; `public/_redirects` repeats them as real
+  301s for Cloudflare, and `routing.test.ts` fails if the two drift apart.
 - `Faq.astro` emits `FAQPage` JSON-LD, built from the same array the accordion
   renders so the structured data and the visible answers cannot drift apart —
   which is the condition search engines check. Exactly one page renders one
@@ -329,9 +344,9 @@ to denied.
   `max-snippet:-1` and `max-image-preview:large`. Guide pages pass
   `ogType="article"` with a `modified` date.
 - `og:locale` follows the page's language, and `og:locale:alternate` lists the
-  other seven — but only on pages that actually have translations, matching the
-  hreflang set exactly.
-- The sitemap lists every generated locale URL. Localized slugs do not share a
+  other indexable locales — but only on pages that actually have translations,
+  matching the hreflang set exactly.
+- The sitemap lists every indexable locale URL. Localized slugs do not share a
   common path stem, so reciprocal hreflang is emitted in each page's HTML from
   the content registry instead of being inferred by the sitemap integration.
 
@@ -386,11 +401,8 @@ projects there — `wrangler pages project create` delegates to Workers unless
 needs `--force` again. A static site runs fine on either, so this is a migration
 to make on your own schedule rather than a problem.
 
-**Not yet configured.** Two Pages features this build would benefit from:
+**Not yet configured.** One Pages feature this build would benefit from:
 
-- `_redirects` would turn `/x-is-what-percent-of-y` into a real 301. Right now
-  the static build emits a meta-refresh stub, which search engines treat more
-  weakly than a server redirect.
 - `_headers` would let you send a CSP and the usual security headers, which is
   straightforward here because the site loads no third-party scripts.
 

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { CALCULATORS } from '../lib/calculators.ts';
+import { CALCULATORS, calculatorPath } from '../lib/calculators.ts';
 ---
 
 <BaseLayout
@@ -29,7 +29,7 @@ import { CALCULATORS } from '../lib/calculators.ts';
           CALCULATORS.map((calculator) => (
             <li>
               <a
-                href={calculator.slug}
+                href={calculatorPath(calculator)}
                 class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
               >
                 <span class="text-card-title">

@@ -1,5 +1,5 @@
 ---
-import type { CalculatorDef } from '../lib/calculators.ts';
+import { calculatorPath, type CalculatorDef } from '../lib/calculators.ts';
 
 interface Props {
   calculators: CalculatorDef[];
@@ -17,7 +17,7 @@ const { calculators, heading = 'Related calculators' } = Astro.props;
       calculators.map((calculator) => (
         <li>
           <a
-            href={calculator.slug}
+            href={calculatorPath(calculator)}
             class="flex h-full flex-col gap-2 rounded-lg border border-hairline bg-canvas p-8 transition-shadow hover:shadow-soft"
           >
             <span class="text-card-title">

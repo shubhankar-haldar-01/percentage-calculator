@@ -230,14 +230,56 @@ export const CALC_KEYS = [
 
 export type CalcKey = (typeof CALC_KEYS)[number];
 
+/**
+ * The calculator that lives on each locale's home page rather than a page of
+ * its own.
+ *
+ * Until October 2026 it had both, and with two pages per language answering
+ * the same search Google indexed one and dropped the other. Its entries in
+ * `SLUGS` are now the retired URLs, kept only so `retiredRedirects()` can send
+ * them to the home page.
+ */
+export const HOME_CALCULATOR = 'percentage-calculator' satisfies CalcKey;
+
 /** The two long-form guide pages. */
 export const GUIDE_KEYS = ['how-to', 'formulas'] as const satisfies readonly PageKey[];
 
-/** Site-relative path for a page in a locale, e.g. "/es/calculadora-de-porcentaje". */
+/** Site-relative path for a page in a locale, e.g. "/es/calculadora-de-aumento-porcentual". */
 export function pathFor(locale: Locale, key: PageKey): string {
-  const slug = SLUGS[locale][key];
+  const slug = key === HOME_CALCULATOR ? '' : SLUGS[locale][key];
   if (locale === DEFAULT_LOCALE) return slug ? `/${slug}` : '/';
   return slug ? `/${locale}/${slug}` : `/${locale}`;
+}
+
+/**
+ * Every retired home-calculator URL with the home page it permanently
+ * redirects to. `astro.config.mjs` builds its redirects from this, and a test
+ * holds `public/_redirects` to the same list.
+ */
+export function retiredRedirects(): { from: string; to: string }[] {
+  return [DEFAULT_LOCALE, ...translatedLocales()].map((locale) => {
+    const slug = SLUGS[locale][HOME_CALCULATOR];
+    return {
+      from: locale === DEFAULT_LOCALE ? `/${slug}` : `/${locale}/${slug}`,
+      to: pathFor(locale, 'home'),
+    };
+  });
+}
+
+/**
+ * Locales that are built and offered in the language switcher but kept out of
+ * search: their pages are `noindex`, emit no hreflang, are left out of every
+ * other page's hreflang set and are not in the sitemap.
+ *
+ * Korean, since October 2026, after Google dropped 15 of its 17 pages as
+ * "Crawled – currently not indexed". Until a native speaker has reviewed the
+ * translation, keeping them indexable only adds pages Google rates as low
+ * value to its view of the whole site. Remove a locale here to put it back.
+ */
+export const NOINDEX_LOCALES: readonly Locale[] = ['ko'];
+
+export function isIndexable(locale: Locale): boolean {
+  return !NOINDEX_LOCALES.includes(locale);
 }
 
 /**
@@ -281,4 +323,13 @@ export function alternates(key: PageKey): { locale: Locale; tag: string; path: s
     tag: LOCALE_META[locale].tag,
     path: pathFor(locale, key),
   }));
+}
+
+/**
+ * The alternates search engines are shown: `alternates()` without the locales
+ * kept out of search. hreflang and `og:locale:alternate` read this; the
+ * language switcher, which is for people, reads `alternates()`.
+ */
+export function indexedAlternates(key: PageKey): ReturnType<typeof alternates> {
+  return alternates(key).filter((entry) => isIndexable(entry.locale));
 }

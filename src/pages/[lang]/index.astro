@@ -1,10 +1,16 @@
 ---
-/** Translated home page — one per locale that has content. */
+/**
+ * Translated home page — one per locale that has content.
+ *
+ * It is also the home calculator's page, so it carries that calculator's
+ * formula, worked example, uses and FAQ beneath the directory.
+ */
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Calculator from '../../components/Calculator.astro';
+import LocalizedCalcSections from '../../components/LocalizedCalcSections.astro';
 import { getCalculator } from '../../lib/calculators.ts';
-import { CALC_KEYS, LOCALE_META, pathFor, type Locale } from '../../i18n/config.ts';
+import { CALC_KEYS, HOME_CALCULATOR, LOCALE_META, pathFor, type Locale } from '../../i18n/config.ts';
 import { contentFor, translatedLocales } from '../../i18n/content/index.ts';
 import type { CalcPageKey } from '../../i18n/content/types.ts';
 import { ui } from '../../i18n/ui/index.ts';
@@ -18,10 +24,11 @@ const t = ui(locale);
 const content = contentFor(locale);
 const home = content.home;
 const labels = content.labels;
-const main = getCalculator('/percentage-calculator');
+const main = getCalculator(`/${HOME_CALCULATOR}`);
 const path = pathFor(locale, 'home');
 
-const ALL = CALC_KEYS as readonly CalcPageKey[];
+/** The directory lists every other calculator; this one is at the top of the page. */
+const OTHERS = CALC_KEYS.filter((key) => key !== HOME_CALCULATOR) as CalcPageKey[];
 ---
 
 <BaseLayout
@@ -70,7 +77,7 @@ const ALL = CALC_KEYS as readonly CalcPageKey[];
 
       <ul class="mt-8 grid gap-4 sm:grid-cols-2">
         {
-          ALL.map((key) => (
+          OTHERS.map((key) => (
             <li>
               <a
                 href={pathFor(locale, key)}
@@ -85,6 +92,10 @@ const ALL = CALC_KEYS as readonly CalcPageKey[];
       </ul>
     </section>
 
+    <div class="max-w-3xl">
+      <LocalizedCalcSections locale={locale} pageKey={HOME_CALCULATOR} />
+    </div>
+
     <section aria-labelledby="about-heading" class="mt-24">
       <h2 id="about-heading" class="text-display-lg">{home.aboutHeading}</h2>
       <div class="prose-site mt-5 max-w-3xl">
@@ -98,7 +109,7 @@ const ALL = CALC_KEYS as readonly CalcPageKey[];
       <h2 class="mx-auto max-w-3xl text-display-lg text-balance">{t.cta.heading}</h2>
       <p class="mx-auto mt-6 max-w-xl text-body-lg">{t.cta.lead}</p>
       <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href={pathFor(locale, 'percentage-calculator')} class="btn-on-block">{t.cta.open}</a>
+        <a href="#calculator" class="btn-on-block">{t.cta.open}</a>
         <a href={pathFor(locale, 'formulas')} class="btn-on-block">{t.cta.browse}</a>
       </div>
     </div>
