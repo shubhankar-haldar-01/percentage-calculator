@@ -12,6 +12,8 @@ import { DEFAULT_LOCALE, LOCALE_META, indexedAlternates, type Locale, type PageK
 interface Props {
   title: string;
   description: string;
+  ogTitle?: string;
+  ogDescription?: string;
   /** Site-relative path, e.g. "/discount-calculator". */
   path: string;
   noindex?: boolean;
@@ -29,6 +31,8 @@ interface Props {
 const {
   title,
   description,
+  ogTitle,
+  ogDescription,
   path,
   noindex = false,
   schema = [],
@@ -84,8 +88,8 @@ const ogAlternates = pageKey && !noindex
 {/* Open Graph */}
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={SITE.name} />
-<meta property="og:title" content={fullTitle} />
-<meta property="og:description" content={description} />
+<meta property="og:title" content={ogTitle ?? fullTitle} />
+<meta property="og:description" content={ogDescription ?? description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content={LOCALE_META[locale].og} />
 {ogAlternates.map((tag) => <meta property="og:locale:alternate" content={tag} />)}
@@ -99,8 +103,8 @@ const ogAlternates = pageKey && !noindex
 
 {/* Twitter / X */}
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={fullTitle} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:title" content={ogTitle ?? fullTitle} />
+<meta name="twitter:description" content={ogDescription ?? description} />
 <meta name="twitter:image" content={ogImage} />
 <meta name="twitter:image:alt" content={imageAlt} />
 

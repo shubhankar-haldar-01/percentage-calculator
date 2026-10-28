@@ -13,6 +13,8 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  ogTitle?: string;
+  ogDescription?: string;
   path: string;
   noindex?: boolean;
   schema?: Record<string, unknown>[];
@@ -27,6 +29,8 @@ interface Props {
 const {
   title,
   description,
+  ogTitle,
+  ogDescription,
   path,
   noindex = false,
   schema = [],
@@ -135,6 +139,8 @@ const indexable = !noindex && isIndexable(locale);
       pageKey={pageKey}
       title={title}
       description={description}
+      ogTitle={ogTitle}
+      ogDescription={ogDescription}
       path={path}
       noindex={!indexable}
       schema={allSchema}

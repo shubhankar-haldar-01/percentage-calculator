@@ -6,7 +6,7 @@ export const SITE = {
   url: 'https://prcentagecalc.com',
   /** Used as the default meta description and the WebSite schema description. */
   description:
-    'Free online percentage calculators with step-by-step working. Find a percentage of a number, percentage increase, decrease, change, difference and discounts — instantly, in your browser.',
+    'Free online percentage calculator with step-by-step working. Use our all-in-one percent calculator and percentage calculators hub for increase, grades, and discounts.',
   locale: 'en_US',
   /** Contact address on the domain the site owns. */
   email: 'hello@prcentagecalc.com',

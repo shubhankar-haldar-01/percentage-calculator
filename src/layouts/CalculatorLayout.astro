@@ -20,12 +20,25 @@ interface Props {
   calculator: CalculatorDef;
   title: string;
   description: string;
+  ogTitle?: string;
+  ogDescription?: string;
   h1: string;
   intro: string;
   currency?: boolean;
 }
 
-const { calculator, title, description, h1, intro, currency = false, pageKey, locale } = Astro.props;
+const {
+  calculator,
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  h1,
+  intro,
+  currency = false,
+  pageKey,
+  locale,
+} = Astro.props;
 
 const crumbs = [
   { label: 'Home', path: '/' },
@@ -38,6 +51,8 @@ const crumbs = [
   locale={locale}
   title={title}
   description={description}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
   path={calculator.slug}
   schema={[
     calculatorSchema({ name: calculator.name, description, path: calculator.slug }),

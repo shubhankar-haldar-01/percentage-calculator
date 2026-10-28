@@ -49,9 +49,49 @@ const examples = [
  */
 const faqs: FaqItem[] = [
   {
-    question: 'How to calculate percentage with a calculator?',
+    question: 'what is percentage?',
     answer:
-      'Divide the percentage by 100, then multiply by the number. On a basic calculator that is 20 ÷ 100 × 500 = 100, so 20% of 500 is 100. If your calculator has a % key you can press 500 × 20 % instead, which does the division for you. The calculator on this page takes both numbers at once and prints the two lines of working underneath the answer.',
+      'A percentage is a number or ratio expressed as a fraction of 100, represented by the percent symbol (%). It comes from the Latin phrase "per centum", meaning "by the hundred". Percentages provide a standardized baseline to compare proportions, shares, and relative growth across different totals without needing to compute common denominators.',
+  },
+  {
+    question: 'How do I calculate my percentage?',
+    answer:
+      'To calculate your personal percentage (such as for an exam, test score, or goal achievement), divide your achieved score by the maximum possible total and multiply by 100: (Your Score ÷ Total Score) × 100. For example, scoring 42 marks out of 50 gives (42 ÷ 50) × 100 = 84%.',
+  },
+  {
+    question: 'How to calculate the%?',
+    answer:
+      'To calculate the percent (%) of any number, divide the percentage rate by 100 to convert it into a decimal multiplier, then multiply that decimal by the total number. For example, to calculate 25% of 80: 25 ÷ 100 = 0.25, and 0.25 × 80 = 20. If you are calculating what percent one number is of another, use the proportion formula: (Part ÷ Total) × 100.',
+  },
+  {
+    question: 'How to calculate a percentage formula?',
+    answer:
+      'The foundational percentage formula is: Percentage (%) = (Part ÷ Total) × 100. To calculate with it: 1) Divide the part by the total to obtain a decimal fraction. 2) Multiply that decimal fraction by 100. 3) Append the % symbol. For example, 35 out of 140 is (35 ÷ 140) × 100 = 25%. If you know the percentage and need to find the part, use Part = (Percentage ÷ 100) × Total. To calculate the total, use Total = Part ÷ (Percentage ÷ 100).',
+  },
+  {
+    question: 'How much is 30% in 100?',
+    answer:
+      '30% in 100 is exactly 30. Because percent translates literally to "per hundred", any percentage taken of 100 is numerically identical to the percentage figure itself: (30 ÷ 100) × 100 = 30.',
+  },
+  {
+    question: 'How to calculate a percentage formula?',
+    answer:
+      'To calculate percentage change or growth between two values, use the percentage increase/decrease formula: ((New Value − Original Value) ÷ Original Value) × 100. Subtract the starting value from the new value, divide by the starting value, and multiply by 100. A positive result indicates a percentage increase, while a negative result represents a percentage decrease.',
+  },
+  {
+    question: 'What formula is 2 * pi * r?',
+    answer:
+      'The formula 2 * pi * r (or C = 2πr) calculates the circumference (perimeter) of a circle, where r represents the radius and π (pi) is approximately 3.14159. In applied percentage problems and geometry, it is commonly used to calculate percentage growth in circular perimeters when a radius changes, or in circumference-based body fat percentage formulas.',
+  },
+  {
+    question: 'What is 80% of 100?',
+    answer:
+      '80% of 100 is 80. Since a percentage represents parts per hundred, 80 percent of 100 is calculated as (80 ÷ 100) × 100 = 80.',
+  },
+  {
+    question: 'how to calculate percentage in calculator?',
+    answer:
+      'On a standard handheld or smartphone calculator: 1) Multiply the base number by the percentage rate, then press the % key (e.g. 500 × 20 % = 100). 2) If your calculator does not have a % key, divide the percentage by 100 and multiply by the base number (20 ÷ 100 × 500 = 100). On our free online percentage calculator, enter both values into the input fields to get the answer and complete step-by-step arithmetic instantly.',
   },
   {
     question: 'What is a percentage increase calculator?',
@@ -59,44 +99,9 @@ const faqs: FaqItem[] = [
       'It measures how much a value has grown relative to where it started, using ((New − Original) ÷ Original) × 100. A salary going from 45,000 to 52,000 is a 15.56% increase. The original value is the reference, which is why the same 50 rise is a 50% increase on 100 but only a 5% increase on 1,000.',
   },
   {
-    question: 'How to use percentage on a calculator?',
-    answer:
-      'The % key divides by 100, so what it does depends on the operator in front of it. 500 × 20 % gives 100, which is 20% of 500. On most calculators 500 + 20 % gives 600, adding 20% rather than adding 20. Because that second behaviour varies between models, this page writes the arithmetic out instead of relying on a key.',
-  },
-  {
-    question: 'How do I calculate what percentage of a number?',
-    answer:
-      'To find what percentage one number is of another, divide the part by the total and multiply by 100. For 25 out of 200: 25 ÷ 200 = 0.125, and 0.125 × 100 = 12.5%. The smaller quantity goes on top — if the answer comes out above 100%, either the two numbers are the wrong way round or the part genuinely exceeds the total.',
-  },
-  {
     question: 'What is what percent of what?',
     answer:
       'It is shorthand for the three questions percentages ask. "What is X% of Y" finds a part. "X is what percent of Y" finds the percentage. "X is Y% of what" finds the total. Three quantities are involved — part, total and percentage — and you always know two of them. Spotting which one is missing tells you which calculation to run, and that recognition is where most wrong answers come from, not the arithmetic.',
-  },
-  {
-    question: 'How is percent (%) calculated?',
-    answer:
-      'Percent means "per hundred", so a percentage is a fraction written with 100 underneath. The base formula is (Part ÷ Total) × 100. Every other percentage formula is that one rearranged to solve for a different unknown: multiply to find a part, divide to find a total, and divide then multiply by 100 to find the percentage itself.',
-  },
-  {
-    question: 'What is 60% of an amount?',
-    answer:
-      'Multiply the amount by 0.6, since 60 ÷ 100 = 0.6. So 60% of 250 is 250 × 0.6 = 150. To do it mentally, halve the amount for 50% (125) and move the decimal point one place for 10% (25), then add the two: 150.',
-  },
-  {
-    question: 'How to calculate % of total?',
-    answer:
-      'Divide the part by the total and multiply by 100. If 79 sales came from 1,600 visits, that is 79 ÷ 1,600 × 100 = 4.94% of the total. When you are combining several groups, add the raw counts first and divide once — averaging the individual percentages gives a different and usually wrong answer unless every group is the same size.',
-  },
-  {
-    question: 'How do you use a percentage calculator?',
-    answer:
-      'Choose the form that matches your question, type two numbers, and press Calculate or the Enter key. The answer appears with the formula, your own numbers substituted into it, and each step written in plain words, so you can check the result instead of taking it on trust. Nothing you type is sent to a server.',
-  },
-  {
-    question: 'How do I calculate the original number from a percentage?',
-    answer:
-      'Divide the part by the percentage written as a decimal. If 50 is 20% of a number, 20% is 0.2, and 50 ÷ 0.2 = 250. This is how you recover a price before a discount or an amount before tax — and note that a total which already includes 20% tax is 120% of the original, so you divide by 1.2 rather than subtracting 20%, which would give a smaller, wrong answer.',
   },
   {
     question: 'What is the difference between percentage change and percentage difference?',
@@ -131,15 +136,17 @@ const faqs: FaqItem[] = [
 ---
 
 <BaseLayout
-  title="Free Percentage Calculators with Step-by-Step Working"
-  description="Calculate percentages online for free with step-by-step working. Explore percentage increase, decrease, difference, grades, tax, discounts and more."
+  title="Percentage Calculator — Free Online Percent Calculators Hub"
+  description="Free online percentage calculator with step-by-step working. Use our all-in-one percent calculator and percentage calculators hub for increase, grades, and discounts."
+  ogTitle="Percentage Calculator — Free Online Percent Calculators Hub"
+  ogDescription="Free online percentage calculator with step-by-step working. Use our all-in-one percent calculator and percentage calculators hub for increase, grades, and discounts."
   path="/"
   pageKey="home"
   schema={[
     calculatorSchema({
       name: 'Percentage Calculator',
       description:
-        'Free online percentage calculator that shows step-by-step working for percentage of a number, percentage increase, decrease, change, difference and discounts.',
+        'Free online percentage calculator and percent calculators hub that shows step-by-step working for percentage of a number, percentage increase, decrease, change, difference and discounts.',
       path: '/',
     }),
   ]}
@@ -346,155 +353,153 @@ const faqs: FaqItem[] = [
       and where each one is used. Written to be read, not to hit a density.
     */}
     <section aria-labelledby="about-heading" class="mt-24">
-      <h2 id="about-heading" class="text-display-lg">About these percentage calculators</h2>
+      <h2 id="about-heading" class="text-display-lg">About this percentage calculators hub</h2>
 
       <div class="prose-site mt-5">
         <p>
-          A percentage calculator turns an awkward piece of arithmetic into a single answer. You
-          know two numbers, you need the third, and you need it before the conversation moves on —
-          the tip on a restaurant bill, the real saving on a sale sticker, the pay rise you have just
-          been offered, the mark you actually scored. These are free online percentage calculators
-          built for exactly that moment: type two numbers, press Calculate, and read the answer with
-          the working underneath it.
+          A <strong>percentage calculator</strong> turns everyday mathematical questions into immediate,{' '}
+          trustworthy answers. Whether you are balancing a personal budget, verifying a seasonal discount,{' '}
+          determining a salary raise, analyzing team standings, or tracking health milestones, percentages{' '}
+          are the universal language of comparison. This website is designed as a comprehensive{' '}
+          <strong>percentage calculators hub</strong> — an all-in-one suite of fourteen specialized tools{' '}
+          that show not just the final result, but the complete formula and step-by-step arithmetic behind{' '}
+          every answer.
         </p>
         <p>
-          The reason for showing the working is simple. An answer you cannot check is an answer you
-          have to trust blindly, and percentages are the one piece of everyday maths people most
-          often get subtly wrong. Every result here comes with the formula, your own numbers
-          substituted into it, and each step written in plain language — so you can confirm the
-          calculator did what you meant, and repeat it yourself next time.
+          Unlike traditional desktop accessories or complicated spreadsheet formulas, an online{' '}
+          <strong>percent calculator</strong> provides instant clarity with zero barrier to entry. Every{' '}
+          calculation executes directly inside your web browser in real time. Nothing you type is ever{' '}
+          transmitted across a network, no accounts or sign-ups are requested, and your numbers remain{' '}
+          completely private on your own device.
         </p>
 
-        <h3>The three questions behind almost every percentage</h3>
+        <h3>Everyday arithmetic made simple with a modern percent calculator</h3>
         <p>
-          Percentage problems look endlessly varied, but nearly all of them involve the same three
-          quantities: a <strong>part</strong>, a <strong>whole</strong>, and the{' '}
-          <strong>percentage</strong> connecting them. You always know two. Identifying which one is
-          missing tells you which calculation you need, and that identification — not the arithmetic
-          — is where most mistakes happen.
+          Percentages can feel deceivingly simple until an unexpected sign, a compounding figure, or a{' '}
+          missing total leads to an incorrect decision. The fundamental strength of a dedicated{' '}
+          <strong>percentage calculator</strong> is transparency: an answer you cannot verify is an answer{' '}
+          you are forced to trust blindly. By laying out the underlying mathematical steps in plain language{' '}
+          with your exact figures substituted, this tool allows students, educators, professionals, and{' '}
+          consumers to confirm accuracy in seconds and learn the methodology for future use.
+        </p>
+
+        <h3>The three fundamental questions behind every percentage calculation</h3>
+        <p>
+          Almost all everyday percentage problems revolve around three core quantities: a{' '}
+          <strong>part</strong>, a <strong>whole</strong>, and the <strong>percentage</strong> connecting{' '}
+          them. In any practical scenario, you invariably know two of these numbers and need to solve for{' '}
+          the third. Misidentifying which value is missing is where the vast majority of mathematical{' '}
+          mistakes happen:
         </p>
         <ul>
           <li>
-            <strong>What is X% of Y?</strong> You have the percentage and the whole, and want the
-            part. This is tips, commission, tax amounts and shares of a budget.
+            <strong>What is X% of Y? (Finding the Part):</strong> When you know the percentage and base{' '}
+            value, solve for the portion. Common examples include restaurant tips, sales taxes, and commissions.{' '}
+            The formula divides the percentage by 100 and multiplies by the total.
           </li>
           <li>
-            <strong>X is what percent of Y?</strong> You have the part and the whole, and want the
-            percentage. This turns 38 out of 50 into 76% —
-            <a href="/what-percent-is-x-of-y">calculate it here</a>.
+            <strong>X is What Percent of Y? (Finding the Percentage):</strong> When you know both the portion{' '}
+            and the whole, you want to express the relationship on a standardized scale of 100. This turns a{' '}
+            test score like 42 out of 50 into a comparable 84% —{' '}
+            <a href="/what-percent-is-x-of-y">calculate it with our dedicated tool</a>.
           </li>
           <li>
-            <strong>X is Y% of what number?</strong> You have the part and the percentage, and want
-            the whole. This is how you{' '}
-            <a href="/x-is-y-percent-of-what">recover an original price</a> from a deposit or a
+            <strong>X is Y% of What Number? (Finding the Whole):</strong> When you have a portion and know its{' '}
+            percentage representation, work backward to reveal the original whole. This is the exact math{' '}
+            required to{' '}
+            <a href="/x-is-y-percent-of-what">recover an original retail price</a> from a deposit or a{' '}
             post-discount total.
           </li>
         </ul>
         <p>
-          All three live in the <a href="#calculator">calculator at the top of this page</a>,
-          switchable with a single tap, so you do not have to work out which page you need before
-          you can start.
+          Each of these three operations is integrated into the{' '}
+          <a href="#calculator">percentage calculator at the top of this page</a>, enabling you to toggle{' '}
+          between modes seamlessly without leaving the screen.
         </p>
 
-        <h3>Measuring change: increase, decrease, difference</h3>
+        <h3>Measuring growth and reductions: the increase percentage calculator</h3>
         <p>
-          The second family of calculations compares two numbers rather than relating a part to a
-          whole. These are the ones that get muddled most often, because three different formulas
-          all sound like they are answering the same question.
+          Comparing numbers across time requires measuring relative movement rather than simple arithmetic{' '}
+          differences. A dedicated <a href="/percentage-increase-calculator">increase percentage calculator</a>{' '}
+          determines the exact rate of expansion relative to the starting baseline. For instance, an increase{' '}
+          from 100 to 150 represents a 50% increase, because the growth of 50 is evaluated against the original{' '}
+          100. In corporate finance, human resources, and real estate, using an{' '}
+          <strong>increase percentage calculator</strong> ensures that salary adjustments, rent increments, and{' '}
+          quarterly revenue metrics are fairly evaluated against inflation and market standards.
         </p>
         <p>
-          An <a href="/percentage-increase-calculator">increase percentage calculator</a> measures
-          growth against where you started: 100 to 150 is a 50% increase. A{' '}
-          <a href="/percentage-decrease-calculator">percentage decrease</a> does the same in the
-          other direction. The <a href="/percentage-change-calculator">percentage change
-          calculator</a> handles either, and states which one happened rather than leaving you to
-          interpret a minus sign.
-        </p>
-        <p>
-          <a href="/percentage-difference-calculator">Percentage difference</a> is the one that is
-          genuinely different. It compares two values against their <em>average</em>, so neither is
-          treated as the baseline and swapping them gives the same answer. Use change when one value
-          came before the other; use difference when they are simply two readings. On the values 100
-          and 120, change says 20% and difference says 18.18% — both correct, answering different
-          questions.
+          Conversely, when values decline, a{' '}
+          <a href="/percentage-decrease-calculator">percentage decrease calculator</a> quantifies reductions{' '}
+          like retail markdowns and depreciation. For two-way trends, our{' '}
+          <a href="/percentage-change-calculator">percentage change calculator</a> shows both direction{' '}
+          and magnitude, while the{' '}
+          <a href="/percentage-difference-calculator">percentage difference calculator</a> compares two{' '}
+          standalone values against their average for symmetric, unbiased results.
         </p>
 
-        <h3>Percentage calculators for specific jobs</h3>
+        <h3>Academic &amp; statistical tools: grade, test, and average percentage calculators</h3>
         <p>
-          Most percentage questions arrive wearing the vocabulary of a particular task, so each one
-          has its own page with the right field labels, the right secondary figures and the
-          conventions that apply to it:
-        </p>
-        <ul>
-          <li>
-            The <a href="/grade-percentage-calculator">grade percentage calculator</a> converts marks
-            into a percentage and a letter grade. It doubles as a test percentage calculator — the
-            arithmetic is identical whether the paper was a quiz or a final.
-          </li>
-          <li>
-            The <a href="/average-percentage-calculator">average percentage calculator</a> averages a
-            list of percentages, and weights them by group size. Averaging percentages from
-            differently-sized groups without weighting is one of the most common statistical errors
-            there is, so it shows both answers.
-          </li>
-          <li>
-            The <a href="/win-percentage-calculator">win percentage calculator</a> turns a win–loss
-            record into a win rate, counting ties as half a win the way league tables do.
-          </li>
-          <li>
-            The <a href="/tax-percentage-calculator">tax percentage calculator</a> adds tax, strips
-            it back out of a total, or works out the rate you were charged — for sales tax, VAT or
-            GST at any rate you enter.
-          </li>
-          <li>
-            The <a href="/discount-calculator">discount calculator</a> shows the money off and the
-            price you actually pay, and explains why stacked discounts never add up the way the sign
-            implies.
-          </li>
-        </ul>
-
-        <h3>Health and fitness percentages</h3>
-        <p>
-          Two more tools cover the percentages people track about themselves. The{' '}
-          <a href="/weight-loss-percentage-calculator">weight loss percentage calculator</a> works
-          out what share of a starting weight has gone, which is the fair way to compare progress
-          between people who started at different weights — and the reason challenges are scored
-          this way rather than in raw pounds. The{' '}
-          <a href="/body-fat-percentage-calculator">body fat percentage calculator</a> estimates body
-          fat from tape measurements using the US Navy method, in centimetres or inches.
+          In educational environments, evaluating student performance requires specialized scoring tools.{' '}
+          Our <a href="/grade-percentage-calculator">grade percentage calculator</a> transforms raw scores{' '}
+          into standardized percentages and corresponding letter grades. It functions equally well as a{' '}
+          comprehensive <strong>test percentage calculator</strong>, whether you are evaluating a quick{' '}
+          classroom quiz, a standardized midterm, or an end-of-year university exam.
         </p>
         <p>
-          Both are arithmetic tools, not clinical ones. They are useful for tracking a direction of
-          travel over weeks and months; they are not a substitute for advice from a doctor or a
-          body-composition scan, and neither page pretends otherwise.
+          When consolidating scores or survey results across distinct cohorts, many people fall into the trap{' '}
+          of averaging percentages directly. However, scoring 90% on a 10-point quiz and 60% on a 100-point{' '}
+          exam does not yield a 75% average; the true weighted performance is 62.7%. Our{' '}
+          <a href="/average-percentage-calculator">average percentage calculator</a> solves this dilemma by{' '}
+          presenting both the simple unweighted average and the weighted average percentage based on group{' '}
+          size, preventing one of the most widespread statistical errors in business and academia.
         </p>
 
-        <h3>Built to be quick, honest and private</h3>
+        <h3>Sports &amp; competitive metrics: win &amp; winning percentage calculators</h3>
         <p>
-          Speed matters more than features on a tool like this. You arrive from a search, you need
-          one number, and you should be gone within seconds. Every page is static, the calculator
-          loads with the page rather than after it, and the whole thing weighs a few kilobytes of
-          JavaScript — so it works on a slow phone connection as well as it does on a laptop.
+          Tracking athletic standings and competitive success demands accurate win-loss ratios. Our{' '}
+          <a href="/win-percentage-calculator">win percentage calculator</a> enables sports analysts,{' '}
+          coaches, fantasy league players, and gamers to evaluate performance records effortlessly. Also known{' '}
+          as a <strong>winning percentage calculator</strong>, this tool handles ties using professional sports{' '}
+          conventions (such as NFL and NHL standards), crediting each draw as half a win rather than ignoring{' '}
+          it. Whether assessing seasonal records with our winning percentage calculator or evaluating sales close{' '}
+          rates, this tool provides precise decimal averages and percentage rates instantly.
+        </p>
+
+        <h3>Health, body composition, and fitness percentage calculators</h3>
+        <p>
+          Tracking physical fitness and personal wellness is another area where percentages offer much greater{' '}
+          insight than raw measurements. Our{' '}
+          <a href="/body-fat-percentage-calculator">body fat percentage calculator</a> utilizes the{' '}
+          scientifically validated US Navy circumference method to estimate body composition from simple tape{' '}
+          measurements of the neck, waist, hips, and height. As a convenient{' '}
+          <strong>fat percentage calculator</strong>, it categorizes results into established fitness and health{' '}
+          bands for both men and women without requiring costly clinical scans.
         </p>
         <p>
-          Everything here runs as a percentage calculator online — nothing to install, no account to
-          create, and no waiting on a server. It is also honest about precision: when a result is a
-          repeating decimal it is marked with ≈ rather than presented as exact, and the calculation
-          behind it always ends at the figure shown. Invalid input produces a plain-English explanation rather than <code>NaN</code>, and
-          the cases that genuinely have no answer — a percentage of zero, a change from zero — say so
-          instead of returning something misleading.
+          Similarly, when embarking on a wellness program or participating in community challenges, raw scale{' '}
+          weight can be deceptive. Losing 15 pounds from a 150-pound starting point represents 10% of total mass,{' '}
+          whereas the same 15 pounds from a 300-pound starting point represents only 5%. Our{' '}
+          <a href="/weight-loss-percentage-calculator">weight loss percentage calculator</a> — whether you are{' '}
+          searching for a fitness and weight loss percentage calculator (often searched as an{' '}
+          <strong>fweight loss percentage calculator</strong>) or a general progress tracker — normalizes results{' '}
+          across participants of differing builds, ensuring an equitable evaluation of dedication and milestone{' '}
+          achievements.
+        </p>
+
+        <h3>Why choose our percentage calculators hub? Fast, private, and verified</h3>
+        <p>
+          As a purpose-built <strong>percentage calculators hub</strong>, our platform brings together 14{' '}
+          mathematically verified tools in one lightweight, intuitive interface. Every calculator is static,{' '}
+          responsive, and engineered for maximum speed on mobile devices and desktop computers alike. Because the{' '}
+          arithmetic runs purely in your browser via client-side JavaScript, your financial figures, test scores,{' '}
+          and personal health metrics remain strictly confidential. Explore the tools above, verify your figures{' '}
+          with complete confidence, and make percentage calculations effortless today.
         </p>
         <p>
-          Nothing you type is sent anywhere. Every calculation runs in your own browser, there is no
-          account, and even the fonts are served from this domain rather than a third party. Your recent calculations are saved in your browser alone, and the Clear
-          button removes them.
-        </p>
-        <p>
-          If you want the reasoning rather than the answer, the{' '}
-          <a href="/how-to-calculate-percentage">guide to calculating percentages</a> covers the
-          method and the mental shortcuts, and the{' '}
-          <a href="/percentage-formula">formula reference</a> sets out every formula side by side
-          with the distinctions between them made explicit.
+          If you want the mathematical theory and step-by-step methods rather than just the final answer, the{' '}
+          <a href="/how-to-calculate-percentage">guide to calculating percentages</a> covers the core arithmetic{' '}
+          and mental shortcuts, while our comprehensive <a href="/percentage-formula">percentage formula reference</a>{' '}
+          sets out every formula side by side with the distinctions between them made explicit.
         </p>
       </div>
     </section>
