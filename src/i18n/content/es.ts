@@ -226,7 +226,7 @@ export const contentEs: LocaleContent = {
       ],
     },
     'what-percent': {
-      title: '¿Qué porcentaje es X de Y?',
+      title: '¿Qué porcentaje es X de Y? — Calculadora online',
       description: 'Averigua qué porcentaje es un número de otro. Introduce la parte y el total para obtener el porcentaje al instante, con la división y la multiplicación a la vista.',
       h1: '¿Qué porcentaje es X de Y?',
       intro: 'Convierte una nota, una parte o una porción en un porcentaje. Introduce la parte y el total al que pertenece: este es el cálculo que hay detrás de las notas de examen, los porcentajes de avance y la cuota de mercado.',

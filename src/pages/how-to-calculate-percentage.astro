@@ -32,17 +32,42 @@ const faqs: FaqItem[] = [
       'Add up all the marks you scored, add up all the marks available, then divide one by the other and multiply by 100. Averaging the individual subject percentages gives a different answer whenever the papers have different totals.',
   },
 ];
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Calculate a Percentage',
+  description: 'Step-by-step method to calculate percentages, whether finding the part, the percentage, or the whole.',
+  step: [
+    {
+      '@type': 'HowToStep',
+      name: 'Identify the missing quantity',
+      text: 'Determine whether you are solving for the part (X% of Y), the percentage (X is what % of Y), or the base whole (X is Y% of what).',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Convert percentage to decimal',
+      text: 'Divide the percentage by 100 to convert it into a decimal multiplier (for example, 25% becomes 0.25).',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Perform the arithmetic',
+      text: 'Multiply or divide according to the identified formula to reach the final result.',
+    },
+  ],
+};
 ---
 
 <ContentLayout
   pageKey="how-to"
-  title="How to Calculate a Percentage"
-  description="Learn how to calculate percentages step by step, including mental shortcuts, worked examples and the mistakes that catch people out."
+  title="How to Calculate a Percentage — Step-by-Step Guide"
+  description="Learn how to calculate percentages with step-by-step methods, mental math shortcuts, decimal conversion, worked examples, and common pitfalls to avoid."
   path="/how-to-calculate-percentage"
   h1="How to calculate a percentage"
   crumbLabel="How to calculate percentage"
   ogType="article"
   modified="2026-09-13"
+  schema={[howToSchema]}
   intro="A practical guide to percentages: what they actually mean, how to work them out on paper or in your head, and the handful of mistakes that produce most wrong answers."
 >
   <div class="prose-site">

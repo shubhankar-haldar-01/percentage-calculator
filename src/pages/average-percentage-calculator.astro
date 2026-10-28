@@ -40,8 +40,8 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="average"
   calculator={calculator}
-  title="Average Percentage Calculator"
-  description="Free average percentage calculator. Average a list of percentages and weight them by group size — the figure that is actually correct — side by side."
+  title="Average Percentage Calculator — Simple & Weighted Percent"
+  description="Calculate simple and weighted average percentages step-by-step. Discover why averaging percentages without weights creates statistical errors in grades and data."
   h1="Average Percentage Calculator"
   intro="Average a list of percentages in one step — and see the weighted average alongside it. Averaging percentages from differently-sized groups is one of the most common statistical mistakes there is, so this calculator shows both numbers rather than letting you pick the wrong one by accident."
 >
@@ -62,6 +62,18 @@ const faqs: FaqItem[] = [
         equal in importance to a 90-mark exam. Percentages only average directly when the groups
         behind them are the same size. Whenever they are not, enter the group sizes and use the
         weighted figure.
+      </p>
+
+      <h3>Business case study: customer satisfaction ratings</h3>
+      <p>
+        Consider a retail company comparing customer satisfaction (CSAT) across two store locations:
+      </p>
+      <ul>
+        <li><strong>Location A:</strong> 95% satisfaction from 20 customer reviews (19 positive reviews).</li>
+        <li><strong>Location B:</strong> 70% satisfaction from 1,000 customer reviews (700 positive reviews).</li>
+      </ul>
+      <p>
+        A naive simple average gives <code>(95% + 70%) ÷ 2 = 82.5%</code>. But in reality, across all 1,020 surveyed shoppers, 719 were satisfied — meaning the true aggregate customer satisfaction is <code>719 ÷ 1,020 ≈ 70.49%</code>. Relying on an unweighted average overstates customer sentiment by more than 12 percentage points!
       </p>
     </div>
   </section>

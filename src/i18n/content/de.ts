@@ -446,7 +446,7 @@ export const contentDe: LocaleContent = {
       ],
     },
     tax: {
-      title: 'Steuer-Prozentrechner',
+      title: 'Steuer-Prozentrechner — Mehrwertsteuer berechnen & abziehen',
       description: 'Steuer auf einen Preis aufschlagen, aus einem Bruttobetrag herausrechnen oder den berechneten Satz ermitteln – für Mehrwertsteuer und jeden Satz.',
       h1: 'Steuer-Prozentrechner',
       intro: 'Drei Steuerrechnungen in einer: Steuer auf einen Nettobetrag aufschlagen, aus einem Bruttobetrag zurückrechnen oder den tatsächlich berechneten Satz ermitteln. Du gibst deinen eigenen Satz ein, es funktioniert also für die Mehrwertsteuer in jedem Land.',

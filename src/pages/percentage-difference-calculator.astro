@@ -40,8 +40,8 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="difference"
   calculator={calculator}
-  title="Percentage Difference Calculator"
-  description="Calculate the percentage difference between two values, measured against their average — and see exactly how it differs from percentage change."
+  title="Percentage Difference Calculator — Symmetric Percent Gap"
+  description="Calculate the symmetric percentage difference between two values measured against their average. See side-by-side comparison with percentage change."
   h1="Percentage Difference Calculator"
   intro="Compare two values where neither came first. Percentage difference measures the gap against the average of the two values' magnitudes, which makes it symmetric — swap the inputs and the answer is unchanged."
 >
@@ -65,12 +65,47 @@ const faqs: FaqItem[] = [
     <h2 id="when-heading" class="text-display-lg">When percentage difference is the right question</h2>
     <div class="prose-site mt-4">
       <p>
-        The test is simple: <strong
-          >does one of your two values come before the other?</strong
-        > If it does, you want <a href="/percentage-change-calculator">percentage change</a>. If the
+        The test is simple: <strong>does one of your two values come before the other?</strong> If it does, you want{' '}
+        <a href="/percentage-change-calculator">percentage change</a>. If the
         two values are simply two readings, two quotes or two options sitting side by side, percentage
         difference is the honest comparison.
       </p>
+
+      <div class="overflow-x-auto rounded-lg border border-hairline not-prose my-6">
+        <table class="w-full border-collapse text-left">
+          <caption class="sr-only">Comparison matrix: Percentage Difference versus Percentage Change</caption>
+          <thead>
+            <tr class="border-b border-hairline bg-surface-soft">
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Property</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Percentage Difference</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Percentage Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Baseline denominator</th>
+              <td class="px-6 py-3 text-body">Average of both values: (A + B) ÷ 2</td>
+              <td class="px-6 py-3 text-body">Starting value only: Original</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Directional symmetry</th>
+              <td class="px-6 py-3 text-body">Symmetric (swapping A and B gives identical %)</td>
+              <td class="px-6 py-3 text-body">Asymmetric (+25% rise ≠ −20% drop)</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Sign of result</th>
+              <td class="px-6 py-3 text-body">Always positive magnitude (|A − B|)</td>
+              <td class="px-6 py-3 text-body">Positive (increase) or negative (decrease)</td>
+            </tr>
+            <tr class="last:border-0">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Best use case</th>
+              <td class="px-6 py-3 text-body">Comparing two peers (quotes, product weights, lab tests)</td>
+              <td class="px-6 py-3 text-body">Tracking time periods (sales growth, inflation, weight loss)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <ul>
         <li>
           <strong>Two quotes for the same job</strong> — a builder at $4,200 and another at $3,800.

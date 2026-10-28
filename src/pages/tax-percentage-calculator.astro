@@ -40,8 +40,8 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="tax"
   calculator={calculator}
-  title="Tax Percentage Calculator"
-  description="Free tax percentage calculator — add tax, remove tax from a total, or find the rate you were charged. Works for sales tax, VAT and GST at any rate."
+  title="Tax Percentage Calculator — Add or Remove VAT & Sales Tax"
+  description="Calculate sales tax, VAT, and GST with ease. Add tax to net amounts, remove tax from gross totals, or determine effective tax rates with complete working."
   h1="Tax Percentage Calculator"
   intro="Three tax calculations in one: add tax to a net amount, work backwards from a tax-inclusive total, or find the rate you were actually charged. Enter your own rate, so it works for sales tax, VAT and GST anywhere."
   currency
@@ -69,6 +69,63 @@ const faqs: FaqItem[] = [
         substituted="((107.5 − 100) ÷ 100) × 100 = 7.5%"
         caption="Finding the rate from a receipt that shows both figures."
       />
+    </div>
+
+    <h3 class="mt-12 text-headline">Standard international VAT and sales tax benchmarks</h3>
+    <p class="mt-3 max-w-2xl text-body">
+      Because sales tax and consumption tax rates vary across borders, here are benchmark rates commonly used around the world:
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-lg border border-hairline">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">International sales tax and VAT benchmark rates</caption>
+        <thead>
+          <tr class="border-b border-hairline bg-surface-soft">
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Region</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Tax System</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Standard Rate</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Pricing Convention</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">United States</th>
+            <td class="px-6 py-3 text-body">State & Local Sales Tax</td>
+            <td class="numeric px-6 py-3 text-body">4% to 10% (varies by city)</td>
+            <td class="px-6 py-3 text-body">Added at register (pre-tax on shelf)</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">United Kingdom</th>
+            <td class="px-6 py-3 text-body">VAT</td>
+            <td class="numeric px-6 py-3 text-body">20% (reduced 5%)</td>
+            <td class="px-6 py-3 text-body">Included on consumer price tag</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">European Union</th>
+            <td class="px-6 py-3 text-body">VAT (MwSt, TVA, IVA)</td>
+            <td class="numeric px-6 py-3 text-body">19% (DE) to 27% (HU)</td>
+            <td class="px-6 py-3 text-body">Included on consumer price tag</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Canada</th>
+            <td class="px-6 py-3 text-body">GST / HST / PST</td>
+            <td class="numeric px-6 py-3 text-body">5% to 15%</td>
+            <td class="px-6 py-3 text-body">Added at register (pre-tax on shelf)</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Australia & New Zealand</th>
+            <td class="px-6 py-3 text-body">GST</td>
+            <td class="numeric px-6 py-3 text-body">10% (AU) / 15% (NZ)</td>
+            <td class="px-6 py-3 text-body">Included on consumer price tag</td>
+          </tr>
+          <tr class="last:border-0">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Japan</th>
+            <td class="px-6 py-3 text-body">Consumption Tax</td>
+            <td class="numeric px-6 py-3 text-body">10% (reduced 8%)</td>
+            <td class="px-6 py-3 text-body">Included on consumer price tag</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 

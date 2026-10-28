@@ -22,9 +22,11 @@ interface Props {
   ogType?: 'website' | 'article';
   /** ISO date for article:modified_time. */
   modified?: string;
+  /** Extra JSON-LD schema objects to embed. */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description, path, h1, intro, crumbLabel, updated, ogType, modified, pageKey, locale } = Astro.props;
+const { title, description, path, h1, intro, crumbLabel, updated, ogType, modified, pageKey, locale, schema = [] } = Astro.props;
 
 const crumbs = [
   { label: 'Home', path: '/' },
@@ -38,7 +40,7 @@ const crumbs = [
   title={title}
   description={description}
   path={path}
-  schema={[breadcrumbSchema(crumbs)]}
+  schema={[breadcrumbSchema(crumbs), ...schema]}
   ogType={ogType}
   modified={modified}
 >

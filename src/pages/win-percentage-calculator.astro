@@ -34,14 +34,19 @@ const faqs: FaqItem[] = [
     answer:
       'The same way. Wins over total attempts works for sales pitches won, matches in a game, bids accepted or trades closed in profit — anything with a clean win-or-lose outcome.',
   },
+  {
+    question: 'How does win percentage differ from points percentage in hockey or soccer?',
+    answer:
+      'Soccer awards 3 points for a win and 1 for a draw, so table standings depend on total points rather than pure win rate. The NHL awards 2 points for a win and 1 point for an overtime or shootout loss, calculating points percentage as Points ÷ (2 × Games Played). In contrast, standard win percentage treats a tie as exactly 0.5 of a win.',
+  },
 ];
 ---
 
 <CalculatorLayout
   pageKey="win"
   calculator={calculator}
-  title="Win Percentage Calculator for Win–Loss Records"
-  description="Calculate a team or player record with our winning percentage calculator. Accurately handles ties, win rate, and step-by-step arithmetic."
+  title="Win Percentage Calculator — Standings & Win Rate"
+  description="Calculate win percentage from wins, losses, and ties. See standard sports league standings formulas for NFL, MLB, NHL, and competitive gaming."
   ogTitle="Winning Percentage Calculator — Accurate Win Rate & Ties"
   ogDescription="Calculate win rates with our winning percentage calculator. Supports wins, losses, and ties with step-by-step math."
   h1="Win Percentage Calculator"
@@ -65,6 +70,46 @@ const faqs: FaqItem[] = [
         substituted="((10 + 1) ÷ 17) × 100 = 64.71%"
         caption="The standard convention when draws are possible."
       />
+    </div>
+
+    <h3 class="mt-12 text-headline">How major sports leagues handle ties</h3>
+    <p class="mt-3 max-w-2xl text-body">
+      Different professional sports organizations apply distinct rules when tabulating league standings:
+    </p>
+
+    <div class="mt-6 overflow-hidden rounded-lg border border-hairline">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">Sports league tie rules and standings formulas</caption>
+        <thead>
+          <tr class="border-b border-hairline bg-surface-soft">
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">League / Sport</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Standings Formula</th>
+            <th scope="col" class="px-6 py-4 text-body-lg font-strong">Tie / Draw Treatment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">NFL (American Football)</th>
+            <td class="px-6 py-3 text-body">(W + 0.5 × T) ÷ Total Games</td>
+            <td class="px-6 py-3 text-body">Tie counted as 1/2 win and 1/2 loss</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">MLB / NBA</th>
+            <td class="px-6 py-3 text-body">Wins ÷ Games Played</td>
+            <td class="px-6 py-3 text-body">No ties (overtime or extra innings played)</td>
+          </tr>
+          <tr class="border-b border-hairline">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">NHL (Ice Hockey)</th>
+            <td class="px-6 py-3 text-body">Points ÷ (2 × Games Played)</td>
+            <td class="px-6 py-3 text-body">Win = 2 pts, Overtime Loss = 1 pt</td>
+          </tr>
+          <tr class="last:border-0">
+            <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">Soccer (EPL, MLS, FIFA)</th>
+            <td class="px-6 py-3 text-body">Total Points (3 × W + D)</td>
+            <td class="px-6 py-3 text-body">Win = 3 pts, Draw = 1 pt, Loss = 0 pts</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 

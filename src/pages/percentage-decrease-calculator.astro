@@ -39,8 +39,8 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="decrease"
   calculator={calculator}
-  title="Percentage Decrease Calculator"
-  description="Calculate the percentage decrease between two values with full step-by-step working. Useful for price cuts, falling costs, reduced usage and declining figures."
+  title="Percentage Decrease Calculator — Calculate Percent Drop"
+  description="Calculate the percentage decrease between two values with step-by-step arithmetic. See formula, examples, and the asymmetry of reversing percentage drops."
   h1="Percentage Decrease Calculator"
   intro="Find out how far a value has fallen in percentage terms. Enter the original and the new value, and the calculator shows the size of the drop and how it was worked out."
 >
@@ -73,6 +73,60 @@ const faqs: FaqItem[] = [
         answer="30% decrease"
         href="/percentage-decrease-calculator?original=180&final=126"
       />
+    </div>
+  </section>
+
+  <section aria-labelledby="asymmetry-heading" class="mt-24">
+    <h2 id="asymmetry-heading" class="text-display-lg">Reversing a decrease: the mathematical asymmetry</h2>
+    <div class="prose-site mt-4">
+      <p>
+        A common trap is assuming that recovering from a percentage drop takes the same percentage rise. Because the fall is calculated from a larger starting base and the subsequent recovery starts from a smaller reduced base, you always need a larger percentage gain to get back to even:
+      </p>
+
+      <div class="overflow-x-auto rounded-lg border border-hairline not-prose my-6">
+        <table class="w-full border-collapse text-left">
+          <caption class="sr-only">Percentage drop and corresponding recovery percentage needed</caption>
+          <thead>
+            <tr class="border-b border-hairline bg-surface-soft">
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Percentage Decrease</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Required Increase to Break Even</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Starting with $100</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">10% drop</th>
+              <td class="numeric px-6 py-3 text-body">+11.11%</td>
+              <td class="px-6 py-3 text-body">$90.00 → needs +$10.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">20% drop</th>
+              <td class="numeric px-6 py-3 text-body">+25.00%</td>
+              <td class="px-6 py-3 text-body">$80.00 → needs +$20.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">25% drop</th>
+              <td class="numeric px-6 py-3 text-body">+33.33%</td>
+              <td class="px-6 py-3 text-body">$75.00 → needs +$25.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">33.33% drop</th>
+              <td class="numeric px-6 py-3 text-body">+50.00%</td>
+              <td class="px-6 py-3 text-body">$66.67 → needs +$33.33</td>
+            </tr>
+            <tr class="last:border-0">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">50% drop</th>
+              <td class="numeric px-6 py-3 text-body">+100.00%</td>
+              <td class="px-6 py-3 text-body">$50.00 → needs +$50.00 (doubling)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        To model growth moving upwards, use the{' '}
+        <a href="/percentage-increase-calculator">percentage increase calculator</a>.
+      </p>
     </div>
   </section>
 

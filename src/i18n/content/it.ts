@@ -226,7 +226,7 @@ export const contentIt: LocaleContent = {
       ],
     },
     'what-percent': {
-      title: 'Che percentuale è X di Y',
+      title: 'Che percentuale è X di Y — Calcolo percentuale online',
       description: 'Scopri che percentuale è un numero di un altro. Inserisci una parte e un totale per ottenere subito la percentuale.',
       h1: 'Che percentuale è X di Y',
       intro: 'Trasforma un voto, una quota o una porzione in percentuale. Inserisci la parte e il totale a cui appartiene — è il calcolo dietro i voti d’esame, gli stati di avanzamento e le quote di mercato.',

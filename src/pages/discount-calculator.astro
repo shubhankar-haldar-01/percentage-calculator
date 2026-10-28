@@ -55,8 +55,8 @@ const faqs: FaqItem[] = [
 <CalculatorLayout
   pageKey="discount"
   calculator={calculator}
-  title="Discount Calculator — Sale Price"
-  description="Work out the discount amount and the final price you pay. Enter an original price and a percentage off to see what you save and what it costs."
+  title="Discount Calculator — Sale Price & Savings Calculator"
+  description="Calculate sale prices and total savings from percentage discounts. Calculate stacked coupons, double markdowns, and verify retail sale tag claims."
   h1="Discount Calculator"
   intro="See what you save and what you actually pay. Enter the original price and the percentage off — the result shows both figures, so you can check a sale claim before you reach the till."
   currency
@@ -144,6 +144,59 @@ const faqs: FaqItem[] = [
         <li>10% off $80 leaves <strong>$72</strong>.</li>
         <li>That is <strong>28% off</strong> in total — not 30%.</li>
       </ul>
+
+      <div class="overflow-x-auto rounded-lg border border-hairline not-prose my-6">
+        <table class="w-full border-collapse text-left">
+          <caption class="sr-only">Stacked discounts lookup table</caption>
+          <thead>
+            <tr class="border-b border-hairline bg-surface-soft">
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">First Discount</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Second Discount</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Total Effective Saving</th>
+              <th scope="col" class="px-6 py-4 text-body-lg font-strong">Final Price on $100</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">10% off</th>
+              <td class="numeric px-6 py-3 text-body">10% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">19.0% off</td>
+              <td class="px-6 py-3 text-body">$81.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">20% off</th>
+              <td class="numeric px-6 py-3 text-body">10% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">28.0% off</td>
+              <td class="px-6 py-3 text-body">$72.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">20% off</th>
+              <td class="numeric px-6 py-3 text-body">20% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">36.0% off</td>
+              <td class="px-6 py-3 text-body">$64.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">30% off</th>
+              <td class="numeric px-6 py-3 text-body">20% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">44.0% off</td>
+              <td class="px-6 py-3 text-body">$56.00</td>
+            </tr>
+            <tr class="border-b border-hairline">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">50% off</th>
+              <td class="numeric px-6 py-3 text-body">20% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">60.0% off</td>
+              <td class="px-6 py-3 text-body">$40.00</td>
+            </tr>
+            <tr class="last:border-0">
+              <th scope="row" class="px-6 py-3 text-body font-semibold text-ink">50% off</th>
+              <td class="numeric px-6 py-3 text-body">50% off</td>
+              <td class="numeric px-6 py-3 text-body font-medium text-ink">75.0% off</td>
+              <td class="px-6 py-3 text-body">$25.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <p>
         The gap widens as the discounts get larger: 50% and then another 50% leaves you paying 25% of
         the original price, not nothing. To handle stacked offers here, run the calculator once, then
