@@ -728,3 +728,30 @@ Inspect `https://prcentagecalc.com/percentage-calculator` in GSC:
 - As Google processes the enriched content, tables, and optimized titles, URLs will naturally transition from **"Crawled - currently not indexed"** into **"Indexed"**.
 - *Note: Do not request indexing for Korean URLs (`/ko/*`) while the intentional quarantine remains active.*
 
+---
+
+## 10. November 11, 2026 Remediation & Live Deployment Addendum
+
+### Background & Audit of 93 GSC URLs
+On November 11, 2026, a fresh GSC export containing **93 URLs** was analyzed. Googlebot had crawled an additional 50 programmatic localized routes across European languages between October 30 and November 7, 2026. Because the translated sub-pages lacked the extended content depth of the updated English pages, Google classified 45 of them as *Crawled – currently not indexed*.
+
+### Implemented Solutions (Commit `4047d61` & Cloudflare Deploy)
+
+1. **Staged i18n Strategy (`NOINDEX_LOCALES`):**
+   - Expanded `NOINDEX_LOCALES` in `src/i18n/config.ts` to `['ko', 'ja', 'it', 'pt']`.
+   - Result: 48 programmatic, thinner pages safely isolated with `noindex, follow` and removed from `sitemap-0.xml` and hreflang links.
+   - Reduced sitemap from 117 to 69 high-authority pages, focusing 100% of Google's crawl budget on high-demand core markets: **English (`/`), German (`/de/`), French (`/fr/`), and Spanish (`/es/`)**.
+   - Language switchers remain completely intact for human visitors.
+
+2. **Contextual Cross-Calculator Link Graph:**
+   - Enriched internal anchor text and in-prose cross-links across all 11 core English calculation guides.
+   - Connected `how-to-calculate-percentage.astro` as a master educational hub with 11 contextual links to individual tools.
+   - Interlinked the core Change/Increase/Decrease/Difference cluster, eliminating link dead-ends.
+
+3. **Live Verification & Production Status:**
+   - Fixed local `@cloudflare/workerd-darwin-arm64` binary dependency.
+   - Deployed live to Cloudflare Pages via `npm run deploy`.
+   - Verified live origin with `node scripts/check-seo.mjs --live https://prcentagecalc.com`:
+     - **Status: PASS**
+     - 69 sitemap pages indexable with self-canonicals, reciprocal hreflang, unique metadata, and consistent headers.
+
