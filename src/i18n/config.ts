@@ -271,12 +271,11 @@ export function retiredRedirects(): { from: string; to: string }[] {
  * search: their pages are `noindex`, emit no hreflang, are left out of every
  * other page's hreflang set and are not in the sitemap.
  *
- * Korean, since October 2026, after Google dropped 15 of its 17 pages as
- * "Crawled – currently not indexed". Until a native speaker has reviewed the
- * translation, keeping them indexable only adds pages Google rates as low
- * value to its view of the whole site. Remove a locale here to put it back.
+ * Staged rollout strategy: Korean, Japanese, Italian, and Portuguese are kept
+ * out of search while establishing domain authority on core high-volume
+ * markets (English, German, French, Spanish).
  */
-export const NOINDEX_LOCALES: readonly Locale[] = ['ko'];
+export const NOINDEX_LOCALES: readonly Locale[] = ['ko', 'ja', 'it', 'pt'];
 
 export function isIndexable(locale: Locale): boolean {
   return !NOINDEX_LOCALES.includes(locale);
