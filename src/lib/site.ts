@@ -18,7 +18,7 @@ export const SITE = {
    * adds the advertising sections to the privacy policy — change that page's
    * `updated` date when you set it. Left empty, none of this is built.
    */
-  adsensePublisherId: '' as string,
+  adsensePublisherId: 'pub-2709906841724144' as string,
   /**
    * Google Search Console verification for the "HTML tag" method: the code,
    * or the whole <meta> tag Search Console shows. Not needed if the domain

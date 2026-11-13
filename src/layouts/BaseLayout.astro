@@ -120,12 +120,18 @@ const indexable = !noindex && isIndexable(locale);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="percentage calculator" />
     {/*
-      Ownership verification for Search Console and AdSense, each emitted only
-      once its value is set in SITE. The AdSense tag is used rather than the
-      AdSense script because it proves ownership without loading any ad code.
+      Ownership verification for Search Console and AdSense, and Google AdSense Auto Ads.
     */}
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     {adsensePublisherId && <meta name="google-adsense-account" content={`ca-${adsensePublisherId}`} />}
+    {adsensePublisherId && (
+      <script
+        is:inline
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${adsensePublisherId}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
